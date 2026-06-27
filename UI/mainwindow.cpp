@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "UI/login.h"
 #include "UI/signup.h"
 #include "UI/forgot_password.h"
 #include "UI/forgot_password2.h"
@@ -10,35 +11,42 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //create pages
+    Login* login = new Login(this);
     Signup* signup = new Signup(this);
     ForgotPassword* forgot_password = new ForgotPassword(this);
     ForgotPassword2* forgot_password2 = new ForgotPassword2(this);
 
-    //add pages
+    ui->stackedWidget->addWidget(login);
     ui->stackedWidget->addWidget(signup);
     ui->stackedWidget->addWidget(forgot_password);
     ui->stackedWidget->addWidget(forgot_password2);
 
-    //signals
-    connect(forgot_password, &ForgotPassword::goToPage2, [this]() {
+    connect(login, &Login::goToSignup, [this]() {
+        ui->stackedWidget->setCurrentIndex(1);
+    });
+
+    connect(login, &Login::goToForgotPassword, [this]() {
         ui->stackedWidget->setCurrentIndex(2);
     });
 
-    connect(forgot_password, &ForgotPassword::backToSignup, [this]() {
+    connect(signup, &Signup::backToLogin, [this]() {
+        ui->stackedWidget->setCurrentIndex(0);
+    });
+
+    connect(forgot_password, &ForgotPassword::goToPage2, [this]() {
+        ui->stackedWidget->setCurrentIndex(3);
+    });
+
+    connect(forgot_password, &ForgotPassword::backToLogin, [this]() {
         ui->stackedWidget->setCurrentIndex(0);
     });
 
     connect(forgot_password2, &ForgotPassword2::backToLogin, [this]() {
-        ui->stackedWidget->setCurrentIndex(0); //inja indexe login page ro bezar
+        ui->stackedWidget->setCurrentIndex(0);
     });
 
-    connect(signup, &Signup::backToLogin, [this]() {
-        ui->stackedWidget->setCurrentIndex(0); //inja ham hamintor
-    });
+    ui->stackedWidget->setCurrentIndex(0);
 
-    //set pages
-    ui->stackedWidget->setCurrentIndex(0); //inja ham hamintor
 }
 
 MainWindow::~MainWindow()
