@@ -30,6 +30,6 @@ void ForgotPassword::on_pushButton_next_clicked()
 
 void ForgotPassword::on_pushButton_back_clicked()
 {
-    emit backToSignup();
+    emit backToLogin();
 }
 
