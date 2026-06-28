@@ -12,6 +12,10 @@ Login::Login(QWidget *parent)
     ui->lineEdit_password->setPlaceholderText("Enter your Password");
 }
 
+void Login::clearPass(){
+    ui->lineEdit_password->clear();
+}
+
 Login::~Login()
 {
     delete ui;
@@ -30,7 +34,7 @@ void Login::on_pushButton_login_clicked()
 
 void Login::on_pushButton_signup_clicked()
 {
-    emit goToSignup();
+    emit goToSignup(ui->lineEdit_username->text(), ui->lineEdit_password->text());
 }
 
 void Login::on_pushButton_forgotPassword_clicked()

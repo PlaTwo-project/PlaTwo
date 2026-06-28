@@ -25,11 +25,13 @@ void ForgotPassword::on_pushButton_next_clicked()
     }
 
     emit goToPage2();
+    ui->lineEdit_phonenumber->clear();
 }
 
 
 void ForgotPassword::on_pushButton_back_clicked()
 {
     emit backToLogin();
+    ui->lineEdit_phonenumber->clear();
 }
 

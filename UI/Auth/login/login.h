@@ -13,6 +13,7 @@ class Login : public QWidget
 
 public:
     explicit Login(QWidget *parent = nullptr);
+    void clearPass();
     ~Login();
 
 private slots:
@@ -21,7 +22,7 @@ private slots:
     void on_pushButton_forgotPassword_clicked();
 
 signals:
-    void goToSignup();
+    void goToSignup(QString username, QString password);
     void goToForgotPassword();
 
 private:

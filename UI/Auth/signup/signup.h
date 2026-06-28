@@ -13,6 +13,7 @@ class Signup : public QWidget
 
 public:
     explicit Signup(QWidget *parent = nullptr);
+    void setInitialValues(const QString &username, const QString &password);
     ~Signup();
 
 private slots:

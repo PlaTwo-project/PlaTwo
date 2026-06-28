@@ -34,13 +34,17 @@ void ForgotPassword2::on_pushButton_reset_clicked()
 
     int result = QMessageBox::information(this, "Success Message", "Password changed successfully.");
     if(result == QMessageBox::Ok){
-        emit backToLogin();
+        emit backToLogin(1);
+        ui->lineEdit_password->clear();
+        ui->lineEdit_newPassword->clear();
     }
 }
 
 
 void ForgotPassword2::on_pushButton_cancel_clicked()
 {
-    emit backToLogin();
+    emit backToLogin(0);
+    ui->lineEdit_password->clear();
+    ui->lineEdit_newPassword->clear();
 }
 

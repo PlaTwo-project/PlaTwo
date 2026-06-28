@@ -15,6 +15,13 @@ Signup::Signup(QWidget *parent)
     ui->lineEdit_email->setPlaceholderText("Enter your Email");
 }
 
+void Signup::setInitialValues(const QString &username, const QString &password)
+{
+    ui->lineEdit_username->setText(username);
+    ui->lineEdit_password->setText(password);
+}
+
+
 Signup::~Signup()
 {
     delete ui;
@@ -38,4 +45,7 @@ void Signup::on_pushButton_submit_clicked()
 void Signup::on_pushButton_login_clicked()
 {
     emit backToLogin();
+    ui->lineEdit_email->clear();
+    ui->lineEdit_phonenumber->clear();
+    ui->lineEdit_name->clear();
 }

@@ -20,7 +20,7 @@ private slots:
     void on_pushButton_cancel_clicked();
 
 signals:
-    void backToLogin();
+    void backToLogin(bool clearPass);
 
 private:
     Ui::ForgotPassword2 *ui;

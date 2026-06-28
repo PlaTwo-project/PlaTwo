@@ -24,28 +24,30 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(forgot_password2);
 
     //signals
-    connect(login, &Login::goToSignup, [this]() {
+    connect(login, &Login::goToSignup, this, [this, signup](QString username, QString password) {
+        signup->setInitialValues(username, password);
         ui->stackedWidget->setCurrentIndex(1);
     });
 
-    connect(login, &Login::goToForgotPassword, [this]() {
+    connect(login, &Login::goToForgotPassword, this, [this]() {
         ui->stackedWidget->setCurrentIndex(2);
     });
 
-    connect(signup, &Signup::backToLogin, [this]() {
+    connect(signup, &Signup::backToLogin, this, [this]() {
         ui->stackedWidget->setCurrentIndex(0);
     });
 
-    connect(forgot_password, &ForgotPassword::goToPage2, [this]() {
+    connect(forgot_password, &ForgotPassword::goToPage2, this, [this]() {
         ui->stackedWidget->setCurrentIndex(3);
     });
 
-    connect(forgot_password, &ForgotPassword::backToLogin, [this]() {
+    connect(forgot_password, &ForgotPassword::backToLogin, this, [this]() {
         ui->stackedWidget->setCurrentIndex(0);
     });
 
-    connect(forgot_password2, &ForgotPassword2::backToLogin, [this]() {
+    connect(forgot_password2, &ForgotPassword2::backToLogin, this, [this, login](bool clearPass) {
         ui->stackedWidget->setCurrentIndex(0);
+        if(clearPass) login->clearPass();
     });
 
     //set pages
