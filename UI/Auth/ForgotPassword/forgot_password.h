@@ -18,12 +18,11 @@ public:
 
 private slots:
     void on_pushButton_next_clicked();
-
     void on_pushButton_back_clicked();
 
 signals:
     void goToPage2();
-    void backToSignup();
+    void backToLogin();
 
 private:
     Ui::ForgotPassword *ui;

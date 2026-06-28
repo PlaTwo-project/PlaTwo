@@ -1,9 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "UI/login.h"
-#include "UI/signup.h"
-#include "UI/forgot_password.h"
-#include "UI/forgot_password2.h"
+#include "UI/Auth/Login/login.h"
+#include "UI/Auth/SignUp/signup.h"
+#include "UI/Auth/ForgotPassword/forgot_password.h"
+#include "UI/Auth/ForgotPassword/forgot_password2.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,16 +11,19 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //create pages
     Login* login = new Login(this);
     Signup* signup = new Signup(this);
     ForgotPassword* forgot_password = new ForgotPassword(this);
     ForgotPassword2* forgot_password2 = new ForgotPassword2(this);
 
+    //add pages
     ui->stackedWidget->addWidget(login);
     ui->stackedWidget->addWidget(signup);
     ui->stackedWidget->addWidget(forgot_password);
     ui->stackedWidget->addWidget(forgot_password2);
 
+    //signals
     connect(login, &Login::goToSignup, [this]() {
         ui->stackedWidget->setCurrentIndex(1);
     });
@@ -45,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->stackedWidget->setCurrentIndex(0);
     });
 
+    //set pages
     ui->stackedWidget->setCurrentIndex(0);
 
 }

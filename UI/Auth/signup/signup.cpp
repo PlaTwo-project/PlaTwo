@@ -7,6 +7,7 @@ Signup::Signup(QWidget *parent)
     , ui(new Ui::Signup)
 {
     ui->setupUi(this);
+
     ui->lineEdit_password->setPlaceholderText("Enter your Password");
     ui->lineEdit_username->setPlaceholderText("Enter your Username");
     ui->lineEdit_name->setPlaceholderText("Enter your Name");

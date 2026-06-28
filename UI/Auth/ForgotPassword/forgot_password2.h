@@ -17,7 +17,6 @@ public:
 
 private slots:
     void on_pushButton_reset_clicked();
-
     void on_pushButton_cancel_clicked();
 
 signals:

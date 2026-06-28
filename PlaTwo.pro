@@ -8,23 +8,30 @@ CONFIG += c++17
 
 SOURCES += \
     Logic/Security/password_hasher.cpp \
-    UI/forgot_password.cpp \
-    UI/forgot_password2.cpp \
-    UI/signup.cpp \
+    Logic/Security/validator.cpp \
+    Logic/user.cpp \
+    UI/Auth/ForgotPassword/forgot_password.cpp \
+    UI/Auth/ForgotPassword/forgot_password2.cpp \
+    UI/Auth/Login/login.cpp \
+    UI/Auth/SignUp/signup.cpp \
     main.cpp \
     UI/mainwindow.cpp
 
 HEADERS += \
     Logic/Security/password_hasher.h \
-    UI/forgot_password.h \
-    UI/forgot_password2.h \
-    UI/signup.h \
+    Logic/Security/validator.h \
+    Logic/user.h \
+    UI/Auth/ForgotPassword/forgot_password.h \
+    UI/Auth/ForgotPassword/forgot_password2.h \
+    UI/Auth/login/login.h \
+    UI/Auth/signup/signup.h \
     UI/mainwindow.h
 
 FORMS += \
-    UI/forgot_password.ui \
-    UI/forgot_password2.ui \
-    UI/signup.ui \
+    UI/Auth/ForgotPassword/forgot_password.ui \
+    UI/Auth/ForgotPassword/forgot_password2.ui \
+    UI/Auth/Login/login.ui \
+    UI/Auth/SignUp/signup.ui \
     UI/mainwindow.ui
 
 # Default rules for deployment.

@@ -19,8 +19,6 @@ private slots:
     void on_pushButton_submit_clicked();
     void on_pushButton_login_clicked();
 
-    void on_pushButton_clicked();
-
 signals:
     void backToLogin();
 
