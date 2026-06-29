@@ -35,7 +35,7 @@ void Signup::on_pushButton_submit_clicked()
     auto email = ui->lineEdit_email->text();
     auto password = ui->lineEdit_password->text();
 
-    if(name.isEmpty() || username.isEmpty() || phone_number.isEmpty() || email.isEmpty() || password.isEmpty()){
+    if (name.isEmpty() || username.isEmpty() || phone_number.isEmpty() || email.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "Sign up", "Please fill out all fields.");
         return;
     }

@@ -7,7 +7,7 @@
 
 class StorageManager {
 public:
-    StorageManager();
+    StorageManager(const QString filePath = "users.json");
 
     bool addUser(const User& newUser);
     bool updateUser(const User& user_to_update);

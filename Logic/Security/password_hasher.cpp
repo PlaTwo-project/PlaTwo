@@ -6,6 +6,6 @@ QString PasswordHasher::hasher(const QString& password) {
     return QString(hash.toHex());
 }
 
-bool PasswordHasher::verify(const QString& password, const QString& hashedPassword){
+bool PasswordHasher::verify(const QString& password, const QString& hashedPassword) {
     return hasher(password) == hashedPassword;
 }

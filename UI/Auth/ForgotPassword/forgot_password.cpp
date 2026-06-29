@@ -19,7 +19,7 @@ ForgotPassword::~ForgotPassword()
 void ForgotPassword::on_pushButton_next_clicked()
 {
     auto number = ui->lineEdit_phonenumber->text();
-    if(number.isEmpty() || !true){
+    if (number.isEmpty() || !true) {
         QMessageBox::warning(this, "Restore Password", "Please Enter a valid phone number.");
         return;
     }

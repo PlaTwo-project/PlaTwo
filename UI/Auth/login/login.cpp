@@ -26,7 +26,7 @@ void Login::on_pushButton_login_clicked()
     auto username = ui->lineEdit_username->text();
     auto password = ui->lineEdit_password->text();
 
-    if(username.isEmpty() || password.isEmpty()){
+    if (username.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "Login", "Please fill out all fields.");
         return;
     }

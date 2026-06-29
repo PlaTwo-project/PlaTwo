@@ -22,18 +22,18 @@ void ForgotPassword2::on_pushButton_reset_clicked()
     auto pass = ui->lineEdit_password->text();
     auto new_pass = ui->lineEdit_newPassword->text();
 
-    if(pass.isEmpty() || new_pass.isEmpty()){
+    if (pass.isEmpty() || new_pass.isEmpty()) {
         QMessageBox::warning(this, "Restore Password", "Please fill out all fields.");
         return;
     }
 
-    if(pass != new_pass){
+    if (pass != new_pass) {
         QMessageBox::warning(this, "Restore Password", "The Passwords do not match.");
         return;
     }
 
     int result = QMessageBox::information(this, "Success Message", "Password changed successfully.");
-    if(result == QMessageBox::Ok){
+    if (result == QMessageBox::Ok) {
         emit backToLogin(1);
         ui->lineEdit_password->clear();
         ui->lineEdit_newPassword->clear();

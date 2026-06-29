@@ -3,9 +3,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMessageBox>
 
-StorageManager::StorageManager() {
-    file_path = "users.json";
+StorageManager::StorageManager(const QString filePath) {
+    file_path = filePath;
     loadUsers();
 }
 
@@ -24,7 +25,8 @@ void StorageManager::loadUsers() {
         QJsonObject obj = value.toObject();
 
         User user;
-        user.setName(obj["username"].toString());
+        user.setName(obj["name"].toString());
+        user.setUsername(obj["username"].toString());
         user.setEmail(obj["email"].toString());
         user.setPhoneNumber(obj["phone"].toString());
         user.setHashedPassword(obj["password"].toString());
@@ -35,12 +37,34 @@ void StorageManager::loadUsers() {
 }
 
 void StorageManager::saveUsers(){
-    //ino benvis
+    QJsonArray jsonArray;
+
+    for (const User& user : users_list) {
+        QJsonObject obj;
+        obj["name"] = user.getName();
+        obj["username"] = user.getUsername();
+        obj["email"] = user.getEmail();
+        obj["phone"] = user.getPhoneNumber();
+        obj["password"] = user.getHashedPassword();
+
+        jsonArray.append(obj);
+    }
+
+    QJsonDocument doc(jsonArray);
+
+    QFile file(file_path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        return;
+    }
+
+    file.write(doc.toJson());
+    file.close();
 }
 
 bool StorageManager::addUser(const User& newUser) {
-    if (isUsernameTaken(newUser.getName()) || isEmailTaken(newUser.getEmail()) || isPhoneNumberTaken(newUser.getPhoneNumber()) )
+    if (isUsernameTaken(newUser.getUsername()) || isEmailTaken(newUser.getEmail()) || isPhoneNumberTaken(newUser.getPhoneNumber())) {
         return false;
+    }
 
     users_list.append(newUser);
     saveUsers();
@@ -48,13 +72,23 @@ bool StorageManager::addUser(const User& newUser) {
 }
 
 bool StorageManager::updateUser(const User& user_to_update) {
-    //ino benvis
-}
+    if (isUsernameTaken(user_to_update.getUsername()) || isEmailTaken(user_to_update.getEmail()) || isPhoneNumberTaken(user_to_update.getPhoneNumber())) {
+        return false;
+    }
 
+    for(User& user : users_list) {
+        if(user.getUsername() == user_to_update.getUsername()) {
+            user = user_to_update;
+            saveUsers();
+            return true;
+        }
+    }
+    return false;
+}
 
 bool StorageManager::isUsernameTaken(const QString& username) const {
     for (const User& user : users_list) {
-        if (user.getName() == username) {
+        if (user.getUsername() == username) {
             return true;
         }
     }
@@ -62,14 +96,33 @@ bool StorageManager::isUsernameTaken(const QString& username) const {
 }
 
 bool StorageManager::isEmailTaken(const QString& email) const {
-    //ino benvis
+    for (const User& user : users_list) {
+        if (user.getEmail() == email) {
+            return true;
+        }
+    }
+    return false;
 }
+
 bool StorageManager::isPhoneNumberTaken(const QString& phone) const {
-    //ino benvis
+    for (const User& user : users_list) {
+        if (user.getPhoneNumber() == phone) {
+            return true;
+        }
+    }
+    return false;
 }
+
 bool StorageManager::getUserByUsername(const QString& username, User& user_to_find) const {
-    //ino benvis
+    for (const User& tmp_user : users_list) {
+        if (tmp_user.getUsername() == username) {
+            user_to_find = tmp_user;
+            return true;
+        }
+    }
+    return false;
 }
+
 bool StorageManager::getUserByPhoneNumber(const QString& phone, User& user_to_find) const {
     for (const User& tmp_user : users_list) {
         if (tmp_user.getPhoneNumber() == phone) {
