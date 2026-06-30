@@ -13,6 +13,8 @@ class ForgotPassword : public QWidget
 
 public:
     explicit ForgotPassword(QWidget *parent = nullptr);
+    void setInitialValues(const QString& username);
+    void clearFields();
     ~ForgotPassword();
 
 signals:

@@ -70,20 +70,31 @@ bool StorageManager::addUser(const User& newUser) {
     return true;
 }
 
-bool StorageManager::updateUser(const User& user_to_update) {
-    if (isUsernameTaken(user_to_update.getUsername()) || isEmailTaken(user_to_update.getEmail()) || isPhoneNumberTaken(user_to_update.getPhoneNumber())) {
-        return false;
-    }
+bool StorageManager::updateUser(const User& user_to_update)
+{
+    for (User& user : users_list) {
+        if (user.getUsername() == user_to_update.getOldUsername()) {
+            if (user.getUsername() != user_to_update.getUsername())
+                if (isUsernameTaken(user_to_update.getUsername()))
+                    return false;
 
-    for(User& user : users_list) {
-        if(user.getUsername() == user_to_update.getUsername()) {
+            if (user.getEmail() != user_to_update.getEmail())
+                if (isEmailTaken(user_to_update.getEmail()))
+                    return false;
+
+            if (user.getPhoneNumber() != user_to_update.getPhoneNumber())
+                if (isPhoneNumberTaken(user_to_update.getPhoneNumber()))
+                    return false;
+
             user = user_to_update;
             saveUsers();
             return true;
         }
     }
+
     return false;
 }
+
 
 bool StorageManager::isUsernameTaken(const QString& username) const {
     for (const User& user : users_list) {

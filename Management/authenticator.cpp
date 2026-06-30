@@ -58,7 +58,7 @@ AuthResult Authenticator::resetPassword(const QString& username, const QString& 
     if (!storage.getUserByUsername(username, user))
         return AuthResult::USER_NOT_FOUND;
 
-    if (user.getPhoneNumber() != phone)
+    if (!storage.getUserByPhoneNumber(phone, user))
         return AuthResult::USER_PHONE_MISMATCH;
 
     if (!Validator::validatePassword(newPassword.toStdString()))
@@ -81,7 +81,7 @@ AuthResult Authenticator::verifyUserPhone(const QString& username, const QString
     if (!storage.getUserByUsername(username, user))
         return AuthResult::USER_NOT_FOUND;
 
-    if (user.getPhoneNumber() != phone)
+    if (!storage.getUserByPhoneNumber(phone, user))
         return AuthResult::USER_PHONE_MISMATCH;
 
     return AuthResult::SUCCESS;

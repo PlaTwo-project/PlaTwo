@@ -13,14 +13,13 @@ class Login : public QWidget
 
 public:
     explicit Login(QWidget *parent = nullptr);
+    void clearFields();
     ~Login();
-
-    void clearPass();
 
 signals:
     void loginRequested(const QString& username, const QString& password);
-    void navigateToSignup();
-    void navigateToForgotPassword();
+    void navigateToSignup(QString username, QString password);
+    void navigateToForgotPassword(QString username);
 
 private slots:
     void on_pushButton_login_clicked();

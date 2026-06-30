@@ -21,11 +21,8 @@ private:
 
 private slots:
     void handleLogin(const QString& username, const QString& password);
-
     void handleSignup(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
-
     void handleForgotPasswordStep2(const QString& username, const QString& phone);
-
     void handleResetPassword(const QString& username, const QString& phone, const QString& newPassword);
 };
 

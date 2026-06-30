@@ -1,5 +1,6 @@
 #ifndef PASSWORDHASHER_H
 #define PASSWORDHASHER_H
+
 #include <QString>
 #include <QByteArray>
 #include <QCryptographicHash>

@@ -1,6 +1,5 @@
 #include "forgot_password2.h"
 #include "ui_forgot_password2.h"
-
 #include <QMessageBox>
 
 ForgotPassword2::ForgotPassword2(QWidget *parent)
@@ -16,6 +15,12 @@ ForgotPassword2::ForgotPassword2(QWidget *parent)
 ForgotPassword2::~ForgotPassword2()
 {
     delete ui;
+}
+
+void ForgotPassword2::clearFields()
+{
+    ui->lineEdit_password->clear();
+    ui->lineEdit_newPassword->clear();
 }
 
 void ForgotPassword2::setUserData(const QString& username, const QString& phone)
@@ -39,16 +44,13 @@ void ForgotPassword2::on_pushButton_reset_clicked()
         return;
     }
 
-    ui->lineEdit_password->clear();
-    ui->lineEdit_newPassword->clear();
-
     emit resetPasswordRequested(user_name, phone_number, pass);
 }
 
 void ForgotPassword2::on_pushButton_cancel_clicked()
 {
+    emit navigateToLogin();
+
     ui->lineEdit_password->clear();
     ui->lineEdit_newPassword->clear();
-
-    emit navigateToLogin();
 }

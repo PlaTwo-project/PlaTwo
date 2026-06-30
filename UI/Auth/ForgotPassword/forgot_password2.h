@@ -13,9 +13,9 @@ class ForgotPassword2 : public QWidget
 
 public:
     explicit ForgotPassword2(QWidget *parent = nullptr);
-    ~ForgotPassword2();
-
+    void clearFields();
     void setUserData(const QString& username, const QString& phone);
+    ~ForgotPassword2();
 
 signals:
     void resetPasswordRequested(const QString& username, const QString& phone, const QString& newPassword);

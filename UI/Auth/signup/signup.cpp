@@ -1,6 +1,5 @@
 #include "signup.h"
 #include "ui_signup.h"
-
 #include <QMessageBox>
 
 Signup::Signup(QWidget *parent)
@@ -9,16 +8,32 @@ Signup::Signup(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->lineEdit_username->setPlaceholderText("Enter your Username");
-    ui->lineEdit_password->setPlaceholderText("Enter your Password");
     ui->lineEdit_name->setPlaceholderText("Enter your Name");
-    ui->lineEdit_phonenumber->setPlaceholderText("Enter your Phone Number");
+    ui->lineEdit_username->setPlaceholderText("Enter your Username");
     ui->lineEdit_email->setPlaceholderText("Enter your Email");
+    ui->lineEdit_phonenumber->setPlaceholderText("Enter your Phone Number");
+    ui->lineEdit_password->setPlaceholderText("Enter your Password");
+
 }
 
 Signup::~Signup()
 {
     delete ui;
+}
+
+void Signup::setInitialValues(const QString& username, const QString& password)
+{
+    ui->lineEdit_username->setText(username);
+    ui->lineEdit_password->setText(password);
+}
+
+void Signup::clearFields()
+{
+    ui->lineEdit_name->clear();
+    ui->lineEdit_username->clear();
+    ui->lineEdit_email->clear();
+    ui->lineEdit_phonenumber->clear();
+    ui->lineEdit_password->clear();
 }
 
 void Signup::on_pushButton_submit_clicked()
@@ -40,10 +55,6 @@ void Signup::on_pushButton_submit_clicked()
 
 void Signup::on_pushButton_login_clicked()
 {
-    ui->lineEdit_email->clear();
-    ui->lineEdit_phonenumber->clear();
-    ui->lineEdit_name->clear();
-    ui->lineEdit_password->clear();
-
     emit navigateToLogin();
+    clearFields();
 }

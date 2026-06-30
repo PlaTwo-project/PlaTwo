@@ -25,6 +25,11 @@ public:
     void showForgotPasswordPage();
     void showForgotPassword2Page(const QString& username, const QString& phone);
 
+    void clearLoginFields();
+    void clearSignupFields();
+    void clearFPFields();
+    void clearFP2Fields();
+
 signals:
     void loginRequested(const QString& username, const QString& password);
     void signupRequested(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);

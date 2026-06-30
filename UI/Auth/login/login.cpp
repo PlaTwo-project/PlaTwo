@@ -1,6 +1,5 @@
 #include "login.h"
 #include "ui_login.h"
-
 #include <QMessageBox>
 
 Login::Login(QWidget *parent)
@@ -18,8 +17,9 @@ Login::~Login()
     delete ui;
 }
 
-void Login::clearPass()
+void Login::clearFields()
 {
+    ui->lineEdit_username->clear();
     ui->lineEdit_password->clear();
 }
 
@@ -38,10 +38,10 @@ void Login::on_pushButton_login_clicked()
 
 void Login::on_pushButton_signup_clicked()
 {
-    emit navigateToSignup();
+    emit navigateToSignup(ui->lineEdit_username->text(), ui->lineEdit_password->text());
 }
 
 void Login::on_pushButton_forgotPassword_clicked()
 {
-    emit navigateToForgotPassword();
+    emit navigateToForgotPassword(ui->lineEdit_username->text());
 }

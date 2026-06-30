@@ -11,21 +11,27 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //create pages
     loginPage = new Login(this);
     signupPage = new Signup(this);
     forgotPasswordPage = new ForgotPassword(this);
     forgotPassword2Page = new ForgotPassword2(this);
 
+
+    // add pages
     ui->stackedWidget->addWidget(loginPage);
     ui->stackedWidget->addWidget(signupPage);
     ui->stackedWidget->addWidget(forgotPasswordPage);
     ui->stackedWidget->addWidget(forgotPassword2Page);
 
-    connect(loginPage, &Login::navigateToSignup, this, [this]() {
+    // received signals
+    connect(loginPage, &Login::navigateToSignup, this, [this](QString username, QString password) {
+        signupPage->setInitialValues(username, password);
         showSignupPage();
     });
 
-    connect(loginPage, &Login::navigateToForgotPassword, this, [this]() {
+    connect(loginPage, &Login::navigateToForgotPassword, this, [this](QString username) {
+        forgotPasswordPage->setInitialValues(username);
         showForgotPasswordPage();
     });
 
@@ -41,10 +47,17 @@ MainWindow::MainWindow(QWidget *parent)
         showLoginPage();
     });
 
+    // page transfer signals
     connect(loginPage, &Login::loginRequested, this, &MainWindow::loginRequested);
+
     connect(signupPage, &Signup::signupRequested, this, &MainWindow::signupRequested);
+
     connect(forgotPasswordPage, &ForgotPassword::forgotPasswordStep2Requested, this, &MainWindow::forgotPasswordStep2Requested);
+
     connect(forgotPassword2Page, &ForgotPassword2::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
+
+    // clearFields signals
+
 
     showLoginPage();
 }
@@ -73,4 +86,24 @@ void MainWindow::showForgotPassword2Page(const QString& username, const QString 
 {
     forgotPassword2Page->setUserData(username, phone);
     ui->stackedWidget->setCurrentWidget(forgotPassword2Page);
+}
+
+void MainWindow::clearLoginFields()
+{
+    loginPage->clearFields();
+}
+
+void MainWindow::clearSignupFields()
+{
+    signupPage->clearFields();
+}
+
+void MainWindow::clearFPFields()
+{
+    forgotPasswordPage->clearFields();
+}
+
+void MainWindow::clearFP2Fields()
+{
+    forgotPassword2Page->clearFields();
 }

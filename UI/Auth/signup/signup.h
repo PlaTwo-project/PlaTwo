@@ -13,11 +13,12 @@ class Signup : public QWidget
 
 public:
     explicit Signup(QWidget *parent = nullptr);
+    void setInitialValues(const QString& username, const QString& password);
+    void clearFields();
     ~Signup();
 
 signals:
     void signupRequested(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
-
     void navigateToLogin();
 
 private slots:
