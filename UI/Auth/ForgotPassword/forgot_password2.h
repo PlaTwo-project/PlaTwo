@@ -15,15 +15,20 @@ public:
     explicit ForgotPassword2(QWidget *parent = nullptr);
     ~ForgotPassword2();
 
+    void setUserData(const QString& username, const QString& phone);
+
+signals:
+    void resetPasswordRequested(const QString& username, const QString& phone, const QString& newPassword);
+    void navigateToLogin();
+
 private slots:
     void on_pushButton_reset_clicked();
     void on_pushButton_cancel_clicked();
 
-signals:
-    void backToLogin(bool clearPass);
-
 private:
     Ui::ForgotPassword2 *ui;
+    QString phone_number;
+    QString user_name;
 };
 
 #endif // FORGOT_PASSWORD2_H

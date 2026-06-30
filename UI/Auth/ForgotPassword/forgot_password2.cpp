@@ -1,10 +1,11 @@
 #include "forgot_password2.h"
 #include "ui_forgot_password2.h"
+
 #include <QMessageBox>
 
 ForgotPassword2::ForgotPassword2(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::ForgotPassword2)
+    : QWidget(parent),
+    ui(new Ui::ForgotPassword2)
 {
     ui->setupUi(this);
 
@@ -17,34 +18,37 @@ ForgotPassword2::~ForgotPassword2()
     delete ui;
 }
 
+void ForgotPassword2::setUserData(const QString& username, const QString& phone)
+{
+    phone_number = phone;
+    user_name = username;
+}
+
 void ForgotPassword2::on_pushButton_reset_clicked()
 {
-    auto pass = ui->lineEdit_password->text();
-    auto new_pass = ui->lineEdit_newPassword->text();
+    QString pass = ui->lineEdit_password->text();
+    QString confirm = ui->lineEdit_newPassword->text();
 
-    if (pass.isEmpty() || new_pass.isEmpty()) {
+    if (pass.isEmpty() || confirm.isEmpty()) {
         QMessageBox::warning(this, "Restore Password", "Please fill out all fields.");
         return;
     }
 
-    if (pass != new_pass) {
-        QMessageBox::warning(this, "Restore Password", "The Passwords do not match.");
+    if (pass != confirm) {
+        QMessageBox::warning(this, "Restore Password", "Passwords do not match.");
         return;
     }
 
-    int result = QMessageBox::information(this, "Success Message", "Password changed successfully.");
-    if (result == QMessageBox::Ok) {
-        emit backToLogin(1);
-        ui->lineEdit_password->clear();
-        ui->lineEdit_newPassword->clear();
-    }
-}
+    ui->lineEdit_password->clear();
+    ui->lineEdit_newPassword->clear();
 
+    emit resetPasswordRequested(user_name, phone_number, pass);
+}
 
 void ForgotPassword2::on_pushButton_cancel_clicked()
 {
-    emit backToLogin(0);
     ui->lineEdit_password->clear();
     ui->lineEdit_newPassword->clear();
-}
 
+    emit navigateToLogin();
+}

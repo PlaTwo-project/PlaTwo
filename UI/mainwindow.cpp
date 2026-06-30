@@ -6,56 +6,71 @@
 #include "UI/Auth/ForgotPassword/forgot_password2.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    : QMainWindow(parent),
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    //create pages
-    Login* login = new Login(this);
-    Signup* signup = new Signup(this);
-    ForgotPassword* forgot_password = new ForgotPassword(this);
-    ForgotPassword2* forgot_password2 = new ForgotPassword2(this);
+    loginPage = new Login(this);
+    signupPage = new Signup(this);
+    forgotPasswordPage = new ForgotPassword(this);
+    forgotPassword2Page = new ForgotPassword2(this);
 
-    //add pages
-    ui->stackedWidget->addWidget(login);
-    ui->stackedWidget->addWidget(signup);
-    ui->stackedWidget->addWidget(forgot_password);
-    ui->stackedWidget->addWidget(forgot_password2);
+    ui->stackedWidget->addWidget(loginPage);
+    ui->stackedWidget->addWidget(signupPage);
+    ui->stackedWidget->addWidget(forgotPasswordPage);
+    ui->stackedWidget->addWidget(forgotPassword2Page);
 
-    //signals
-    connect(login, &Login::goToSignup, this, [this, signup](QString username, QString password) {
-        signup->setInitialValues(username, password);
-        ui->stackedWidget->setCurrentIndex(1);
+    connect(loginPage, &Login::navigateToSignup, this, [this]() {
+        showSignupPage();
     });
 
-    connect(login, &Login::goToForgotPassword, this, [this]() {
-        ui->stackedWidget->setCurrentIndex(2);
+    connect(loginPage, &Login::navigateToForgotPassword, this, [this]() {
+        showForgotPasswordPage();
     });
 
-    connect(signup, &Signup::backToLogin, this, [this]() {
-        ui->stackedWidget->setCurrentIndex(0);
+    connect(signupPage, &Signup::navigateToLogin, this, [this]() {
+        showLoginPage();
     });
 
-    connect(forgot_password, &ForgotPassword::goToPage2, this, [this]() {
-        ui->stackedWidget->setCurrentIndex(3);
+    connect(forgotPasswordPage, &ForgotPassword::navigateToLogin, this, [this]() {
+        showLoginPage();
     });
 
-    connect(forgot_password, &ForgotPassword::backToLogin, this, [this]() {
-        ui->stackedWidget->setCurrentIndex(0);
+    connect(forgotPassword2Page, &ForgotPassword2::navigateToLogin, this, [this]() {
+        showLoginPage();
     });
 
-    connect(forgot_password2, &ForgotPassword2::backToLogin, this, [this, login](bool clearPass) {
-        ui->stackedWidget->setCurrentIndex(0);
-        if(clearPass) login->clearPass();
-    });
+    connect(loginPage, &Login::loginRequested, this, &MainWindow::loginRequested);
+    connect(signupPage, &Signup::signupRequested, this, &MainWindow::signupRequested);
+    connect(forgotPasswordPage, &ForgotPassword::forgotPasswordStep2Requested, this, &MainWindow::forgotPasswordStep2Requested);
+    connect(forgotPassword2Page, &ForgotPassword2::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
 
-    //set pages
-    ui->stackedWidget->setCurrentIndex(0);
-
+    showLoginPage();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::showLoginPage()
+{
+    ui->stackedWidget->setCurrentWidget(loginPage);
+}
+
+void MainWindow::showSignupPage()
+{
+    ui->stackedWidget->setCurrentWidget(signupPage);
+}
+
+void MainWindow::showForgotPasswordPage()
+{
+    ui->stackedWidget->setCurrentWidget(forgotPasswordPage);
+}
+
+void MainWindow::showForgotPassword2Page(const QString& username, const QString &phone)
+{
+    forgotPassword2Page->setUserData(username, phone);
+    ui->stackedWidget->setCurrentWidget(forgotPassword2Page);
 }

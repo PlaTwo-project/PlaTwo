@@ -11,6 +11,8 @@ SOURCES += \
     Logic/Security/password_hasher.cpp \
     Logic/Security/validator.cpp \
     Logic/user.cpp \
+    Management/app_manager.cpp \
+    Management/authenticator.cpp \
     UI/Auth/ForgotPassword/forgot_password.cpp \
     UI/Auth/ForgotPassword/forgot_password2.cpp \
     UI/Auth/Login/login.cpp \
@@ -23,6 +25,8 @@ HEADERS += \
     Logic/Security/password_hasher.h \
     Logic/Security/validator.h \
     Logic/user.h \
+    Management/app_manager.h \
+    Management/authenticator.h \
     UI/Auth/ForgotPassword/forgot_password.h \
     UI/Auth/ForgotPassword/forgot_password2.h \
     UI/Auth/login/login.h \

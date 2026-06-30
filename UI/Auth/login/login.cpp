@@ -1,10 +1,11 @@
 #include "login.h"
 #include "ui_login.h"
+
 #include <QMessageBox>
 
 Login::Login(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::Login)
+    : QWidget(parent),
+    ui(new Ui::Login)
 {
     ui->setupUi(this);
 
@@ -12,32 +13,35 @@ Login::Login(QWidget *parent)
     ui->lineEdit_password->setPlaceholderText("Enter your Password");
 }
 
-void Login::clearPass(){
-    ui->lineEdit_password->clear();
-}
-
 Login::~Login()
 {
     delete ui;
 }
 
+void Login::clearPass()
+{
+    ui->lineEdit_password->clear();
+}
+
 void Login::on_pushButton_login_clicked()
 {
-    auto username = ui->lineEdit_username->text();
-    auto password = ui->lineEdit_password->text();
+    QString username = ui->lineEdit_username->text();
+    QString password = ui->lineEdit_password->text();
 
     if (username.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "Login", "Please fill out all fields.");
         return;
     }
+
+    emit loginRequested(username, password);
 }
 
 void Login::on_pushButton_signup_clicked()
 {
-    emit goToSignup(ui->lineEdit_username->text(), ui->lineEdit_password->text());
+    emit navigateToSignup();
 }
 
 void Login::on_pushButton_forgotPassword_clicked()
 {
-    emit goToForgotPassword();
+    emit navigateToForgotPassword();
 }
