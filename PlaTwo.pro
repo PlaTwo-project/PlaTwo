@@ -17,6 +17,7 @@ SOURCES += \
     UI/Auth/ForgotPassword/forgot_password2.cpp \
     UI/Auth/Login/login.cpp \
     UI/Auth/SignUp/signup.cpp \
+    UI/Menu/main_menu.cpp \
     main.cpp \
     UI/mainwindow.cpp
 
@@ -31,6 +32,7 @@ HEADERS += \
     UI/Auth/ForgotPassword/forgot_password2.h \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
+    UI/Menu/main_menu.h \
     UI/mainwindow.h
 
 FORMS += \
@@ -38,6 +40,7 @@ FORMS += \
     UI/Auth/ForgotPassword/forgot_password2.ui \
     UI/Auth/Login/login.ui \
     UI/Auth/SignUp/signup.ui \
+    UI/Menu/main_menu.ui \
     UI/mainwindow.ui
 
 # Default rules for deployment.

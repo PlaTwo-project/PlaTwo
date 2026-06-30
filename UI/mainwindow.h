@@ -7,6 +7,7 @@ class Login;
 class Signup;
 class ForgotPassword;
 class ForgotPassword2;
+class MainMenu;
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +25,7 @@ public:
     void showSignupPage();
     void showForgotPasswordPage();
     void showForgotPassword2Page(const QString& username, const QString& phone);
+    void showMainMenu();
 
     void clearLoginFields();
     void clearSignupFields();
@@ -43,6 +45,7 @@ private:
     Signup* signupPage;
     ForgotPassword* forgotPasswordPage;
     ForgotPassword2* forgotPassword2Page;
+    MainMenu* mainMenuPage;
 };
 
 #endif // MAINWINDOW_H

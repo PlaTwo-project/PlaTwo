@@ -4,6 +4,7 @@
 #include "UI/Auth/SignUp/signup.h"
 #include "UI/Auth/ForgotPassword/forgot_password.h"
 #include "UI/Auth/ForgotPassword/forgot_password2.h"
+#include "UI/Menu/main_menu.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     signupPage = new Signup(this);
     forgotPasswordPage = new ForgotPassword(this);
     forgotPassword2Page = new ForgotPassword2(this);
+    mainMenuPage = new MainMenu(this);
 
 
     // add pages
@@ -23,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(signupPage);
     ui->stackedWidget->addWidget(forgotPasswordPage);
     ui->stackedWidget->addWidget(forgotPassword2Page);
+    ui->stackedWidget->addWidget(mainMenuPage);
 
     // received signals
     connect(loginPage, &Login::navigateToSignup, this, [this](QString username, QString password) {
@@ -56,10 +59,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(forgotPassword2Page, &ForgotPassword2::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
 
-    // clearFields signals
+    connect(mainMenuPage, &MainMenu::navigateToLogin, this, &MainWindow::showLoginPage);
 
 
-    showLoginPage();
+    // showLoginPage();
+    showMainMenu();
 }
 
 MainWindow::~MainWindow()
@@ -86,6 +90,11 @@ void MainWindow::showForgotPassword2Page(const QString& username, const QString 
 {
     forgotPassword2Page->setUserData(username, phone);
     ui->stackedWidget->setCurrentWidget(forgotPassword2Page);
+}
+
+void MainWindow::showMainMenu()
+{
+    ui->stackedWidget->setCurrentWidget(mainMenuPage);
 }
 
 void MainWindow::clearLoginFields()

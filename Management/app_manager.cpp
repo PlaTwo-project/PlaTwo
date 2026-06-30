@@ -34,6 +34,7 @@ void AppManager::handleLogin(const QString& username, const QString& password)
     case AuthResult::SUCCESS:
         res = QMessageBox::information(mainWindow, "Login", "Login successfully.");
         if(res == QMessageBox::Ok) {
+            mainWindow->showMainMenu();
             mainWindow->clearLoginFields();
         }
         break;
