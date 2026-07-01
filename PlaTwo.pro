@@ -9,6 +9,7 @@ SOURCES += \
     Logic/user.cpp \
     Management/app_manager.cpp \
     Management/authenticator.cpp \
+    Management/session_manager.cpp \
     UI/Auth/ForgotPassword/forgot_password.cpp \
     UI/Auth/ForgotPassword/forgot_password2.cpp \
     UI/Auth/Login/login.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     Logic/user.h \
     Management/app_manager.h \
     Management/authenticator.h \
+    Management/session_manager.h \
     UI/Auth/ForgotPassword/forgot_password.h \
     UI/Auth/ForgotPassword/forgot_password2.h \
     UI/Auth/login/login.h \

@@ -1,4 +1,5 @@
 #include "app_manager.h"
+#include "session_manager.h"
 #include <QMessageBox>
 
 AppManager::AppManager(QObject *parent)
@@ -26,12 +27,14 @@ void AppManager::setupConnections()
 
 void AppManager::handleLogin(const QString& username, const QString& password)
 {
-    AuthResult result = authenticator.login(username, password);
+    User loggedInUser;
+    AuthResult result = authenticator.login(username, password, loggedInUser);
     int res;
 
     switch (result)
     {
     case AuthResult::SUCCESS:
+        SessionManager::getInstance().login(loggedInUser);
         res = QMessageBox::information(mainWindow, "Login", "Login successfully.");
         if(res == QMessageBox::Ok) {
             mainWindow->showMainMenu();

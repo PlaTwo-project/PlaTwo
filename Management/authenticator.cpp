@@ -8,7 +8,7 @@ Authenticator::Authenticator()
 {
 }
 
-AuthResult Authenticator::login(const QString& username, const QString& password)
+AuthResult Authenticator::login(const QString& username, const QString& password, User& logged_in_user)
 {
     User user;
 
@@ -18,6 +18,7 @@ AuthResult Authenticator::login(const QString& username, const QString& password
     if (!PasswordHasher::verify(password, user.getHashedPassword()))
         return AuthResult::WRONG_PASSWORD;
 
+    logged_in_user = user;
     return AuthResult::SUCCESS;
 }
 
