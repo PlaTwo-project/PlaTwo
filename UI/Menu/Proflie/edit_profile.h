@@ -13,6 +13,7 @@ class EditProfile : public QWidget
 
 public:
     explicit EditProfile(QWidget *parent = nullptr);
+    void setInitialValues(const QString& name, const QString& username, const QString& email, const QString& phone);
     ~EditProfile();
 
 signals:

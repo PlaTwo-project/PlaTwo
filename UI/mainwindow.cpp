@@ -5,6 +5,7 @@
 #include "UI/Auth/ForgotPassword/forgot_password.h"
 #include "UI/Auth/ForgotPassword/forgot_password2.h"
 #include "UI/Menu/main_menu.h"
+#include "UI/Menu/Proflie/edit_profile.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -13,55 +14,63 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //create pages
-    loginPage = new Login(this);
-    signupPage = new Signup(this);
-    forgotPasswordPage = new ForgotPassword(this);
-    forgotPassword2Page = new ForgotPassword2(this);
-    mainMenuPage = new MainMenu(this);
-
+    login_page = new Login(this);
+    signup_page = new Signup(this);
+    forgot_password_page = new ForgotPassword(this);
+    forgot_password_page2 = new ForgotPassword2(this);
+    main_menu_page = new MainMenu(this);
+    edit_profile_page = new EditProfile(this);
 
     // add pages
-    ui->stackedWidget->addWidget(loginPage);
-    ui->stackedWidget->addWidget(signupPage);
-    ui->stackedWidget->addWidget(forgotPasswordPage);
-    ui->stackedWidget->addWidget(forgotPassword2Page);
-    ui->stackedWidget->addWidget(mainMenuPage);
+    ui->stackedWidget->addWidget(login_page);
+    ui->stackedWidget->addWidget(signup_page);
+    ui->stackedWidget->addWidget(forgot_password_page);
+    ui->stackedWidget->addWidget(forgot_password_page2);
+    ui->stackedWidget->addWidget(main_menu_page);
+    ui->stackedWidget->addWidget(edit_profile_page);
 
     // received signals
-    connect(loginPage, &Login::navigateToSignup, this, [this](QString username, QString password) {
-        signupPage->setInitialValues(username, password);
+    connect(login_page, &Login::navigateToSignup, this, [this](QString username, QString password) {
+        signup_page->setInitialValues(username, password);
         showSignupPage();
     });
 
-    connect(loginPage, &Login::navigateToForgotPassword, this, [this](QString username) {
-        forgotPasswordPage->setInitialValues(username);
+    connect(login_page, &Login::navigateToForgotPassword, this, [this](QString username) {
+        forgot_password_page->setInitialValues(username);
         showForgotPasswordPage();
     });
 
-    connect(signupPage, &Signup::navigateToLogin, this, [this]() {
+    connect(signup_page, &Signup::navigateToLogin, this, [this]() {
         showLoginPage();
     });
 
-    connect(forgotPasswordPage, &ForgotPassword::navigateToLogin, this, [this]() {
+    connect(forgot_password_page, &ForgotPassword::navigateToLogin, this, [this]() {
         showLoginPage();
     });
 
-    connect(forgotPassword2Page, &ForgotPassword2::navigateToLogin, this, [this]() {
+    connect(forgot_password_page2, &ForgotPassword2::navigateToLogin, this, [this]() {
         showLoginPage();
     });
 
     // page transfer signals
-    connect(loginPage, &Login::loginRequested, this, &MainWindow::loginRequested);
+    connect(login_page, &Login::loginRequested, this, &MainWindow::loginRequested);
 
-    connect(signupPage, &Signup::signupRequested, this, &MainWindow::signupRequested);
+    connect(signup_page, &Signup::signupRequested, this, &MainWindow::signupRequested);
 
-    connect(forgotPasswordPage, &ForgotPassword::forgotPasswordStep2Requested, this, &MainWindow::forgotPasswordStep2Requested);
+    connect(forgot_password_page, &ForgotPassword::forgotPasswordStep2Requested, this, &MainWindow::forgotPasswordStep2Requested);
 
-    connect(forgotPassword2Page, &ForgotPassword2::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
+    connect(forgot_password_page2, &ForgotPassword2::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
 
-    connect(mainMenuPage, &MainMenu::navigateToLogin, this, &MainWindow::showLoginPage);
+    connect(main_menu_page, &MainMenu::navigateToLogin, this, &MainWindow::showLoginPage);
+
+    connect(main_menu_page, &MainMenu::navigateToEditProfile, this, &MainWindow::showEditProfilePage);
+
+    connect(edit_profile_page, &EditProfile::navigateToMainMenu, this, &MainWindow::showMainMenuPage);
+
+    connect(edit_profile_page, &EditProfile::editProfileRequested, this, &MainWindow::editProfileRequested);
 
 
+    // show pages
     showLoginPage();
 }
 
@@ -72,46 +81,56 @@ MainWindow::~MainWindow()
 
 void MainWindow::showLoginPage()
 {
-    ui->stackedWidget->setCurrentWidget(loginPage);
+    ui->stackedWidget->setCurrentWidget(login_page);
 }
 
 void MainWindow::showSignupPage()
 {
-    ui->stackedWidget->setCurrentWidget(signupPage);
+    ui->stackedWidget->setCurrentWidget(signup_page);
 }
 
 void MainWindow::showForgotPasswordPage()
 {
-    ui->stackedWidget->setCurrentWidget(forgotPasswordPage);
+    ui->stackedWidget->setCurrentWidget(forgot_password_page);
 }
 
-void MainWindow::showForgotPassword2Page(const QString& username, const QString &phone)
+void MainWindow::showForgotPasswordPage2(const QString& username, const QString &phone)
 {
-    forgotPassword2Page->setUserData(username, phone);
-    ui->stackedWidget->setCurrentWidget(forgotPassword2Page);
+    forgot_password_page2->setUserData(username, phone);
+    ui->stackedWidget->setCurrentWidget(forgot_password_page2);
 }
 
-void MainWindow::showMainMenu()
+void MainWindow::showMainMenuPage()
 {
-    ui->stackedWidget->setCurrentWidget(mainMenuPage);
+    ui->stackedWidget->setCurrentWidget(main_menu_page);
+}
+
+void MainWindow::showEditProfilePage()
+{
+    ui->stackedWidget->setCurrentWidget(edit_profile_page);
+}
+
+void MainWindow::loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone)
+{
+    edit_profile_page->setInitialValues(name, username, email, phone);
 }
 
 void MainWindow::clearLoginFields()
 {
-    loginPage->clearFields();
+    login_page->clearFields();
 }
 
 void MainWindow::clearSignupFields()
 {
-    signupPage->clearFields();
+    signup_page->clearFields();
 }
 
 void MainWindow::clearFPFields()
 {
-    forgotPasswordPage->clearFields();
+    forgot_password_page->clearFields();
 }
 
 void MainWindow::clearFP2Fields()
 {
-    forgotPassword2Page->clearFields();
+    forgot_password_page2->clearFields();
 }

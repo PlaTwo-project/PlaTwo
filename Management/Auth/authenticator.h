@@ -21,6 +21,9 @@ enum class AuthResult
 
     USER_PHONE_MISMATCH,
 
+    WRONG_OLD_PASSWORD,
+    EMPTY_FIELD,
+
     UNKNOWN_ERROR
 };
 
@@ -33,6 +36,7 @@ public:
     AuthResult signup(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
     AuthResult resetPassword(const QString& username, const QString& phone, const QString& newPassword);
     AuthResult verifyUserPhone(const QString& username, const QString& phone);
+    AuthResult updateUser(int id, const QString& name, const QString& username, const QString& email, const QString& phone, const QString& old_password, const QString& new_password);
 
 private:
     StorageManager storage;

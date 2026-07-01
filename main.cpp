@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "Management/app_manager.h"
+#include "Management/App/app_manager.h"
 
 int main(int argc, char *argv[])
 {

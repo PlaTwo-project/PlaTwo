@@ -25,8 +25,8 @@ void Login::clearFields()
 
 void Login::on_pushButton_login_clicked()
 {
-    QString username = ui->lineEdit_username->text();
-    QString password = ui->lineEdit_password->text();
+    QString username = ui->lineEdit_username->text().trimmed();
+    QString password = ui->lineEdit_password->text().trimmed();
 
     if (username.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "Login", "Please fill out all fields.");

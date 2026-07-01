@@ -38,11 +38,11 @@ void Signup::clearFields()
 
 void Signup::on_pushButton_submit_clicked()
 {
-    QString name = ui->lineEdit_name->text();
-    QString username = ui->lineEdit_username->text();
-    QString phone = ui->lineEdit_phonenumber->text();
-    QString email = ui->lineEdit_email->text();
-    QString password = ui->lineEdit_password->text();
+    QString name = ui->lineEdit_name->text().trimmed();
+    QString username = ui->lineEdit_username->text().trimmed();
+    QString phone = ui->lineEdit_phonenumber->text().trimmed();
+    QString email = ui->lineEdit_email->text().trimmed();
+    QString password = ui->lineEdit_password->text().trimmed();
 
     if (name.isEmpty() || username.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty())
     {

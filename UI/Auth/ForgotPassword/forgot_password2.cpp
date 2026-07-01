@@ -31,8 +31,8 @@ void ForgotPassword2::setUserData(const QString& username, const QString& phone)
 
 void ForgotPassword2::on_pushButton_reset_clicked()
 {
-    QString pass = ui->lineEdit_password->text();
-    QString confirm = ui->lineEdit_newPassword->text();
+    QString pass = ui->lineEdit_password->text().trimmed();
+    QString confirm = ui->lineEdit_newPassword->text().trimmed();
 
     if (pass.isEmpty() || confirm.isEmpty()) {
         QMessageBox::warning(this, "Restore Password", "Please fill out all fields.");

@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "UI/mainwindow.h"
-#include "Management/authenticator.h"
+#include "Management/Auth/authenticator.h"
 
 class AppManager : public QObject
 {
@@ -24,6 +24,7 @@ private slots:
     void handleSignup(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
     void handleForgotPasswordStep2(const QString& username, const QString& phone);
     void handleResetPassword(const QString& username, const QString& phone, const QString& newPassword);
+    void handleEditProfile(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& oldPassword, const QString& newPassword);
 };
 
 #endif

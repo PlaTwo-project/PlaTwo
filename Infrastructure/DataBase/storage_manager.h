@@ -18,6 +18,7 @@ public:
 
     bool getUserByUsername(const QString& username, User& user_to_find) const;
     bool getUserByPhoneNumber(const QString& phone, User& user_to_find) const;
+    bool getUserById(const int& id, User& user_to_find) const;
 
 private:
     QString file_path;

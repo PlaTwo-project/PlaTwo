@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1166</width>
-    <height>648</height>
+    <height>672</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,47 +31,7 @@ QMessageBox QPushButton:pressed {
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignTop">
-    <widget class="QLabel" name="label_menuTitle">
-     <property name="font">
-      <font>
-       <family>Orbitron SemiBold</family>
-       <pointsize>60</pointsize>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #000000;</string>
-     </property>
-     <property name="text">
-      <string>Menu</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" alignment="Qt::AlignmentFlag::AlignTop">
-    <widget class="QLabel" name="label_title">
-     <property name="font">
-      <font>
-       <family>Orbitron</family>
-       <pointsize>90</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #495ee4;</string>
-     </property>
-     <property name="text">
-      <string>PlaTwo</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="leftMargin">
       <number>200</number>
@@ -93,7 +53,7 @@ QMessageBox QPushButton:pressed {
        <property name="minimumSize">
         <size>
          <width>300</width>
-         <height>60</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -109,7 +69,7 @@ QMessageBox QPushButton:pressed {
     border: 2px solid #444;
     border-radius: 14px;
     padding: 12px 20px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -140,7 +100,7 @@ QPushButton:pressed {
        <property name="minimumSize">
         <size>
          <width>300</width>
-         <height>60</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -156,7 +116,7 @@ QPushButton:pressed {
     border: 2px solid #5e0099;
     border-radius: 16px;
     padding: 12px 20px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     transition: all 200ms ease;
 }
@@ -164,8 +124,8 @@ QPushButton:pressed {
 QPushButton:hover {
     background-color: #5e0099;
     border-color: #9d00ff;
-    padding: 15px 23px;
-    font-size: 19px;
+    padding: 13px 25px; 
+    font-size: 18px;
 }
 
 QPushButton:pressed {
@@ -184,7 +144,7 @@ QPushButton:pressed {
        <property name="minimumSize">
         <size>
          <width>300</width>
-         <height>60</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -200,7 +160,7 @@ QPushButton:pressed {
     border: 2px solid #444;
     border-radius: 14px;
     padding: 12px 20px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -231,7 +191,7 @@ QPushButton:pressed {
        <property name="minimumSize">
         <size>
          <width>300</width>
-         <height>60</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -247,7 +207,7 @@ QPushButton:pressed {
     border: 2px solid #5e0099;
     border-radius: 16px;
     padding: 12px 20px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     transition: all 200ms ease;
 }
@@ -275,7 +235,7 @@ QPushButton:pressed {
        <property name="minimumSize">
         <size>
          <width>300</width>
-         <height>60</height>
+         <height>55</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -291,7 +251,7 @@ QPushButton:pressed {
     border: 2px solid #444;
     border-radius: 14px;
     padding: 12px 20px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -322,7 +282,7 @@ QPushButton:pressed {
        <property name="minimumSize">
         <size>
          <width>300</width>
-         <height>60</height>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -338,7 +298,7 @@ QPushButton:pressed {
     border: 2px solid #5e0099;
     border-radius: 16px;
     padding: 12px 20px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     transition: all 200ms ease;
 }
@@ -362,6 +322,78 @@ QPushButton:pressed {
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignTop">
+    <widget class="QLabel" name="label_menuTitle">
+     <property name="font">
+      <font>
+       <family>Orbitron SemiBold</family>
+       <pointsize>60</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #000000;</string>
+     </property>
+     <property name="text">
+      <string>Menu</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="1" alignment="Qt::AlignmentFlag::AlignTop">
+    <widget class="QLabel" name="label_title">
+     <property name="font">
+      <font>
+       <family>Orbitron</family>
+       <pointsize>90</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #495ee4;</string>
+     </property>
+     <property name="text">
+      <string>PlaTwo</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

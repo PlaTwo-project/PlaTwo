@@ -31,8 +31,8 @@ void ForgotPassword::clearFields()
 
 void ForgotPassword::on_pushButton_next_clicked()
 {
-    QString phone = ui->lineEdit_phonenumber->text();
-    QString username = ui->lineEdit_username->text();
+    QString phone = ui->lineEdit_phonenumber->text().trimmed();
+    QString username = ui->lineEdit_username->text().trimmed();
 
     if (phone.isEmpty() || username.isEmpty()) {
         QMessageBox::warning(this, "Restore Password", "Please fill out all fields.");
