@@ -62,8 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mainMenuPage, &MainMenu::navigateToLogin, this, &MainWindow::showLoginPage);
 
 
-    // showLoginPage();
-    showMainMenu();
+    showLoginPage();
 }
 
 MainWindow::~MainWindow()

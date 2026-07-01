@@ -81,7 +81,7 @@ AuthResult Authenticator::verifyUserPhone(const QString& username, const QString
     if (!storage.getUserByUsername(username, user))
         return AuthResult::USER_NOT_FOUND;
 
-    if (!storage.getUserByPhoneNumber(phone, user))
+    if (user.getPhoneNumber() != phone)
         return AuthResult::USER_PHONE_MISMATCH;
 
     return AuthResult::SUCCESS;

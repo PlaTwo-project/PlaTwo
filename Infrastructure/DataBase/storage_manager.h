@@ -9,7 +9,7 @@ class StorageManager {
 public:
     StorageManager(const QString filePath = "users.json");
 
-    bool addUser(const User& newUser);
+    bool addUser(User& newUser);
     bool updateUser(const User& user_to_update);
 
     bool isUsernameTaken(const QString& username) const;
@@ -25,6 +25,7 @@ private:
 
     void loadUsers();
     void saveUsers();
+    int generateNextUserId() const;
 };
 
 #endif // STORAGE_MANAGER_H

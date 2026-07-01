@@ -9,6 +9,17 @@ StorageManager::StorageManager(const QString filePath) {
     loadUsers();
 }
 
+int StorageManager::generateNextUserId() const
+{
+    int max_id = 0;
+
+    for (const User& user : users_list)
+        if (user.getId() > maxId)
+            max_id = user.getId();
+
+    return max_id + 1;
+}
+
 void StorageManager::loadUsers() {
     QFile file(file_path);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -24,12 +35,13 @@ void StorageManager::loadUsers() {
         QJsonObject obj = value.toObject();
 
         User user;
+        user.setId(obj["id"].toInt());
         user.setName(obj["name"].toString());
         user.setUsername(obj["username"].toString());
         user.setEmail(obj["email"].toString());
         user.setPhoneNumber(obj["phone"].toString());
         user.setHashedPassword(obj["password"].toString());
-
+        
         users_list.append(user);
     }
     file.close();
@@ -40,6 +52,7 @@ void StorageManager::saveUsers(){
 
     for (const User& user : users_list) {
         QJsonObject obj;
+        obj["id"] = user.getId();
         obj["name"] = user.getName();
         obj["username"] = user.getUsername();
         obj["email"] = user.getEmail();
@@ -60,12 +73,13 @@ void StorageManager::saveUsers(){
     file.close();
 }
 
-bool StorageManager::addUser(const User& newUser) {
-    if (isUsernameTaken(newUser.getUsername()) || isEmailTaken(newUser.getEmail()) || isPhoneNumberTaken(newUser.getPhoneNumber())) {
+bool StorageManager::addUser(User& newUser) {
+    if (isUsernameTaken(newUser.getUsername()) || isEmailTaken(newUser.getEmail()) || isPhoneNumberTaken(newUser.getPhoneNumber()))
         return false;
-    }
 
+    newUser.setId(generateNextUserId());
     users_list.append(newUser);
+
     saveUsers();
     return true;
 }
@@ -73,7 +87,7 @@ bool StorageManager::addUser(const User& newUser) {
 bool StorageManager::updateUser(const User& user_to_update)
 {
     for (User& user : users_list) {
-        if (user.getUsername() == user_to_update.getOldUsername()) {
+        if (user.getId() == user_to_update.getId()) {
             if (user.getUsername() != user_to_update.getUsername())
                 if (isUsernameTaken(user_to_update.getUsername()))
                     return false;
@@ -94,7 +108,6 @@ bool StorageManager::updateUser(const User& user_to_update)
 
     return false;
 }
-
 
 bool StorageManager::isUsernameTaken(const QString& username) const {
     for (const User& user : users_list) {

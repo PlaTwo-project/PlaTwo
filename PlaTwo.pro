@@ -2,10 +2,6 @@ QT += widgets
 
 CONFIG += c++17
 
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
 SOURCES += \
     Infrastructure/Database/storage_manager.cpp \
     Logic/Security/password_hasher.cpp \
@@ -18,6 +14,7 @@ SOURCES += \
     UI/Auth/Login/login.cpp \
     UI/Auth/SignUp/signup.cpp \
     UI/Menu/main_menu.cpp \
+    UI/Menu/Proflie/edit_profile.cpp \
     main.cpp \
     UI/mainwindow.cpp
 
@@ -33,6 +30,7 @@ HEADERS += \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
     UI/Menu/main_menu.h \
+    UI/Menu/Proflie/edit_profile.h \
     UI/mainwindow.h
 
 FORMS += \
@@ -41,6 +39,7 @@ FORMS += \
     UI/Auth/Login/login.ui \
     UI/Auth/SignUp/signup.ui \
     UI/Menu/main_menu.ui \
+    UI/Menu/Proflie/edit_profile.ui \
     UI/mainwindow.ui
 
 # Default rules for deployment.

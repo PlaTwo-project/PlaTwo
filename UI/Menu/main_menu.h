@@ -19,7 +19,6 @@ private slots:
     void on_pushButton_dots_clicked();
     void on_pushButton_morris_clicked();
     void on_pushButton_fanorona_clicked();
-    void on_pushButton_history_clicked();
     void on_pushButton_editProfile_clicked();
     void on_pushButton_exit_clicked();
     void on_pushButton_logout_clicked();

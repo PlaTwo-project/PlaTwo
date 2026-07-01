@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1166</width>
-    <height>613</height>
+    <height>648</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -104,26 +104,29 @@ QMessageBox QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #3b0066;
-    color: #ffffff;
-    border: 2px solid #5e0099;
-    border-radius: 16px;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 2px solid #444;
+    border-radius: 14px;
     padding: 12px 20px;
     font-size: 18px;
     font-weight: bold;
-    transition: all 200ms ease;
+    letter-spacing: 1px;
 }
 
 QPushButton:hover {
-    background-color: #5e0099;
-    border-color: #9d00ff;
+    background-color: #292929;
+    border-color: #00c8ff;
+    color: white;
+    box-shadow: 0px 0px 12px #00c8ff; 
     padding: 15px 23px;
     font-size: 19px;
 }
 
 QPushButton:pressed {
-    background-color: #2a0047;
-    border-color: #7a00cc;
+    background-color: #0f0f0f;
+    border-color: #0088aa;
+    box-shadow: none;
 }
 </string>
        </property>
@@ -148,53 +151,6 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    border: 2px solid #444;
-    border-radius: 14px;
-    padding: 12px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-QPushButton:hover {
-    background-color: #292929;
-    border-color: #00c8ff;
-    color: white;
-    box-shadow: 0px 0px 12px #00c8ff;
-    padding: 15px 23px;
-    font-size: 19px;
-}
-
-QPushButton:pressed {
-    background-color: #0f0f0f;
-    border-color: #0088aa;
-    box-shadow: none;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>Nine Men’s Morris</string>
-       </property>
-      </widget>
-     </item>
-     <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
-      <widget class="QPushButton" name="pushButton_fanorona">
-       <property name="minimumSize">
-        <size>
-         <width>300</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>600</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
     background-color: #3b0066;
     color: #ffffff;
     border: 2px solid #5e0099;
@@ -219,12 +175,12 @@ QPushButton:pressed {
 </string>
        </property>
        <property name="text">
-        <string>Fanorona</string>
+        <string>Nine Men’s Morris</string>
        </property>
       </widget>
      </item>
      <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
-      <widget class="QPushButton" name="pushButton_history">
+      <widget class="QPushButton" name="pushButton_fanorona">
        <property name="minimumSize">
         <size>
          <width>300</width>
@@ -266,7 +222,7 @@ QPushButton:pressed {
 </string>
        </property>
        <property name="text">
-        <string>History</string>
+        <string>Fanorona</string>
        </property>
       </widget>
      </item>
@@ -310,7 +266,7 @@ QPushButton:pressed {
 </string>
        </property>
        <property name="text">
-        <string>دنبال چیزی میگردی؟</string>
+        <string>Edit Profile</string>
        </property>
       </widget>
      </item>

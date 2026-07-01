@@ -30,11 +30,8 @@ public:
     Authenticator();
 
     AuthResult login(const QString& username, const QString& password);
-
     AuthResult signup(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
-
     AuthResult resetPassword(const QString& username, const QString& phone, const QString& newPassword);
-
     AuthResult verifyUserPhone(const QString& username, const QString& phone);
 
 private:

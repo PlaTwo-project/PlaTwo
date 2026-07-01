@@ -29,11 +29,6 @@ void MainMenu::on_pushButton_fanorona_clicked()
 
 }
 
-void MainMenu::on_pushButton_history_clicked()
-{
-
-}
-
 void MainMenu::on_pushButton_editProfile_clicked()
 {
     emit navigateToEditProfile();
