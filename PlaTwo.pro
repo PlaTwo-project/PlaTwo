@@ -6,6 +6,7 @@ SOURCES += \
     Infrastructure/Database/storage_manager.cpp \
     Logic/Security/password_hasher.cpp \
     Logic/Security/validator.cpp \
+    Logic/match_record.cpp \
     Logic/user.cpp \
     Management/App/app_manager.cpp \
     Management/App/session_manager.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     Infrastructure/Database/storage_manager.h \
     Logic/Security/password_hasher.h \
     Logic/Security/validator.h \
+    Logic/match_record.h \
     Logic/user.h \
     Management/App/app_manager.h \
     Management/App/session_manager.h \
