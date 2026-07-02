@@ -3,6 +3,7 @@ QT += widgets
 CONFIG += c++17
 
 SOURCES += \
+    Infrastructure/DataBase/history_storage_manager.cpp \
     Infrastructure/Database/storage_manager.cpp \
     Logic/Security/password_hasher.cpp \
     Logic/Security/validator.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
     UI/mainwindow.cpp
 
 HEADERS += \
+    Infrastructure/DataBase/history_storage_manager.h \
     Infrastructure/Database/storage_manager.h \
     Logic/Security/password_hasher.h \
     Logic/Security/validator.h \

@@ -2,43 +2,41 @@
 #define MATCH_RECORD_H
 
 #include <QString>
-#include <QJsonObject>
+#include <QDateTime>
 
 class MatchRecord
 {
 private:
     int recordId;
-    QString gameType;
-    QString hostUsername;
-    QString guestUsername;
-    QString winnerUsername;
+    QString game_type;
+    int hostId;
+    int guestId;
+    int winnerId;
     int hostScore;
     int guestScore;
-    QString date;
+    QDateTime date;
 
 public:
     MatchRecord();
-    MatchRecord(const QString& type, const QString& host, const QString& guest, const QString& winner, int hostS, int guestS, const QString& gameDate);
-
+    MatchRecord(const QString &type, int host, int guest, int winner, int hostS, int guestS, const QString &gameDate);
 
     int getRecordId() const;
     QString getGameType() const;
-    QString getHostUsername() const;
-    QString getGuestUsername() const;
-    QString getWinnerUsername() const;
+    int getHostId() const;
+    int getGuestId() const;
+    int getWinnerId() const;
     int getHostScore() const;
     int getGuestScore() const;
-    QString getDate() const;
-
+    QDateTime getDate() const;
 
     void setRecordId(int id);
-    void setGameType(const QString& type);
-    void setHostUsername(const QString& host);
-    void setGuestUsername(const QString& guest);
-    void setWinnerUsername(const QString& winner);
+    void setGameType(const QString &type);
+    void setHostId(int host);
+    void setGuestId(int guest);
+    void setWinnerId(int winner);
     void setHostScore(int score);
     void setGuestScore(int score);
-    void setDate(const QString& gameDate);
+    void setDate(const QDateTime &gameDate);
 };
 
 #endif // MATCH_RECORD_H
