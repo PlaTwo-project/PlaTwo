@@ -11,7 +11,7 @@ Signup::Signup(QWidget *parent)
     ui->lineEdit_name->setPlaceholderText("Enter your Name");
     ui->lineEdit_username->setPlaceholderText("Enter your Username");
     ui->lineEdit_email->setPlaceholderText("Enter your Email");
-    ui->lineEdit_phonenumber->setPlaceholderText("Enter your Phone Number");
+    ui->lineEdit_phonenumber->setPlaceholderText("Enter your Phone Number (e.g. 09123456789)");
     ui->lineEdit_password->setPlaceholderText("Enter your Password");
 
 }

@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+enum class GameName;
+
 namespace Ui {
 class MainMenu;
 }
@@ -24,6 +26,9 @@ private slots:
     void on_pushButton_logout_clicked();
 
 signals:
+    void navigateToGame1(GameName game_name);
+    void navigateToGame2(GameName game_name);
+    void navigateToGame3(GameName game_name);
     void navigateToEditProfile();
     void navigateToLogin();
 

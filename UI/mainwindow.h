@@ -9,6 +9,9 @@ class ForgotPassword;
 class ForgotPassword2;
 class MainMenu;
 class EditProfile;
+class GameMenu;
+
+enum class GameName;
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +31,7 @@ public:
     void showForgotPasswordPage2(const QString& username, const QString& phone);
     void showMainMenuPage();
     void showEditProfilePage();
+    void showGameMenuPage(GameName game_name);
 
     void loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone);
 
@@ -52,6 +56,7 @@ private:
     ForgotPassword2* forgot_password_page2;
     MainMenu* main_menu_page;
     EditProfile* edit_profile_page;
+    GameMenu* game_menu_page;
 };
 
 #endif // MAINWINDOW_H

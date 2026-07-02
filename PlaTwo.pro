@@ -16,6 +16,7 @@ SOURCES += \
     UI/Auth/ForgotPassword/forgot_password2.cpp \
     UI/Auth/Login/login.cpp \
     UI/Auth/SignUp/signup.cpp \
+    UI/Menu/game_menu.cpp \
     UI/Menu/main_menu.cpp \
     UI/Menu/Proflie/edit_profile.cpp \
     main.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     UI/Auth/ForgotPassword/forgot_password2.h \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
+    UI/Menu/game_menu.h \
     UI/Menu/main_menu.h \
     UI/Menu/Proflie/edit_profile.h \
     UI/mainwindow.h
@@ -44,6 +46,7 @@ FORMS += \
     UI/Auth/ForgotPassword/forgot_password2.ui \
     UI/Auth/Login/login.ui \
     UI/Auth/SignUp/signup.ui \
+    UI/Menu/game_menu.ui \
     UI/Menu/main_menu.ui \
     UI/Menu/Proflie/edit_profile.ui \
     UI/mainwindow.ui
