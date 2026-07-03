@@ -19,6 +19,7 @@ SOURCES += \
     UI/Menu/game_menu.cpp \
     UI/Menu/main_menu.cpp \
     UI/Menu/Proflie/edit_profile.cpp \
+    UI/host_page.cpp \
     main.cpp \
     UI/mainwindow.cpp
 
@@ -39,6 +40,7 @@ HEADERS += \
     UI/Menu/game_menu.h \
     UI/Menu/main_menu.h \
     UI/Menu/Proflie/edit_profile.h \
+    UI/host_page.h \
     UI/mainwindow.h
 
 FORMS += \
@@ -49,6 +51,7 @@ FORMS += \
     UI/Menu/game_menu.ui \
     UI/Menu/main_menu.ui \
     UI/Menu/Proflie/edit_profile.ui \
+    UI/host_page.ui \
     UI/mainwindow.ui
 
 # Default rules for deployment.

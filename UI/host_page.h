@@ -1,0 +1,37 @@
+#ifndef HOST_PAGE_H
+#define HOST_PAGE_H
+
+#include <QWidget>
+
+enum class GameName { BoxesAndDots, NineMensMorris, Fanorona };
+
+namespace Ui {
+class HostPage;
+}
+
+class HostPage : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit HostPage(QWidget *parent = nullptr);
+    ~HostPage();
+
+    void setPage(GameName game_name);
+    void switchToWaitingStatus(const QString& Ip);
+
+signals:
+    void createRoomRequested(int port, int boardSize, int timeLimitMinutes);
+    void backRequested();
+    void cancelHostRequested();
+
+private slots:
+    void on_btn_create_clicked();
+    void on_btn_back_clicked();
+    void on_btn_cancelHost_clicked();
+
+private:
+    Ui::HostPage *ui;
+};
+
+#endif // HOST_PAGE_H

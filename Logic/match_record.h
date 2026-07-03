@@ -18,7 +18,7 @@ private:
 
 public:
     MatchRecord();
-    MatchRecord(const QString &type, int host, int guest, int winner, int hostS, int guestS, const QString &gameDate);
+    MatchRecord(const QString &type, int host, int guest, int winner, int hostS, int guestS, const QDateTime &gameDate);
 
     int getRecordId() const;
     QString getGameType() const;
