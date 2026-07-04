@@ -31,8 +31,7 @@ void HistoryStorageManager::loadHistory()
     QJsonArray json_array = doc.array();
     history_list.clear();
 
-    for (const QJsonValue &value : json_array)
-    {
+    for (const QJsonValue &value : json_array) {
         QJsonObject obj = value.toObject();
 
         MatchRecord record;
@@ -58,8 +57,7 @@ void HistoryStorageManager::saveHistory()
         return;
 
     QJsonArray json_array;
-    for (const MatchRecord &record : history_list)
-    {
+    for (const MatchRecord &record : history_list) {
         QJsonObject obj;
         obj["id"] = record.getRecordId();
         obj["game_type"] = record.getGameType();
@@ -93,11 +91,8 @@ QList<MatchRecord> HistoryStorageManager::getHistoryForUser(int userId, const QS
 {
     QList<MatchRecord> filtered_list;
     for (const MatchRecord &record : history_list)
-        if (record.getGameType() == game_type &&
-            (record.getHostId() == userId || record.getGuestId() == userId))
-        {
+        if (record.getGameType() == game_type && (record.getHostId() == userId || record.getGuestId() == userId))
             filtered_list.append(record);
-        }
 
     return filtered_list;
 }

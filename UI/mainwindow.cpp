@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(game_menu_page, &GameMenu::navigateToMainMenu, this, &MainWindow::showMainMenuPage);
 
+
     // Mediator signals
     connect(login_page, &Login::loginRequested, this, &MainWindow::loginRequested);
 

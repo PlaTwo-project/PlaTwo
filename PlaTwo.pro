@@ -17,6 +17,7 @@ SOURCES += \
     UI/Auth/Login/login.cpp \
     UI/Auth/SignUp/signup.cpp \
     UI/Menu/game_menu.cpp \
+    UI/Menu/history.cpp \
     UI/Menu/main_menu.cpp \
     UI/Menu/Proflie/edit_profile.cpp \
     UI/host_page.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
     UI/Menu/game_menu.h \
+    UI/Menu/history.h \
     UI/Menu/main_menu.h \
     UI/Menu/Proflie/edit_profile.h \
     UI/host_page.h \
@@ -49,6 +51,7 @@ FORMS += \
     UI/Auth/Login/login.ui \
     UI/Auth/SignUp/signup.ui \
     UI/Menu/game_menu.ui \
+    UI/Menu/history.ui \
     UI/Menu/main_menu.ui \
     UI/Menu/Proflie/edit_profile.ui \
     UI/host_page.ui \
