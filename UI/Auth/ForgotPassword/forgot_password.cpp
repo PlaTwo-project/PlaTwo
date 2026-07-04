@@ -44,8 +44,6 @@ void ForgotPassword::on_pushButton_next_clicked()
 
 void ForgotPassword::on_pushButton_back_clicked()
 {
-    ui->lineEdit_username->clear();
-    ui->lineEdit_phonenumber->clear();
-
+    clearFields();
     emit navigateToLogin();
 }

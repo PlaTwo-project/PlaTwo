@@ -20,7 +20,8 @@ SOURCES += \
     UI/Menu/history.cpp \
     UI/Menu/main_menu.cpp \
     UI/Menu/Proflie/edit_profile.cpp \
-    UI/host_page.cpp \
+    UI/Network/guest_page.cpp \
+    UI/Network/host_page.cpp \
     main.cpp \
     UI/mainwindow.cpp
 
@@ -42,7 +43,8 @@ HEADERS += \
     UI/Menu/history.h \
     UI/Menu/main_menu.h \
     UI/Menu/Proflie/edit_profile.h \
-    UI/host_page.h \
+    UI/Network/guest_page.h \
+    UI/Network/host_page.h \
     UI/mainwindow.h
 
 FORMS += \
@@ -54,7 +56,8 @@ FORMS += \
     UI/Menu/history.ui \
     UI/Menu/main_menu.ui \
     UI/Menu/Proflie/edit_profile.ui \
-    UI/host_page.ui \
+    UI/Network/guest_page.ui \
+    UI/Network/host_page.ui \
     UI/mainwindow.ui
 
 # Default rules for deployment.

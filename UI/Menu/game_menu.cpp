@@ -11,20 +11,14 @@ GameMenu::GameMenu(QWidget *parent)
 
 void GameMenu::setTitle(GameName game_name)
 {
-    if (game_name == GameName::BoxesAndDots) {
-        ui->label_title->setText("PlaTwo");
+    if (game_name == GameName::BoxesAndDots)
         ui->label_menu_title->setText("Boxes And Dots");
-    }
 
-    else if (game_name == GameName::NineMensMorris) {
-        ui->label_title->setText("PlaTwo");
+    else if (game_name == GameName::NineMensMorris)
         ui->label_menu_title->setText("Nine Men's Morris");
-    }
 
-    else if (game_name == GameName::Fanorona) {
-        ui->label_title->setText("PlaTwo");
+    else if (game_name == GameName::Fanorona)
         ui->label_menu_title->setText("Fanorona");
-    }
 }
 
 GameMenu::~GameMenu()
