@@ -1,10 +1,12 @@
 QT += widgets
+QT += network
 
 CONFIG += c++17
 
 SOURCES += \
     Infrastructure/DataBase/history_storage_manager.cpp \
     Infrastructure/Database/storage_manager.cpp \
+    Infrastructure/Network/network.cpp \
     Logic/Security/password_hasher.cpp \
     Logic/Security/validator.cpp \
     Logic/match_record.cpp \
@@ -28,6 +30,7 @@ SOURCES += \
 HEADERS += \
     Infrastructure/DataBase/history_storage_manager.h \
     Infrastructure/Database/storage_manager.h \
+    Infrastructure/Network/network.h \
     Logic/Security/password_hasher.h \
     Logic/Security/validator.h \
     Logic/match_record.h \
