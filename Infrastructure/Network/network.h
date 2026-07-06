@@ -10,22 +10,22 @@ class Network : public QObject
     Q_OBJECT
 public:
     explicit Network(QObject *parent = nullptr);
-    void sendData(const QByteArray& data);
-    void stop();
     virtual ~Network();
+    
+    void sendData(const QByteArray &data);
 
 signals:
     void connected();
-    void dataReceived(const QByteArray& data);
+    void dataReceived(const QByteArray &data);
     void disconnected();
-    void error(const QString& error);
+    void error(const QString &error);
 
 private slots:
-    void onReadyRead();
-    void onDisconnected();
+    void readData();
+    void disconnectSocket();
 
 protected:
-    QTcpSocket* socket;
+    QTcpSocket *socket;
     void initConnection();
 };
 

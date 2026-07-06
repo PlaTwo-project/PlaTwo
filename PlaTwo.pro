@@ -6,6 +6,8 @@ CONFIG += c++17
 SOURCES += \
     Infrastructure/DataBase/history_storage_manager.cpp \
     Infrastructure/Database/storage_manager.cpp \
+    Infrastructure/Network/guest.cpp \
+    Infrastructure/Network/host.cpp \
     Infrastructure/Network/network.cpp \
     Logic/Security/password_hasher.cpp \
     Logic/Security/validator.cpp \
@@ -30,6 +32,8 @@ SOURCES += \
 HEADERS += \
     Infrastructure/DataBase/history_storage_manager.h \
     Infrastructure/Database/storage_manager.h \
+    Infrastructure/Network/guest.h \
+    Infrastructure/Network/host.h \
     Infrastructure/Network/network.h \
     Logic/Security/password_hasher.h \
     Logic/Security/validator.h \
