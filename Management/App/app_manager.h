@@ -2,8 +2,10 @@
 #define APP_MANAGER_H
 
 #include <QObject>
-#include "UI/mainwindow.h"
+#include "UI/MainWindow/mainwindow.h"
 #include "Management/Auth/authenticator.h"
+#include "Infrastructure/DataBase/storage_manager.h"
+#include "Infrastructure/DataBase/history_storage_manager.h"
 
 class AppManager : public QObject
 {
@@ -14,8 +16,10 @@ public:
     void run();
 
 private:
-    MainWindow *main_window;
+    MainWindow* main_window;
+    StorageManager userStorage;
     Authenticator authenticator;
+    HistoryStorageManager historyStorage;
 
     void setupConnections();
 
@@ -27,5 +31,4 @@ private slots:
     void handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password);
 };
 
-#endif
-// APP_MANAGER_H
+#endif // APP_MANAGER_H

@@ -1,8 +1,7 @@
 #ifndef AUTHENTICATOR_H
 #define AUTHENTICATOR_H
 
-#include <QString>
-#include "Infrastructure/DataBase/storage_manager.h"
+#include "Logic/Interface/user_interface.h"
 
 enum class AuthResult
 {
@@ -30,7 +29,7 @@ enum class AuthResult
 class Authenticator
 {
 public:
-    Authenticator();
+    explicit Authenticator(UserInterface& user);
 
     AuthResult login(const QString &username, const QString &password, User &logged_in_user);
     AuthResult signup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password);
@@ -39,7 +38,7 @@ public:
     AuthResult updateUser(int id, const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password);
 
 private:
-    StorageManager storage;
+    UserInterface& storage;
 };
 
 #endif // AUTHENTICATOR_H

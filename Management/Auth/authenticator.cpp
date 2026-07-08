@@ -3,10 +3,8 @@
 #include "Logic/Security/password_hasher.h"
 #include "Management/App/session_manager.h"
 
-Authenticator::Authenticator()
-    : storage()
-{
-}
+Authenticator::Authenticator(UserInterface& storage) : storage(storage)
+{}
 
 AuthResult Authenticator::login(const QString &username, const QString &password, User &logged_in_user)
 {
@@ -115,7 +113,7 @@ AuthResult Authenticator::updateUser(int id, const QString &name, const QString 
         if (user.getPhoneNumber() != phone && !Validator::validatePhone(phone.toStdString()))
             return AuthResult::INVALID_PHONE;
 
-        if (user.getPhoneNumber() != phone && user.getPhoneNumber() != phone && storage.isPhoneNumberTaken(phone))
+        if (user.getPhoneNumber() != phone && storage.isPhoneNumberTaken(phone))
             return AuthResult::PHONE_TAKEN;
     }
 

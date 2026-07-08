@@ -4,8 +4,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-StorageManager::StorageManager(): file_path("users.json")
+StorageManager::StorageManager(const QString& file_path)
 {
+    this->file_path = file_path;
     loadUsers();
 }
 

@@ -1,17 +1,17 @@
 #ifndef HISTORY_STORAGE_MANAGER_H
 #define HISTORY_STORAGE_MANAGER_H
 
-#include <QString>
 #include <QList>
-#include "Logic/match_record.h"
+#include "Logic/Game/Record/match_record.h"
+#include "Logic/Interface/history_interface.h"
 
-class HistoryStorageManager
+class HistoryStorageManager : public HistoryInterface
 {
 public:
     HistoryStorageManager();
 
-    bool addMatchRecord(MatchRecord &new_record);
-    QList<MatchRecord> getHistoryForUser(int user_ID, GameName game_type) const;
+    bool addMatchRecord(MatchRecord &new_record) override;
+    QList<MatchRecord> getHistoryForUser(int user_ID, GameName& game_type) const override;
 
 private:
     QString file_path;

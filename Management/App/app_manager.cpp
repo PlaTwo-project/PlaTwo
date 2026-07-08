@@ -2,8 +2,8 @@
 #include "session_manager.h"
 #include <QMessageBox>
 
-AppManager::AppManager(QObject *parent)
-    : QObject{parent}
+AppManager::AppManager(QObject* parent)
+    : QObject{parent}, userStorage("users.json"), authenticator(userStorage)
 {
     main_window = new MainWindow();
     setupConnections();
