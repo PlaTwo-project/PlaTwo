@@ -12,6 +12,8 @@ SOURCES += \
     Logic/Game/Record/match_record.cpp \
     Logic/Security/password_hasher.cpp \
     Logic/Security/validator.cpp \
+    Logic/match_record.cpp \
+    Logic/user.cpp \
     Logic/User/user.cpp \
     Management/App/app_manager.cpp \
     Management/App/session_manager.cpp \
@@ -28,6 +30,7 @@ SOURCES += \
     UI/Network/guest_page.cpp \
     UI/Network/host_page.cpp \
     main.cpp \
+    UI/mainwindow.cpp
 
 HEADERS += \
     Infrastructure/DataBase/history_storage_manager.h \
@@ -37,8 +40,13 @@ HEADERS += \
     Infrastructure/Network/network.h \
     Logic/Game/Record/match_record.h \
     Logic/Game/game_name.h \
+    Logic/Interface/history_interface.h \
+    Logic/Interface/network_interface.h \
+    Logic/Interface/user_interface.h \
     Logic/Security/password_hasher.h \
     Logic/Security/validator.h \
+    Logic/match_record.h \
+    Logic/user.h \
     Logic/User/user.h \
     Management/App/app_manager.h \
     Management/App/session_manager.h \
@@ -54,6 +62,7 @@ HEADERS += \
     UI/Menu/Proflie/edit_profile.h \
     UI/Network/guest_page.h \
     UI/Network/host_page.h \
+    UI/mainwindow.h
 
 FORMS += \
     UI/Auth/ForgotPassword/forgot_password.ui \
@@ -67,8 +76,8 @@ FORMS += \
     UI/Menu/Proflie/edit_profile.ui \
     UI/Network/guest_page.ui \
     UI/Network/host_page.ui \
+    UI/mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target

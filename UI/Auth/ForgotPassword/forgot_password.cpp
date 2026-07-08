@@ -1,7 +1,7 @@
 #include "forgot_password.h"
 #include "ui_forgot_password.h"
 #include <QMessageBox>
-#include "UI/mainwindow.h"
+#include "UI/MainWindow/mainwindow.h"
 
 ForgotPassword::ForgotPassword(QWidget *parent)
     : QWidget(parent),

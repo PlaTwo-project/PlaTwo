@@ -2,7 +2,7 @@
 #define HISTORY_H
 
 #include <QWidget>
-#include "Logic/match_record.h"
+#include "Logic/Game/Record/match_record.h"
 #include "Logic/Game/game_name.h"
 
 namespace Ui {

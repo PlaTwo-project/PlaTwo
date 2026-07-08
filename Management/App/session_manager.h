@@ -1,7 +1,7 @@
 #ifndef SESSION_MANAGER_H
 #define SESSION_MANAGER_H
 
-#include "Logic/user.h"
+#include "Logic/User/user.h"
 
 class SessionManager
 {
