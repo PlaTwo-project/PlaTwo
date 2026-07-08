@@ -9,7 +9,7 @@ ForgotPassword2::ForgotPassword2(QWidget *parent)
     ui->setupUi(this);
 
     ui->lineEdit_password->setPlaceholderText("Enter new Password");
-    ui->lineEdit_newPassword->setPlaceholderText("Confirm Password");
+    ui->lineEdit_new_password->setPlaceholderText("Confirm Password");
 }
 
 ForgotPassword2::~ForgotPassword2()
@@ -20,7 +20,7 @@ ForgotPassword2::~ForgotPassword2()
 void ForgotPassword2::clearFields()
 {
     ui->lineEdit_password->clear();
-    ui->lineEdit_newPassword->clear();
+    ui->lineEdit_new_password->clear();
 }
 
 void ForgotPassword2::setUserData(const QString& username, const QString& phone)
@@ -32,7 +32,7 @@ void ForgotPassword2::setUserData(const QString& username, const QString& phone)
 void ForgotPassword2::on_pushButton_reset_clicked()
 {
     QString pass = ui->lineEdit_password->text().trimmed();
-    QString confirm = ui->lineEdit_newPassword->text().trimmed();
+    QString confirm = ui->lineEdit_new_password->text().trimmed();
 
     if (pass.isEmpty() || confirm.isEmpty()) {
         QMessageBox::warning(this, "Restore Password", "Please fill out all fields.");
@@ -52,5 +52,5 @@ void ForgotPassword2::on_pushButton_cancel_clicked()
     emit navigateToLogin();
 
     ui->lineEdit_password->clear();
-    ui->lineEdit_newPassword->clear();
+    ui->lineEdit_new_password->clear();
 }

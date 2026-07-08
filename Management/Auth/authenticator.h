@@ -32,11 +32,11 @@ class Authenticator
 public:
     Authenticator();
 
-    AuthResult login(const QString& username, const QString& password, User& logged_in_user);
-    AuthResult signup(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
-    AuthResult resetPassword(const QString& username, const QString& phone, const QString& newPassword);
-    AuthResult verifyUserPhone(const QString& username, const QString& phone);
-    AuthResult updateUser(int id, const QString& name, const QString& username, const QString& email, const QString& phone, const QString& old_password, const QString& new_password);
+    AuthResult login(const QString &username, const QString &password, User &logged_in_user);
+    AuthResult signup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password);
+    AuthResult resetPassword(const QString &username, const QString &phone, const QString &new_password);
+    AuthResult verifyUserPhone(const QString &username, const QString &phone);
+    AuthResult updateUser(int id, const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password);
 
 private:
     StorageManager storage;

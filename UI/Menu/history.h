@@ -2,8 +2,8 @@
 #define HISTORY_H
 
 #include <QWidget>
-#include <QMetaEnum>
 #include "Logic/match_record.h"
+#include "Logic/Game/game_name.h"
 
 namespace Ui {
 class History;
@@ -14,12 +14,10 @@ class History : public QWidget
     Q_OBJECT
 
 public:
-    enum class GameName { BoxesAndDots, NineMensMorris, Fanorona };
-    Q_ENUM(GameName)
-
     explicit History(QWidget *parent = nullptr);
-    void setHistory(const QList<MatchRecord>& list, int current_user_id, const GameName& game_type);
     ~History();
+
+    void setHistory(const QList<MatchRecord>& list, int current_user_id, GameName game_type);
 
 signals:
     void navigateToGameMenu();

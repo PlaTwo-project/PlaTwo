@@ -2,8 +2,7 @@
 #define GAME_MENU_H
 
 #include <QWidget>
-
-enum class GameName { BoxesAndDots, NineMensMorris, Fanorona };
+#include "Logic/Game/game_name.h"
 
 namespace Ui {
 class GameMenu;
@@ -24,12 +23,14 @@ private slots:
     void on_pushButton_back_clicked();
 
 signals:
-    void navigateToStartGame();
-    void navigateToHistory();
+    void navigateToHostPage(GameName game_name);
+    void navigateToGuestPage(GameName game_name);
+    void navigateToHistory(GameName game_name);
     void navigateToMainMenu();
 
 private:
     Ui::GameMenu *ui;
+    GameName cur_game;
 };
 
 #endif // GAME_MENU_H

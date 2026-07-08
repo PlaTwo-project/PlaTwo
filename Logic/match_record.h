@@ -3,25 +3,26 @@
 
 #include <QString>
 #include <QDateTime>
+#include "Logic/Game/game_name.h"
 
 class MatchRecord
 {
 private:
-    int recordId;
-    QString game_type;
-    int hostId;
-    int guestId;
-    int winnerId;
-    int hostScore;
-    int guestScore;
+    int record_id;
+    GameName game_type;
+    int host_id;
+    int guest_id;
+    int winner_id;
+    int host_score;
+    int guest_score;
     QDateTime date;
 
 public:
     MatchRecord();
-    MatchRecord(const QString &type, int host, int guest, int winner, int hostS, int guestS, const QDateTime &gameDate);
+    MatchRecord(GameName game_name, int host, int guest, int winner, int hostS, int guestS, const QDateTime &gameDate);
 
     int getRecordId() const;
-    QString getGameType() const;
+    GameName getGameType() const;
     int getHostId() const;
     int getGuestId() const;
     int getWinnerId() const;
@@ -30,7 +31,7 @@ public:
     QDateTime getDate() const;
 
     void setRecordId(int id);
-    void setGameType(const QString &type);
+    void setGameType(GameName game_name);
     void setHostId(int host);
     void setGuestId(int guest);
     void setWinnerId(int winner);

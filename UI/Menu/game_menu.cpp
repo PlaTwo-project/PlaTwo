@@ -1,4 +1,4 @@
-#include "game_menu.h"
+ #include "game_menu.h"
 #include "ui_game_menu.h"
 #include "QMessageBox"
 
@@ -11,6 +11,7 @@ GameMenu::GameMenu(QWidget *parent)
 
 void GameMenu::setTitle(GameName game_name)
 {
+    cur_game = game_name;
     if (game_name == GameName::BoxesAndDots)
         ui->label_menu_title->setText("Boxes And Dots");
 
@@ -29,19 +30,16 @@ GameMenu::~GameMenu()
 void GameMenu::on_pushButton_start_game_clicked()
 {
     auto reply = QMessageBox::question(this, "Start Game", "Would you like to be a host?\nif not, you'll be a guest", QMessageBox::No | QMessageBox::Yes);
-    if (reply == QMessageBox::Yes) {
 
-    }
-    else {
-
-    }
-
-    emit navigateToStartGame();
+    if (reply == QMessageBox::Yes)
+        emit navigateToHostPage(cur_game);
+    else
+        emit navigateToGuestPage(cur_game);
 }
 
 void GameMenu::on_pushButton_history_clicked()
 {
-    emit navigateToHistory();
+    emit navigateToHistory(cur_game);
 }
 
 void GameMenu::on_pushButton_back_clicked()

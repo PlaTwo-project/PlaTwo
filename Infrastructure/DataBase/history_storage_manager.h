@@ -10,8 +10,8 @@ class HistoryStorageManager
 public:
     HistoryStorageManager();
 
-    bool addMatchRecord(MatchRecord &newRecord);
-    QList<MatchRecord> getHistoryForUser(int userId, const QString &game_type) const;
+    bool addMatchRecord(MatchRecord &new_record);
+    QList<MatchRecord> getHistoryForUser(int user_ID, GameName game_type) const;
 
 private:
     QString file_path;

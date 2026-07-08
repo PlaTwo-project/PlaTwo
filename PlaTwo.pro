@@ -35,6 +35,7 @@ HEADERS += \
     Infrastructure/Network/guest.h \
     Infrastructure/Network/host.h \
     Infrastructure/Network/network.h \
+    Logic/Game/game_name.h \
     Logic/Security/password_hasher.h \
     Logic/Security/validator.h \
     Logic/match_record.h \

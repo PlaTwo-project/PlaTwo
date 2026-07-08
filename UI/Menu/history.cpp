@@ -18,12 +18,12 @@ void History::on_pushButton_back_clicked()
     emit navigateToGameMenu();
 }
 
-void History::setHistory(const QList<MatchRecord>& list, int current_user_id, const GameName& game_type)
+void History::setHistory(const QList<MatchRecord>& list, int current_user_id, GameName game_type)
 {
     ui->tableWidget_history->setRowCount(list.size());
     for (int i = 0; i < list.size(); i++) {
         const MatchRecord& rec = list[i];
-        if (QString::fromLatin1(QMetaEnum::fromType<GameName>().valueToKey(static_cast<int>(game_type))) != rec.getGameType()) // convert 'GameName' to 'QString'
+        if (game_type != rec.getGameType())
             continue;
 
         int opponent_id, your_score, opponent_score;

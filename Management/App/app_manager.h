@@ -14,18 +14,18 @@ public:
     void run();
 
 private:
-    MainWindow* mainWindow;
+    MainWindow *main_window;
     Authenticator authenticator;
 
     void setupConnections();
 
 private slots:
-    void handleLogin(const QString& username, const QString& password);
-    void handleSignup(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
-    void handleForgotPasswordStep2(const QString& username, const QString& phone);
-    void handleResetPassword(const QString& username, const QString& phone, const QString& newPassword);
-    void handleEditProfile(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& oldPassword, const QString& newPassword);
+    void handleLogin(const QString &username, const QString &password);
+    void handleSignup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password);
+    void handleForgotPasswordStep2(const QString &username, const QString &phone);
+    void handleResetPassword(const QString &username, const QString &phone, const QString &new_password);
+    void handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password);
 };
 
 #endif
- // APP_MANAGER_H
+// APP_MANAGER_H

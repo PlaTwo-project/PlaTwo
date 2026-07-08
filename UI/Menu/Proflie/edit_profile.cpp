@@ -3,8 +3,7 @@
 #include <QMessageBox>
 
 EditProfile::EditProfile(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::EditProfile)
+    : QWidget(parent), ui(new Ui::EditProfile)
 {
     ui->setupUi(this);
 
@@ -21,7 +20,7 @@ EditProfile::~EditProfile()
     delete ui;
 }
 
-void EditProfile::setInitialValues(const QString& name, const QString& username, const QString& email, const QString& phone)
+void EditProfile::setInitialValues(const QString &name, const QString &username, const QString &email, const QString &phone)
 {
     ui->lineEdit_name->setText(name);
     ui->lineEdit_username->setText(username);
@@ -37,8 +36,8 @@ void EditProfile::on_pushButton_save_changes_clicked()
     QString username = ui->lineEdit_username->text().trimmed();
     QString email = ui->lineEdit_email->text().trimmed().trimmed();
     QString phone = ui->lineEdit_phone->text().trimmed().trimmed();
-    QString oldPassword = ui->lineEdit_old_password->text().trimmed();
-    QString newPassword = ui->lineEdit_new_password->text().trimmed();
+    QString old_password = ui->lineEdit_old_password->text().trimmed();
+    QString new_password = ui->lineEdit_new_password->text().trimmed();
 
     if (name.isEmpty() || username.isEmpty() || email.isEmpty())
     {
@@ -46,7 +45,7 @@ void EditProfile::on_pushButton_save_changes_clicked()
         return;
     }
 
-    emit editProfileRequested(name, username, email, phone, oldPassword, newPassword);
+    emit editProfileRequested(name, username, email, phone, old_password, new_password);
 }
 
 void EditProfile::on_pushButton_back_to_menu_clicked()

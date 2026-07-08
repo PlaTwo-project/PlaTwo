@@ -31,12 +31,13 @@ void HistoryStorageManager::loadHistory()
     QJsonArray json_array = doc.array();
     history_list.clear();
 
-    for (const QJsonValue &value : json_array) {
+    for (const QJsonValue &value : json_array)
+    {
         QJsonObject obj = value.toObject();
 
         MatchRecord record;
         record.setRecordId(obj["id"].toInt());
-        record.setGameType(obj["game_type"].toString());
+        record.setGameType(static_cast<GameName>(obj["game_type"].toInt()));
         record.setHostId(obj["host_id"].toInt());
         record.setGuestId(obj["guest_id"].toInt());
         record.setWinnerId(obj["winner_id"].toInt());
@@ -57,10 +58,11 @@ void HistoryStorageManager::saveHistory()
         return;
 
     QJsonArray json_array;
-    for (const MatchRecord &record : history_list) {
+    for (const MatchRecord &record : history_list)
+    {
         QJsonObject obj;
         obj["id"] = record.getRecordId();
-        obj["game_type"] = record.getGameType();
+        obj["game_type"] = static_cast<int>(record.getGameType());
         obj["host_id"] = record.getHostId();
         obj["guest_id"] = record.getGuestId();
         obj["winner_id"] = record.getWinnerId();
@@ -76,22 +78,22 @@ void HistoryStorageManager::saveHistory()
     file.close();
 }
 
-bool HistoryStorageManager::addMatchRecord(MatchRecord &newRecord)
+bool HistoryStorageManager::addMatchRecord(MatchRecord &new_record)
 {
     int new_id = generateNextRecordId();
-    newRecord.setRecordId(new_id);
-    history_list.append(newRecord);
+    new_record.setRecordId(new_id);
+    history_list.append(new_record);
 
     saveHistory();
 
     return true;
 }
 
-QList<MatchRecord> HistoryStorageManager::getHistoryForUser(int userId, const QString &game_type) const
+QList<MatchRecord> HistoryStorageManager::getHistoryForUser(int user_ID, GameName game_type) const
 {
     QList<MatchRecord> filtered_list;
     for (const MatchRecord &record : history_list)
-        if (record.getGameType() == game_type && (record.getHostId() == userId || record.getGuestId() == userId))
+        if (record.getGameType() == game_type && (record.getHostId() == user_ID || record.getGuestId() == user_ID))
             filtered_list.append(record);
 
     return filtered_list;

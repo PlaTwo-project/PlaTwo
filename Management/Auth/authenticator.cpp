@@ -4,11 +4,11 @@
 #include "Management/App/session_manager.h"
 
 Authenticator::Authenticator()
-    : storage("users.json")
+    : storage()
 {
 }
 
-AuthResult Authenticator::login(const QString& username, const QString& password, User& logged_in_user)
+AuthResult Authenticator::login(const QString &username, const QString &password, User &logged_in_user)
 {
     User user;
 
@@ -22,7 +22,7 @@ AuthResult Authenticator::login(const QString& username, const QString& password
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::signup(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password)
+AuthResult Authenticator::signup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password)
 {
     if (!Validator::validateEmail(email.toStdString()))
         return AuthResult::INVALID_EMAIL;
@@ -44,15 +44,15 @@ AuthResult Authenticator::signup(const QString& name, const QString& username, c
 
     QString hashedPassword = PasswordHasher::hasher(password);
 
-    User newUser(name, username, phone, email, hashedPassword);
+    User new_user(name, username, phone, email, hashedPassword);
 
-    if (!storage.addUser(newUser))
+    if (!storage.addUser(new_user))
         return AuthResult::UNKNOWN_ERROR;
 
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::resetPassword(const QString& username, const QString& phone, const QString& newPassword)
+AuthResult Authenticator::resetPassword(const QString &username, const QString &phone, const QString &new_password)
 {
     User user;
 
@@ -62,10 +62,10 @@ AuthResult Authenticator::resetPassword(const QString& username, const QString& 
     if (user.getPhoneNumber() != phone)
         return AuthResult::USER_PHONE_MISMATCH;
 
-    if (!Validator::validatePassword(newPassword.toStdString()))
+    if (!Validator::validatePassword(new_password.toStdString()))
         return AuthResult::WEAK_PASSWORD;
 
-    QString hashedPassword = PasswordHasher::hasher(newPassword);
+    QString hashedPassword = PasswordHasher::hasher(new_password);
 
     user.setHashedPassword(hashedPassword);
 
@@ -75,7 +75,7 @@ AuthResult Authenticator::resetPassword(const QString& username, const QString& 
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::verifyUserPhone(const QString& username, const QString& phone)
+AuthResult Authenticator::verifyUserPhone(const QString &username, const QString &phone)
 {
     User user;
 
@@ -88,11 +88,12 @@ AuthResult Authenticator::verifyUserPhone(const QString& username, const QString
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::updateUser(int id, const QString& name, const QString& username, const QString& email, const QString& phone, const QString& old_password, const QString& new_password)
+AuthResult Authenticator::updateUser(int id, const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password)
 {
     User user;
 
-    if (!username.isEmpty()) {
+    if (!username.isEmpty())
+    {
         if (!storage.getUserById(id, user))
             return AuthResult::USER_NOT_FOUND;
 
@@ -100,7 +101,8 @@ AuthResult Authenticator::updateUser(int id, const QString& name, const QString&
             return AuthResult::USERNAME_TAKEN;
     }
 
-    if (!email.isEmpty()) {
+    if (!email.isEmpty())
+    {
         if (user.getEmail() != email && !Validator::validateEmail(email.toStdString()))
             return AuthResult::INVALID_EMAIL;
 
@@ -108,7 +110,8 @@ AuthResult Authenticator::updateUser(int id, const QString& name, const QString&
             return AuthResult::EMAIL_TAKEN;
     }
 
-    if (!phone.isEmpty()) {
+    if (!phone.isEmpty())
+    {
         if (user.getPhoneNumber() != phone && !Validator::validatePhone(phone.toStdString()))
             return AuthResult::INVALID_PHONE;
 
@@ -116,11 +119,13 @@ AuthResult Authenticator::updateUser(int id, const QString& name, const QString&
             return AuthResult::PHONE_TAKEN;
     }
 
-    if (!old_password.isEmpty() && !new_password.isEmpty()) {
+    if (!old_password.isEmpty() && !new_password.isEmpty())
+    {
         if (!PasswordHasher::verify(old_password, user.getHashedPassword()))
             return AuthResult::WRONG_PASSWORD;
 
-        if (old_password != new_password) {
+        if (old_password != new_password)
+        {
             if (!Validator::validatePassword(new_password.toStdString()))
                 return AuthResult::WEAK_PASSWORD;
 

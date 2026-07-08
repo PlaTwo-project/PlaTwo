@@ -2,8 +2,7 @@
 #define HOST_PAGE_H
 
 #include <QWidget>
-
-enum class GameName { BoxesAndDots, NineMensMorris, Fanorona };
+#include "Logic/Game/game_name.h"
 
 namespace Ui {
 class HostPage;
