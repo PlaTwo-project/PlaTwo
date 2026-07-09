@@ -6,6 +6,7 @@
 #include "Management/Auth/authenticator.h"
 #include "Infrastructure/DataBase/history_storage_manager.h"
 #include "Management/Game/game_manager.h"
+#include "Infrastructure/DataBase/storage_manager.h"
 
 class AppManager : public QObject
 {
@@ -17,6 +18,7 @@ public:
 
 private:
     MainWindow* main_window;
+    StorageManager userStorage;
     Authenticator authenticator;
     HistoryStorageManager history_storage;
     GameManager game_manager;

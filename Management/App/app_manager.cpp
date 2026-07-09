@@ -3,7 +3,7 @@
 #include <QMessageBox>
 
 AppManager::AppManager(QObject* parent)
-    : QObject{parent}, authenticator(),history_storage(), game_manager()
+    : QObject{parent}, authenticator(userStorage),history_storage(), game_manager()
 {
     main_window = new MainWindow();
     setupConnections();

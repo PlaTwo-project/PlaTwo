@@ -29,7 +29,7 @@ enum class AuthResult
 class Authenticator
 {
 public:
-    explicit Authenticator();
+    explicit Authenticator(UserInterface& storage);
 
     AuthResult login(const QString &username, const QString &password, User &logged_in_user);
     AuthResult signup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password);
