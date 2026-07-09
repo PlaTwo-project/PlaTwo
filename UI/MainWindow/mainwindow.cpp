@@ -76,11 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(game_menu_page, &GameMenu::navigateToGuestPage, this, &MainWindow::showGuestPage);
 
-    connect(history_page, &History::navigateToGameMenu, this, [this]() {
-        showMainMenuPage();
-    });
-
-    connect(host_page, &HostPage::cancelHostRequested, this, &MainWindow::cancelHostRequested);
+    connect(history_page, &History::navigateToGameMenu, this, &MainWindow::showMainMenuPage);
 
     connect(host_page, &HostPage::backRequested, this, [this]() {
         showGameMenuPage(cur_game);
@@ -97,9 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(edit_profile_page, &EditProfile::editProfileRequested, this, &MainWindow::editProfileRequested);
 
-    connect(game_menu_page, &GameMenu::navigateToHistory, this, [this](GameName game_name) {
-        emit showHistoryRequested(game_name);
-    });
+    connect(game_menu_page, &GameMenu::navigateToHistory, this, &MainWindow::showHistoryRequested);
 
     connect(host_page, &HostPage::createRoomRequested, this, [this](int port, int board_size, int time_limit) {
         emit createRoomRequested(port, board_size, time_limit, cur_game);
@@ -108,6 +102,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(guest_page, &GuestPage::joinRequested, this, [this](const QString& IP, const QString& port) {
         emit joinRoomRequested(IP, port, cur_game);
     });
+
+    connect(host_page, &HostPage::cancelHostRequested, this, &MainWindow::cancelHostRequested);
 
     // show pages
     showLoginPage();

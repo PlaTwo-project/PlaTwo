@@ -3,8 +3,10 @@
 #include "Logic/Security/password_hasher.h"
 #include "Management/App/session_manager.h"
 
-Authenticator::Authenticator(UserInterface& storage) : storage(storage)
-{}
+Authenticator::Authenticator() :
+{
+    storage = new StorageManager();
+}
 
 AuthResult Authenticator::login(const QString &username, const QString &password, User &logged_in_user)
 {

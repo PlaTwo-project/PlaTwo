@@ -8,7 +8,7 @@
 class StorageManager : public UserInterface
 {
 public:
-    StorageManager(const QString& file_path = "users.json");
+    StorageManager();
 
     bool addUser(User &new_user) override;
     bool updateUser(const User &user_to_update) override;

@@ -4,8 +4,8 @@
 #include <QObject>
 #include "UI/MainWindow/mainwindow.h"
 #include "Management/Auth/authenticator.h"
-#include "Infrastructure/DataBase/storage_manager.h"
 #include "Infrastructure/DataBase/history_storage_manager.h"
+#include "Management/Game/game_manager.h"
 
 class AppManager : public QObject
 {
@@ -17,9 +17,9 @@ public:
 
 private:
     MainWindow* main_window;
-    StorageManager userStorage;
     Authenticator authenticator;
-    HistoryStorageManager historyStorage;
+    HistoryStorageManager history_storage;
+    GameManager game_manager;
 
     void setupConnections();
 
@@ -29,6 +29,10 @@ private slots:
     void handleForgotPasswordStep2(const QString &username, const QString &phone);
     void handleResetPassword(const QString &username, const QString &phone, const QString &new_password);
     void handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password);
+    void handleShowHistory(GameName game_name);
+    void handleCreateRoom(int port, int board_size, int time_limit, GameName game_name);
+    void handleJoinRoom(const QString& IP, const QString& port, GameName game_name);
+    void handleCancelHost();
 };
 
 #endif // APP_MANAGER_H

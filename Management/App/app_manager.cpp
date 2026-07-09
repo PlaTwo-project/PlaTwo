@@ -3,7 +3,7 @@
 #include <QMessageBox>
 
 AppManager::AppManager(QObject* parent)
-    : QObject{parent}, userStorage("users.json"), authenticator(userStorage)
+    : QObject{parent}, authenticator(),history_storage(), game_manager()
 {
     main_window = new MainWindow();
     setupConnections();
@@ -34,6 +34,7 @@ void AppManager::setupConnections()
 
     connect(main_window, &MainWindow::cancelHostRequested, this, &AppManager::handleCancelHost);
 }
+
 
 void AppManager::handleLogin(const QString &username, const QString &password)
 {
@@ -170,6 +171,7 @@ void AppManager::handleResetPassword(const QString &username, const QString &pho
     }
 }
 
+
 void AppManager::handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password)
 {
     User cur_user = SessionManager::getInstance().getCurrentUser();
@@ -219,4 +221,29 @@ void AppManager::handleEditProfile(const QString &name, const QString &username,
     default:
         QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
     }
+}
+
+void AppManager::handleShowHistory(GameName game_name)
+{
+    User cur_user = SessionManager::getInstance().getCurrentUser();
+    QList<MatchRecord> user_history =  history_storage.getHistoryForUser(cur_user.getId(), game_name);
+    main_window->showHistoryPage(user_history,cur_user.getId(),game_name);
+}
+
+void AppManager::handleCreateRoom(int port, int board_size, int time_limit, GameName game_name)
+{
+    User cur_user = SessionManager::getInstance().getCurrentUser();
+    game_manager.createRoom(cur_user, port, game_name, board_size, time_limit);
+
+}
+
+void AppManager::handleJoinRoom(const QString& IP, const QString& port, GameName game_name)
+{
+    User cur_user = SessionManager::getInstance().getCurrentUser();
+    //game_manager.joinRoom(cur_user, IP, port);
+}
+
+void AppManager::handleCancelHost()
+{
+    game_manager.cancelRoom();
 }
