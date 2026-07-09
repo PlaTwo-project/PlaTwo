@@ -21,12 +21,12 @@ public:
 
 signals:
     void createRoomRequested(int port, int boardSize, int timeLimitMinutes);
-    void backRequested();
+    void navigateToGameMenu();
     void cancelHostRequested();
 
 private slots:
     void on_btn_create_clicked();
-    void on_btn_back_clicked();
+    void on_pushButton_back_clicked();
     void on_btn_cancelHost_clicked();
 
 private:

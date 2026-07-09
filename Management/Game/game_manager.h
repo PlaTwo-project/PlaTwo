@@ -6,12 +6,7 @@
 #include "Infrastructure/Network/guest.h"
 #include "Infrastructure/Network/host.h"
 
-enum class Role
-{
-    Default,
-    Host,
-    Guest
-};
+enum class Role{ Host, Guest };
 
 class GameManager : public QObject
 {

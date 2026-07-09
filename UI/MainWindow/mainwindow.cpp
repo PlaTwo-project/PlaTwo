@@ -76,9 +76,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(game_menu_page, &GameMenu::navigateToGuestPage, this, &MainWindow::showGuestPage);
 
-    connect(history_page, &History::navigateToGameMenu, this, &MainWindow::showMainMenuPage);
+    connect(history_page, &History::navigateToGameMenu, this, [this]() {
+        showGameMenuPage(cur_game);
+    });
 
-    connect(host_page, &HostPage::backRequested, this, [this]() {
+    connect(host_page, &HostPage::navigateToGameMenu, this, [this]() {
+        showGameMenuPage(cur_game);
+    });
+
+    connect(guest_page, &GuestPage::navigateToGameMenu, this, [this]() {
         showGameMenuPage(cur_game);
     });
 

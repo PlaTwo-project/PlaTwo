@@ -58,9 +58,9 @@ void HostPage::on_btn_create_clicked()
     emit createRoomRequested(port, boardSize, timeLimit);
 }
 
-void HostPage::on_btn_back_clicked()
+void HostPage::on_pushButton_back_clicked()
 {
-    emit backRequested();
+    emit navigateToGameMenu();
 }
 
 void HostPage::on_btn_cancelHost_clicked()
