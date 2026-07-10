@@ -34,9 +34,10 @@ public:
     void showForgotPasswordPage2(const QString& username, const QString& phone);
     void showMainMenuPage();
     void showEditProfilePage();
-    void showGameMenuPage(GameName game_name);
-    void showHostPage(GameName game_name);
-    void showGuestPage(GameName game_name);
+    void showGameMenuPage(const GameName game_name);
+    void showHostPage(const GameName game_name);
+    void showWatingHostPage(const QString& ip);
+    void showGuestPage(const GameName game_name);
     void showHistoryPage(const QList<MatchRecord>& historyList, int currentUserId, GameName game_name);
 
     void loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone);

@@ -89,7 +89,7 @@ bool HistoryStorageManager::addMatchRecord(MatchRecord &new_record)
     return true;
 }
 
-QList<MatchRecord> HistoryStorageManager::getHistoryForUser(int user_ID, GameName& game_type) const
+QList<MatchRecord> HistoryStorageManager::getHistoryForUser(const int& user_ID, const GameName& game_type) const
 {
     QList<MatchRecord> filtered_list;
     for (const MatchRecord &record : history_list)

@@ -223,28 +223,27 @@ void AppManager::handleEditProfile(const QString &name, const QString &username,
     }
 }
 
-void AppManager::handleShowHistory(GameName game_name)
+void AppManager::handleShowHistory(const GameName& game_name)
 {
     User cur_user = SessionManager::getInstance().getCurrentUser();
     QList<MatchRecord> user_history =  history_storage.getHistoryForUser(cur_user.getId(), game_name);
     main_window->showHistoryPage(user_history,cur_user.getId(),game_name);
 }
 
-void AppManager::handleCreateRoom(int port, int board_size, int time_limit, GameName game_name)
+void AppManager::handleCreateRoom(const int& port, const int& board_size, const int& time_limit, const GameName& game_name)
 {
     User cur_user = SessionManager::getInstance().getCurrentUser();
-    game_manager.createRoom(cur_user, port, game_name, board_size, time_limit);
-
+    main_window->showWatingHostPage(game_manager.createRoom(cur_user, port, game_name, board_size, time_limit));
 }
 
-void AppManager::handleJoinRoom(const QString& IP, const int& port, GameName game_name)
+void AppManager::handleJoinRoom(const QString& IP, const int& port, const GameName& game_name)
 {
     User cur_user = SessionManager::getInstance().getCurrentUser();
     AuthResult result = authenticator.verifyIP(IP);
 
     switch (result) {
     case AuthResult::SUCCESS:
-        game_manager.joinRoom(cur_user, IP, port);
+        game_manager.joinRoom(cur_user, IP, port, game_name);
         break;
 
     case AuthResult::INVALID_IP:

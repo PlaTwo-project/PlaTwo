@@ -45,7 +45,7 @@ void HostPage::setPage(GameName game_name)
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void HostPage::on_btn_create_clicked()
+void HostPage::on_pushButton_create_clicked()
 {
     int port = ui->spinBox_port->value();
     int boardSize = ui->comboBox__board_size->currentData().toInt();
@@ -63,7 +63,7 @@ void HostPage::on_pushButton_back_clicked()
     emit navigateToGameMenu();
 }
 
-void HostPage::on_btn_cancelHost_clicked()
+void HostPage::on_pushButton_cancelHost_clicked()
 {
     emit cancelHostRequested();
     ui->stackedWidget->setCurrentIndex(0);

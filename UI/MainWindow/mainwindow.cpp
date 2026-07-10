@@ -151,20 +151,25 @@ void MainWindow::showEditProfilePage()
     ui->stackedWidget->setCurrentWidget(edit_profile_page);
 }
 
-void MainWindow::showGameMenuPage(GameName game_name)
+void MainWindow::showGameMenuPage(const GameName game_name)
 {
     cur_game = game_name;
     game_menu_page->setTitle(game_name);
     ui->stackedWidget->setCurrentWidget(game_menu_page);
 }
 
-void MainWindow::showHostPage(GameName game_name)
+void MainWindow::showHostPage(const GameName game_name)
 {
     host_page->setPage(game_name);
     ui->stackedWidget->setCurrentWidget(host_page);
 }
 
-void MainWindow::showGuestPage(GameName game_name)
+void MainWindow::showWatingHostPage(const QString& ip)
+{
+    host_page->switchToWaitingStatus(ip);
+}
+
+void MainWindow::showGuestPage(const GameName game_name)
 {
     guest_page->setTitle(game_name);
     ui->stackedWidget->setCurrentWidget(guest_page);

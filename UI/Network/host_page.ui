@@ -40,7 +40,7 @@ QMessageBox QPushButton:pressed {
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_host_setting">
       <layout class="QGridLayout" name="gridLayout">
@@ -100,7 +100,7 @@ QPushButton:pressed {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_start">
+            <widget class="QPushButton" name="pushButton_create">
              <property name="minimumSize">
               <size>
                <width>140</width>
@@ -132,7 +132,7 @@ QPushButton:pressed {
 </string>
              </property>
              <property name="text">
-              <string>Start Game</string>
+              <string>Create</string>
              </property>
             </widget>
            </item>
@@ -439,7 +439,7 @@ color: rgb(0, 0, 0);</string>
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="pushButton_cancelHost">
            <property name="styleSheet">
             <string notr="true">QPushButton {
     background-color: #DC3545;
@@ -466,7 +466,7 @@ QPushButton:pressed {
 </string>
            </property>
            <property name="text">
-            <string>Back</string>
+            <string>Cancel</string>
            </property>
           </widget>
          </item>

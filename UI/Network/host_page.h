@@ -25,9 +25,9 @@ signals:
     void cancelHostRequested();
 
 private slots:
-    void on_btn_create_clicked();
+    void on_pushButton_create_clicked();
     void on_pushButton_back_clicked();
-    void on_btn_cancelHost_clicked();
+    void on_pushButton_cancelHost_clicked();
 
 private:
     Ui::HostPage *ui;
