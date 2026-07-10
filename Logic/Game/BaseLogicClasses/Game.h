@@ -2,7 +2,6 @@
 #define GAME_H
 
 #include "Logic/Game/BaseLogicClasses/Move.h"
-#include "Logic/Game/BaseLogicClasses/Board.h"
 #include "Logic/User/user.h"
 
 enum class GameStatus {
@@ -16,9 +15,8 @@ class Game {
 public:
     virtual ~Game() = default;
     virtual bool makeMove(const Move& move) = 0;
-    virtual GameStatus checkWinCondition() = 0;
+    virtual GameStatus checkWin() = 0;
     virtual void resetGame() = 0;
-
     virtual QString serializeState() const = 0;
     virtual void loadState(const QString& state_data) = 0;
 
@@ -28,7 +26,6 @@ public:
 
 protected:
     virtual bool isValidMove(const Move& move) = 0;
-
     User current_player;
 };
 

@@ -10,6 +10,7 @@ SOURCES += \
     Infrastructure/Network/host.cpp \
     Infrastructure/Network/network.cpp \
     Logic/Game/DotsAndBoxes/DotsAndBoxesBoard/dots_and_boxes_board.cpp \
+    Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.cpp \
     Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.cpp \
     Logic/Game/Record/match_record.cpp \
     Logic/Game/room_state.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     Logic/Game/BaseLogicClasses/Game.h \
     Logic/Game/BaseLogicClasses/Move.h \
     Logic/Game/DotsAndBoxes/DotsAndBoxesBoard/dots_and_boxes_board.h \
+    Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.h \
     Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.h \
     Logic/Game/Record/match_record.h \
     Logic/Game/game_name.h \

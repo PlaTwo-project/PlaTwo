@@ -17,7 +17,7 @@ MainMenu::~MainMenu()
 
 void MainMenu::on_pushButton_dots_clicked()
 {
-    emit navigateToGame1(GameName::BoxesAndDots);
+    emit navigateToGame1(GameName::DotsAndBoxes);
 }
 
 void MainMenu::on_pushButton_morris_clicked()

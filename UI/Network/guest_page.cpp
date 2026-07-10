@@ -14,7 +14,7 @@ GuestPage::GuestPage(QWidget *parent)
 
 void GuestPage::setTitle(GameName game_name)
 {
-    if (game_name == GameName::BoxesAndDots)
+    if (game_name == GameName::DotsAndBoxes)
         ui->label_game->setText("Boxes And Dots");
 
     else if (game_name == GameName::NineMensMorris)

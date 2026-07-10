@@ -15,7 +15,7 @@ HostPage::~HostPage()
 
 void HostPage::setPage(GameName game_name)
 {
-    if (game_name == GameName::BoxesAndDots) {
+    if (game_name == GameName::DotsAndBoxes) {
         ui->label_game_name->setText("Boxes And Dots");
         ui->label_game_name_2->setText("Boxes And Dots");
     }
@@ -30,7 +30,7 @@ void HostPage::setPage(GameName game_name)
 
     ui->comboBox__board_size->clear();
 
-    if (game_name == GameName::BoxesAndDots) {
+    if (game_name == GameName::DotsAndBoxes) {
         ui->comboBox__board_size->addItem("6 x 6 Dots", 6);
         ui->comboBox__board_size->addItem("7 x 7 Dots", 7);
         ui->comboBox__board_size->addItem("8 x 8 Dots", 8);

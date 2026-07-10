@@ -12,7 +12,7 @@ GameMenu::GameMenu(QWidget *parent)
 void GameMenu::setTitle(GameName game_name)
 {
     cur_game = game_name;
-    if (game_name == GameName::BoxesAndDots)
+    if (game_name == GameName::DotsAndBoxes)
         ui->label_menu_title->setText("Boxes And Dots");
 
     else if (game_name == GameName::NineMensMorris)
