@@ -134,7 +134,7 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #dc3545;
+    background-color: #DE2424;
     color: white;
     border: none;
     border-radius: 5px;

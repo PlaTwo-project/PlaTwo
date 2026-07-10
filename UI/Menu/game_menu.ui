@@ -74,7 +74,7 @@ QMessageBox QPushButton:pressed {
         <string notr="true">QPushButton {
     background-color: #23BD3D;
     color: #e0e0e0;
-    border-radius: 20px;
+    border-radius: 17px;
     padding: 12px 20px;
     font-size: 17px;
     font-weight: bold;
@@ -118,7 +118,7 @@ QPushButton:pressed {
         <string notr="true">QPushButton {
     background-color: #007bff;
     color: #e0e0e0;
-    border-radius: 20px;
+    border-radius: 17px;
     padding: 12px 20px;
     font-size: 17px;
     font-weight: bold;
@@ -160,9 +160,9 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #DC3545;
+    background-color: #DE2424;
     color: #e0e0e0;
-    border-radius: 20px;
+    border-radius: 17px;
     padding: 12px 20px;
     font-size: 17px;
     font-weight: bold;
@@ -170,7 +170,7 @@ QPushButton:pressed {
 }
 
 QPushButton:hover {
-    background-color: #DC1F22;
+    background-color: #C42B1C;
     border-color: #00c8ff;
     color: white;
     padding: 15px 23px;
@@ -178,7 +178,7 @@ QPushButton:hover {
 }
 
 QPushButton:pressed {
-    background-color: #C91C1F;
+    background-color: #B02719; 
     border-color: #0088aa;
 }
 </string>

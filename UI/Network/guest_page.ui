@@ -133,10 +133,10 @@ QMessageBox QPushButton:pressed {
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: #DE4D4D;
+    background-color: #DE2424;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 9px;
     padding: 8px 16px;
     font-weight: bold;
 }
@@ -168,7 +168,7 @@ QPushButton:pressed {
     background-color: #1976D2;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 9px;
     padding: 8px 16px;
     font-weight: bold;
 }
