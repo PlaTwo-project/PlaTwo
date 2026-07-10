@@ -24,7 +24,7 @@ private slots:
 
 signals:
     void navigateToGameMenu();
-    void joinRequested(QString ip, QString port);
+    void joinRequested(QString ip, int port);
 
 private:
     Ui::GuestPage *ui;

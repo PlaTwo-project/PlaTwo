@@ -105,7 +105,7 @@ MainWindow::MainWindow(QWidget *parent)
         emit createRoomRequested(port, board_size, time_limit, cur_game);
     });
 
-    connect(guest_page, &GuestPage::joinRequested, this, [this](const QString& IP, const QString& port) {
+    connect(guest_page, &GuestPage::joinRequested, this, [this](const QString& IP, const int& port) {
         emit joinRoomRequested(IP, port, cur_game);
     });
 

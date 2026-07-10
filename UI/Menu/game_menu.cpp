@@ -33,7 +33,7 @@ void GameMenu::on_pushButton_start_game_clicked()
 
     if (reply == QMessageBox::Yes)
         emit navigateToHostPage(cur_game);
-    else
+    else if (reply == QMessageBox::No)
         emit navigateToGuestPage(cur_game);
 }
 

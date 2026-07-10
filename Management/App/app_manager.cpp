@@ -215,7 +215,7 @@ void AppManager::handleEditProfile(const QString &name, const QString &username,
         break;
 
     case AuthResult::EMPTY_FIELD:
-        QMessageBox::warning(main_window, "Warning", "Please fill out the required fields.");
+        QMessageBox::warning(main_window, "Error", "Please fill out the required fields.");
         return;
 
     default:
@@ -237,10 +237,23 @@ void AppManager::handleCreateRoom(int port, int board_size, int time_limit, Game
 
 }
 
-void AppManager::handleJoinRoom(const QString& IP, const QString& port, GameName game_name)
+void AppManager::handleJoinRoom(const QString& IP, const int& port, GameName game_name)
 {
     User cur_user = SessionManager::getInstance().getCurrentUser();
-    //game_manager.joinRoom(cur_user, IP, port);
+    AuthResult result = authenticator.verifyIP(IP);
+
+    switch (result) {
+    case AuthResult::SUCCESS:
+        game_manager.joinRoom(cur_user, IP, port);
+        break;
+
+    case AuthResult::INVALID_IP:
+        QMessageBox::warning(main_window, "Error", "Invalid IP");
+        break;
+
+    default:
+        QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
+    }
 }
 
 void AppManager::handleCancelHost()

@@ -86,7 +86,7 @@ AuthResult Authenticator::verifyUserPhone(const QString &username, const QString
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::updateUser(int id, const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password)
+AuthResult Authenticator::updateUser(const int id, const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password)
 {
     User user;
 
@@ -142,6 +142,14 @@ AuthResult Authenticator::updateUser(int id, const QString &name, const QString 
         return AuthResult::UNKNOWN_ERROR;
 
     SessionManager::getInstance().updateCurrentUser(user);
+
+    return AuthResult::SUCCESS;
+}
+
+AuthResult Authenticator::verifyIP(const QString& ip)
+{
+    if (!Validator::validateIP(ip.toStdString()))
+        return AuthResult::INVALID_IP;
 
     return AuthResult::SUCCESS;
 }

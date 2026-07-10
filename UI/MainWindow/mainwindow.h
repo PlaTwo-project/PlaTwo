@@ -54,7 +54,7 @@ signals:
     void editProfileRequested(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& new_password, const QString& old_password);\
     void showHistoryRequested(GameName game_name);
     void createRoomRequested(int port, int board_size, int time_limit, GameName game_name);
-    void joinRoomRequested(const QString& IP, const QString& port, GameName game_name);
+    void joinRoomRequested(const QString& IP, const int& port, GameName game_name);
     void cancelHostRequested();
 
 private:

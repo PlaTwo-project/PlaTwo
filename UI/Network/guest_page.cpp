@@ -38,13 +38,14 @@ GuestPage::~GuestPage()
 void GuestPage::on_pushButton_join_clicked()
 {
     QString ip = ui->lineEdit_ip->text().trimmed();
-    QString port = ui->lineEdit_port->text().trimmed();
+    QString text_port = ui->lineEdit_port->text().trimmed();
 
-    if (ip.isEmpty() || port.isEmpty()) {
+    if (ip.isEmpty() || text_port.isEmpty()) {
         QMessageBox::warning(this, "Guest Page", "Please fill out all fields.");
         return;
     }
 
+    int port = text_port.toInt();
     emit joinRequested(ip, port);
 }
 

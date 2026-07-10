@@ -33,7 +33,7 @@ private slots:
     void handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password);
     void handleShowHistory(GameName game_name);
     void handleCreateRoom(int port, int board_size, int time_limit, GameName game_name);
-    void handleJoinRoom(const QString& IP, const QString& port, GameName game_name);
+    void handleJoinRoom(const QString& IP, const int& port, GameName game_name);
     void handleCancelHost();
 };
 
