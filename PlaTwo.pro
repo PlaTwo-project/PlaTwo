@@ -37,6 +37,9 @@ HEADERS += \
     Infrastructure/Network/guest.h \
     Infrastructure/Network/host.h \
     Infrastructure/Network/network.h \
+    Logic/Game/BaseLogicClasses/Board.h \
+    Logic/Game/BaseLogicClasses/Game.h \
+    Logic/Game/BaseLogicClasses/Move.h \
     Logic/Game/Record/match_record.h \
     Logic/Game/game_name.h \
     Logic/Game/room_state.h \
