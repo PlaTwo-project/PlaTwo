@@ -25,6 +25,7 @@ SOURCES += \
     UI/Auth/ForgotPassword/forgot_password2.cpp \
     UI/Auth/Login/login.cpp \
     UI/Auth/SignUp/signup.cpp \
+    UI/Games/DotsAndBoxesPage/dots_and_boxes_page.cpp \
     UI/MainWindow/mainwindow.cpp \
     UI/Menu/game_menu.cpp \
     UI/Menu/history.cpp \
@@ -64,6 +65,7 @@ HEADERS += \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
     UI/Games/BasePage/base_page.h \
+    UI/Games/DotsAndBoxesPage/dots_and_boxes_page.h \
     UI/MainWindow/mainwindow.h \
     UI/Menu/game_menu.h \
     UI/Menu/history.h \
