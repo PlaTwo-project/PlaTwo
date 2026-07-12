@@ -1,5 +1,5 @@
-#ifndef ROOMSTATE_H
-#define ROOMSTATE_H
+#ifndef ROOM_STATE_H
+#define ROOM_STATE_H
 
 #include "Logic/User/user.h"
 #include "Logic/Game/game_name.h"
@@ -35,4 +35,4 @@ private:
     int time_limit;
 };
 
-#endif // ROOMSTATE_H
+#endif // ROOM_STATE_H

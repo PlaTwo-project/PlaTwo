@@ -1,5 +1,4 @@
-#ifndef BOXES_AND_DOTS_MOVE_H
-#define BOXES_AND_DOTS_MOVE_H
+#pragma once
 
 #include "Logic/Game/BaseLogicClasses/Move.h"
 #include <QString>
@@ -27,5 +26,3 @@ private:
     int column_index;
     lineDirection line_direction;
 };
-
-#endif // BOXES_AND_DOTS_MOVE_H

@@ -1,9 +1,10 @@
-#ifndef PASSWORDHASHER_H
-#define PASSWORDHASHER_H
+#ifndef PASSWORD_HASHER_H
+#define PASSWORD_HASHER_H
 
 #include <QString>
 #include <QByteArray>
 #include <QCryptographicHash>
+
 using namespace std;
 
 class PasswordHasher
@@ -13,4 +14,4 @@ public:
     static bool verify(const QString& password, const QString& hashedPassword);
 };
 
-#endif // PASSWORDHASHER_H
+#endif // PASSWORD_HASHER_H

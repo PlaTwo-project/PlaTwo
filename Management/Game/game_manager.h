@@ -1,5 +1,5 @@
-#ifndef GAMEMANAGER_H
-#define GAMEMANAGER_H
+#ifndef GAME_MANAGER_H
+#define GAME_MANAGER_H
 
 #include <QObject>
 #include "Logic/Game/room_state.h"
@@ -29,4 +29,4 @@ private:
     Guest* guest;
 };
 
-#endif // GAMEMANAGER_H
+#endif // GAME_MANAGER_H

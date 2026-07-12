@@ -1,5 +1,4 @@
-#ifndef INETWORKSERVICE_H
-#define INETWORKSERVICE_H
+#pragma once
 
 #include <QByteArray>
 
@@ -13,5 +12,3 @@ public:
     virtual void sendData(const QByteArray& data) = 0;
     virtual bool isConnected() const = 0;
 };
-
-#endif // INETWORKSERVICE_H

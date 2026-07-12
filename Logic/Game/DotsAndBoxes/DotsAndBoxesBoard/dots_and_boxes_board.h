@@ -1,5 +1,4 @@
-#ifndef BOXES_AND_DOTS_BOARD_H
-#define BOXES_AND_DOTS_BOARD_H
+#pragma once
 
 #include "Logic/Game/BaseLogicClasses/Board.h"
 #include "Logic/Game/BaseLogicClasses/Move.h"
@@ -36,5 +35,3 @@ private:
     QVector<QVector<bool>> vertical_lines;
     QVector<QVector<int>>  captured_boxes;
 };
-
-#endif // BOXES_AND_DOTS_BOARD_H

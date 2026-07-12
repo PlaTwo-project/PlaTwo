@@ -63,6 +63,7 @@ HEADERS += \
     UI/Auth/ForgotPassword/forgot_password2.h \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
+    UI/Games/BasePage/base_page.h \
     UI/MainWindow/mainwindow.h \
     UI/Menu/game_menu.h \
     UI/Menu/history.h \

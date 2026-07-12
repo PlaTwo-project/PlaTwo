@@ -1,5 +1,4 @@
-#ifndef IUSERREPOSITORY_H
-#define IUSERREPOSITORY_H
+#pragma once
 
 #include "Logic/User/user.h"
 
@@ -19,5 +18,3 @@ public:
     virtual bool getUserByPhoneNumber(const QString& phone, User& user_to_find) const = 0;
     virtual bool getUserById(const int& id, User& user_to_find) const = 0;
 };
-
-#endif // IUSERREPOSITORY_H
