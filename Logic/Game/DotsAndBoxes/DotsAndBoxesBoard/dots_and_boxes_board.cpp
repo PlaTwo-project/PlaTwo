@@ -110,6 +110,16 @@ const QVector<QVector<int>> &DotsAndBoxesBoard::getCapturedBoxes() const
     return captured_boxes;
 }
 
+const QVector<QVector<bool>> &DotsAndBoxesBoard::getHorizontalLines() const
+{
+    return horizontal_lines;
+}
+
+const QVector<QVector<bool>> &DotsAndBoxesBoard::getVerticalLines() const
+{
+    return vertical_lines;
+}
+
 bool DotsAndBoxesBoard::isValidDirection(int direction_type) const
 {
     return direction_type == horizontalDirection || direction_type == verticalDirection;

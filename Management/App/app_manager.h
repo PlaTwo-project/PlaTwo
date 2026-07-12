@@ -22,6 +22,7 @@ private:
     Authenticator authenticator;
     HistoryStorageManager history_storage;
     GameManager game_manager;
+    void updateGameUI();
 
     void setupConnections();
 
@@ -35,6 +36,11 @@ private slots:
     void handleCreateRoom(const int& port, const int& board_size, const int& time_limit, const GameName& game_name);
     void handleJoinRoom(const QString& IP, const int& port, const GameName& game_name);
     void handleCancelHost();
+    void handleDotsAndBoxesMove(int row, int col, int direction);
+    void handleGameStarted();
+    void handleMoveApplied(bool is_turn_kept);
+    void handleOpponentMoveReceived();
+    void handleGameOver(GameStatus status);
 };
 
 #endif // APP_MANAGER_H

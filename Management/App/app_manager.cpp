@@ -17,22 +17,19 @@ void AppManager::run()
 void AppManager::setupConnections()
 {
     connect(main_window, &MainWindow::loginRequested, this, &AppManager::handleLogin);
-
     connect(main_window, &MainWindow::signupRequested, this, &AppManager::handleSignup);
-
     connect(main_window, &MainWindow::forgotPasswordStep2Requested, this, &AppManager::handleForgotPasswordStep2);
-
     connect(main_window, &MainWindow::resetPasswordRequested, this, &AppManager::handleResetPassword);
-
     connect(main_window, &MainWindow::editProfileRequested, this, &AppManager::handleEditProfile);
-
     connect(main_window, &MainWindow::showHistoryRequested, this, &AppManager::handleShowHistory);
-
     connect(main_window, &MainWindow::createRoomRequested, this, &AppManager::handleCreateRoom);
-
     connect(main_window, &MainWindow::joinRoomRequested, this, &AppManager::handleJoinRoom);
-
     connect(main_window, &MainWindow::cancelHostRequested, this, &AppManager::handleCancelHost);
+    connect(main_window, &MainWindow::dotsAndBoxesMoveRequested, this, &AppManager::handleDotsAndBoxesMove);
+    connect(&game_manager, &GameManager::gameStarted, this, &AppManager::handleGameStarted);
+    connect(&game_manager, &GameManager::moveAppliedSuccessfully, this, &AppManager::handleMoveApplied);
+    connect(&game_manager, &GameManager::opponentMoveReceived, this, &AppManager::handleOpponentMoveReceived);
+    connect(&game_manager, &GameManager::gameOver, this, &AppManager::handleGameOver);
 }
 
 
@@ -258,4 +255,65 @@ void AppManager::handleJoinRoom(const QString& IP, const int& port, const GameNa
 void AppManager::handleCancelHost()
 {
     game_manager.cancelRoom();
+}
+
+void AppManager::handleDotsAndBoxesMove(int row, int col, int direction) {
+    game_manager.handleLocalMove(row, col, direction);
+}
+
+void AppManager::updateGameUI() {
+    Game* game_logic = game_manager.getCurrentGame();
+    if (!game_logic)
+        return;
+
+    User cur_user = SessionManager::getInstance().getCurrentUser();
+    bool is_my_turn = (game_logic->getCurrentPlayer().getId() == cur_user.getId());
+    QString turn_text = is_my_turn ? "Your Turn" : "Opponent's Turn";
+
+    main_window->updateScoresAndTurn( game_logic->getFirstPlayerScore(), game_logic->getSecondPlayerScore(), turn_text, is_my_turn );
+
+    main_window->renderActivePage(game_logic);
+}
+
+void AppManager::handleGameStarted() {
+    Game* game_logic = game_manager.getCurrentGame();
+    if (!game_logic) {
+        return;
+    }
+
+    int board_size = game_manager.getRoomBoardSize();
+    main_window->showDotsAndBoxesPage(board_size);
+    updateGameUI();
+}
+
+void AppManager::handleMoveApplied(bool is_turn_kept) {
+    Q_UNUSED(is_turn_kept);
+    updateGameUI();
+}
+
+void AppManager::handleOpponentMoveReceived() {
+    updateGameUI();
+}
+
+void AppManager::handleGameOver(GameStatus status) {
+    QString message_text = "";
+
+    switch (status) {
+    case GameStatus::PLAYER_ONE_WIN:
+        message_text = "Player 1 Wins the game!";
+        break;
+    case GameStatus::PLAYER_TWO_WIN:
+        message_text = "Player 2 Wins the game!";
+        break;
+    case GameStatus::DRAW:
+        message_text = "The game ended in a Draw!";
+        break;
+    default:
+        message_text = "Game Over!";
+        break;
+    }
+
+    QMessageBox::information(main_window, "Match Result", message_text);
+
+    main_window->showMainMenuPage();
 }

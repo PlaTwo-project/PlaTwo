@@ -15,7 +15,7 @@ public:
     DotsAndBoxesMove(int row, int column, lineDirection direction);
     ~DotsAndBoxesMove() override;
 
-    QString serializeMove() const override;
+    QByteArray serializeMove() const override;
 
     int getRow() const;
     int getColumn() const;

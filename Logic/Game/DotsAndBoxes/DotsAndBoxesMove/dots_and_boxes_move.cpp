@@ -9,9 +9,9 @@ DotsAndBoxesMove::~DotsAndBoxesMove()
 {
 }
 
-QString DotsAndBoxesMove::serializeMove() const
+QByteArray DotsAndBoxesMove::serializeMove() const
 {
-    return QString("%1,%2,%3").arg(row_index).arg(column_index).arg(static_cast<int>(line_direction));
+    return QString("%1,%2,%3").arg(row_index).arg(column_index).arg(static_cast<int>(line_direction)).toUtf8();
 }
 
 int DotsAndBoxesMove::getRow() const

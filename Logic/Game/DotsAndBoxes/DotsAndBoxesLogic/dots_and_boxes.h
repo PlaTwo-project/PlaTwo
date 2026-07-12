@@ -15,8 +15,9 @@ public:
     QString serializeState() const override;
     void loadState(const QString& state_data) override;
 
-    int getFirstPlayerScore() const;
-    int getSecondPlayerScore() const;
+    int getFirstPlayerScore() const override;
+    int getSecondPlayerScore() const override;
+    Board* getBoard() const override;
 
 protected:
     bool isValidMove(const Move& main_move) override;

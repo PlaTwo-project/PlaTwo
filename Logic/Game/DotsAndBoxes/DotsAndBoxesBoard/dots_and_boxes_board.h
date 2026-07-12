@@ -20,6 +20,8 @@ public:
 
     int getBoardSize() const;
     const QVector<QVector<int>> &getCapturedBoxes() const;
+    const QVector<QVector<bool>> &getVerticalLines() const;
+    const QVector<QVector<bool>> &getHorizontalLines() const;
 
 private:
     static const int horizontalDirection = 0;

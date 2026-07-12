@@ -105,3 +105,7 @@ int DotsAndBoxes::getFirstPlayerScore() const {
 int DotsAndBoxes::getSecondPlayerScore() const {
     return second_player_score;
 }
+
+Board* DotsAndBoxes::getBoard() const {
+    return game_board;
+}

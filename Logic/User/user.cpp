@@ -3,6 +3,9 @@
 User::User() : name(""), username(""), phone_number(""), email(""), hashed_password("") , id(0)
 {}
 
+User::User(const QString& name): name(name), username(""), phone_number(""), email(""), hashed_password(""), id(0)
+{}
+
 User::User(const QString& name, const QString& username, const QString& phone_number, const QString& email, const QString& hashed_password)
     : name(name), username(username), phone_number(phone_number), email(email), hashed_password(hashed_password), id(0)
 {}

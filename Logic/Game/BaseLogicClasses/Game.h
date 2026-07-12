@@ -3,6 +3,7 @@
 
 #include "Logic/Game/BaseLogicClasses/Move.h"
 #include "Logic/User/user.h"
+#include "Logic/Game/BaseLogicClasses/Board.h"
 
 enum class GameStatus {
     ONGOING,
@@ -19,6 +20,10 @@ public:
     virtual void resetGame() = 0;
     virtual QString serializeState() const = 0;
     virtual void loadState(const QString& state_data) = 0;
+
+    virtual int getFirstPlayerScore() const = 0;
+    virtual int getSecondPlayerScore() const = 0;
+    virtual Board* getBoard() const = 0;
 
     User getCurrentPlayer() const {
         return current_player;

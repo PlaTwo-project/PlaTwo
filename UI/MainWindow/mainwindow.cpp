@@ -9,6 +9,7 @@
 #include "UI/Network/guest_page.h"
 #include "UI/Network/host_page.h"
 #include "UI/Menu/history.h"
+#include "UI/Games/DotsAndBoxesPage/dots_and_boxes_page.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     host_page = new HostPage(this);
     guest_page = new GuestPage(this);
     history_page = new History(this);
+    dots_and_boxes_page = new DotsAndBoxesPage(this);
 
     // add pages
     ui->stackedWidget->addWidget(login_page);
@@ -37,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(host_page);
     ui->stackedWidget->addWidget(guest_page);
     ui->stackedWidget->addWidget(history_page);
+    ui->stackedWidget->addWidget(dots_and_boxes_page);
 
     // received signals
     connect(login_page, &Login::navigateToSignup, this, [this](QString username, QString password) {
@@ -105,6 +108,8 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(host_page, &HostPage::cancelHostRequested, this, &MainWindow::cancelHostRequested);
+
+    connect(dots_and_boxes_page, &DotsAndBoxesPage::moveRequested, this, &MainWindow::dotsAndBoxesMoveRequested);
 
     // show pages
     showLoginPage();
@@ -177,9 +182,33 @@ void MainWindow::showHistoryPage(const QList<MatchRecord>& historyList, int curr
     ui->stackedWidget->setCurrentWidget(history_page);
 }
 
+void MainWindow::showDotsAndBoxesPage(const int size) {
+    dots_and_boxes_page->setupBoard(size);
+    ui->stackedWidget->setCurrentWidget(dots_and_boxes_page);
+}
+
+void MainWindow::renderActivePage(const Game* game) {
+    BasePage* active_page = qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
+    if (active_page) {
+        active_page->updateFromGame(game);
+    }
+}
+
 void MainWindow::loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone)
 {
     edit_profile_page->setInitialValues(name, username, email, phone);
+}
+
+void MainWindow::updateScoresAndTurn(const int score1, const int score2, const QString& turn_text, const bool is_my_turn) {
+    BasePage* active_page = qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
+    if (active_page) {
+        active_page->updateScores(score1, score2);
+        active_page->setTurnInfo(turn_text, is_my_turn);
+    }
+}
+
+BasePage* MainWindow::getActivePage() const {
+    return qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
 }
 
 void MainWindow::clearLoginFields()

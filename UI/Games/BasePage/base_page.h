@@ -16,6 +16,8 @@ public:
         board_size = size;
     }
 
+    virtual void updateFromGame(const class Game* game) = 0;
+
     virtual void updateScores(const int score1, const int score2) {
         first_player_score = score1;
         second_player_score = score2;

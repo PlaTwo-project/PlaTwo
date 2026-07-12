@@ -6,7 +6,7 @@
 class Move {
 public:
     virtual ~Move() = default;
-    virtual QString serializeMove() const = 0;
+    virtual QByteArray serializeMove() const = 0;
 };
 
 #endif // MOVE_H

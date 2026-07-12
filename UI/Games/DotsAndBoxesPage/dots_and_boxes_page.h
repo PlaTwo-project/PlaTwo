@@ -6,23 +6,25 @@
 
 using namespace std;
 
-class DotsAndBoxesPage : public BasePage {
+class DotsAndBoxesPage : public BasePage
+{
     Q_OBJECT
 
 public:
-    explicit DotsAndBoxesPage(QWidget* parent = nullptr);
+    explicit DotsAndBoxesPage(QWidget *parent = nullptr);
     ~DotsAndBoxesPage() override = default;
 
     void setupBoard(const int size) override;
-    void updateBoard(const QVector<QVector<bool>>& horizontal_edges, const QVector<QVector<bool>>& vertical_edges, const QVector<QVector<int>>& captured_boxes);
+    void updateBoard(const QVector<QVector<bool>> &horizontal_lines, const QVector<QVector<bool>> &vertical_lines, const QVector<QVector<int>> &captured_boxes);
+    void updateFromGame(const class Game *game) override;
 
 protected:
-    void paintEvent(QPaintEvent* event) override;
-    void mousePressEvent(QMouseEvent* event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 private:
-    QVector<QVector<bool>> horizontal_edges;
-    QVector<QVector<bool>> vertical_edges;
+    QVector<QVector<bool>> horizontal_lines;
+    QVector<QVector<bool>> vertical_lines;
     QVector<QVector<int>> captured_boxes;
 };
 

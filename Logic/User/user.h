@@ -15,6 +15,7 @@ private:
 
 public:
     User();
+    User(const QString& name);
     User(const QString& name, const QString& username, const QString& phone_number, const QString& email, const QString& hashed_password);
 
     QString getName() const;
