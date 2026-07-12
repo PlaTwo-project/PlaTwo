@@ -8,7 +8,6 @@ class MatchRecord;
 class Login;
 class Signup;
 class ForgotPassword;
-class ForgotPassword2;
 class MainMenu;
 class EditProfile;
 class GameMenu;
@@ -45,7 +44,6 @@ public:
     void clearLoginFields();
     void clearSignupFields();
     void clearFPFields();
-    void clearFP2Fields();
 
 signals:
     void loginRequested(const QString& username, const QString& password);
@@ -66,7 +64,6 @@ private:
     Login* login_page;
     Signup* signup_page;
     ForgotPassword* forgot_password_page;
-    ForgotPassword2* forgot_password_page2;
     MainMenu* main_menu_page;
     EditProfile* edit_profile_page;
     GameMenu* game_menu_page;

@@ -150,7 +150,7 @@ void AppManager::handleResetPassword(const QString &username, const QString &pho
         if (res == QMessageBox::Ok)
         {
             main_window->showLoginPage();
-            main_window->clearFP2Fields();
+            main_window->clearFPFields();
         }
         break;
 

@@ -22,7 +22,6 @@ SOURCES += \
     Management/Auth/authenticator.cpp \
     Management/Game/game_manager.cpp \
     UI/Auth/ForgotPassword/forgot_password.cpp \
-    UI/Auth/ForgotPassword/forgot_password2.cpp \
     UI/Auth/Login/login.cpp \
     UI/Auth/SignUp/signup.cpp \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.cpp \
@@ -61,7 +60,6 @@ HEADERS += \
     Management/Auth/authenticator.h \
     Management/Game/game_manager.h \
     UI/Auth/ForgotPassword/forgot_password.h \
-    UI/Auth/ForgotPassword/forgot_password2.h \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
     UI/Games/BasePage/base_page.h \
@@ -76,7 +74,6 @@ HEADERS += \
 
 FORMS += \
     UI/Auth/ForgotPassword/forgot_password.ui \
-    UI/Auth/ForgotPassword/forgot_password2.ui \
     UI/Auth/Login/login.ui \
     UI/Auth/SignUp/signup.ui \
     UI/MainWindow/mainwindow.ui \

@@ -3,7 +3,6 @@
 #include "UI/Auth/Login/login.h"
 #include "UI/Auth/SignUp/signup.h"
 #include "UI/Auth/ForgotPassword/forgot_password.h"
-#include "UI/Auth/ForgotPassword/forgot_password2.h"
 #include "UI/Menu/main_menu.h"
 #include "UI/Menu/Proflie/edit_profile.h"
 #include "UI/Menu/game_menu.h"
@@ -21,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     login_page = new Login(this);
     signup_page = new Signup(this);
     forgot_password_page = new ForgotPassword(this);
-    forgot_password_page2 = new ForgotPassword2(this);
     main_menu_page = new MainMenu(this);
     edit_profile_page = new EditProfile(this);
     game_menu_page = new GameMenu(this);
@@ -33,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(login_page);
     ui->stackedWidget->addWidget(signup_page);
     ui->stackedWidget->addWidget(forgot_password_page);
-    ui->stackedWidget->addWidget(forgot_password_page2);
     ui->stackedWidget->addWidget(main_menu_page);
     ui->stackedWidget->addWidget(edit_profile_page);
     ui->stackedWidget->addWidget(game_menu_page);
@@ -55,8 +52,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(signup_page, &Signup::navigateToLogin, this, &MainWindow::showLoginPage);
 
     connect(forgot_password_page, &ForgotPassword::navigateToLogin, this, &MainWindow::showLoginPage);
-
-    connect(forgot_password_page2, &ForgotPassword2::navigateToLogin, this, &MainWindow::showLoginPage);
 
     connect(main_menu_page, &MainMenu::navigateToGame1, this, &MainWindow::showGameMenuPage);
 
@@ -95,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(forgot_password_page, &ForgotPassword::forgotPasswordStep2Requested, this, &MainWindow::forgotPasswordStep2Requested);
 
-    connect(forgot_password_page2, &ForgotPassword2::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
+    connect(forgot_password_page, &ForgotPassword::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
 
     connect(edit_profile_page, &EditProfile::editProfileRequested, this, &MainWindow::editProfileRequested);
 
@@ -132,13 +127,14 @@ void MainWindow::showSignupPage()
 
 void MainWindow::showForgotPasswordPage()
 {
+    forgot_password_page->switchToVerifyPage();
     ui->stackedWidget->setCurrentWidget(forgot_password_page);
 }
 
 void MainWindow::showForgotPasswordPage2(const QString& username, const QString &phone)
 {
-    forgot_password_page2->setUserData(username, phone);
-    ui->stackedWidget->setCurrentWidget(forgot_password_page2);
+    forgot_password_page->setUserData(username, phone);
+    forgot_password_page->switchToResetPage();
 }
 
 void MainWindow::showMainMenuPage()
@@ -199,9 +195,4 @@ void MainWindow::clearSignupFields()
 void MainWindow::clearFPFields()
 {
     forgot_password_page->clearFields();
-}
-
-void MainWindow::clearFP2Fields()
-{
-    forgot_password_page2->clearFields();
 }
