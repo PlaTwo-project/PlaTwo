@@ -2,7 +2,9 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.h"
-DotsAndBoxesPage::DotsAndBoxesPage(QWidget *parent) : BasePage(parent) {}
+DotsAndBoxesPage::DotsAndBoxesPage(QWidget *parent) : BasePage(parent) {
+    setMouseTracking(true);
+}
 
 void DotsAndBoxesPage::setupBoard(int size)
 {
@@ -32,6 +34,11 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event)
     painter.drawText(margin_offset, 30, QString("Status: %1").arg(turn_status_text));
     painter.drawText(margin_offset, 50, QString("Player 1: %1  |  Player 2: %2").arg(first_player_score).arg(second_player_score));
 
+    QPen active_line_pen(Qt::black, 4);
+    QPen empty_pen(Qt::lightGray, 2, Qt::DashLine);
+    QPen hover_pen(Qt::darkGray, 4, Qt::DashLine);
+
+    // captured squares
     for (int r = 0; r < board_size; ++r)
     {
         for (int c = 0; c < board_size; ++c)
@@ -58,18 +65,16 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event)
         }
     }
 
-    QPen active_line_pen(Qt::black, 4);
-    QPen empty_pen(Qt::lightGray, 2, Qt::DashLine);
-
-    for (int r = 0; r <= board_size; ++r)
-    {
-        for (int c = 0; c < board_size; ++c)
-        {
+    // horizontal lines
+    for (int r = 0; r <= board_size; ++r) {
+        for (int c = 0; c < board_size; ++c) {
             int x1 = margin_offset + c * cell_spacing;
             int y1 = margin_offset + r * cell_spacing;
 
             if (horizontal_lines[r][c])
                 painter.setPen(active_line_pen);
+            else if (r == hovered_h_row && c == hovered_h_col)
+                painter.setPen(hover_pen);
             else
                 painter.setPen(empty_pen);
 
@@ -77,15 +82,16 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event)
         }
     }
 
-    for (int r = 0; r < board_size; ++r)
-    {
-        for (int c = 0; c <= board_size; ++c)
-        {
+    // vertical lines
+    for (int r = 0; r < board_size; ++r) {
+        for (int c = 0; c <= board_size; ++c) {
             int x1 = margin_offset + c * cell_spacing;
             int y1 = margin_offset + r * cell_spacing;
 
             if (vertical_lines[r][c])
                 painter.setPen(active_line_pen);
+            else if (r == hovered_v_row && c == hovered_v_col)
+                painter.setPen(hover_pen);
             else
                 painter.setPen(empty_pen);
 
@@ -93,6 +99,7 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event)
         }
     }
 
+    // dots
     painter.setPen(Qt::NoPen);
     painter.setBrush(Qt::black);
 
@@ -135,6 +142,41 @@ void DotsAndBoxesPage::mousePressEvent(QMouseEvent *event)
                 return;
             }
         }
+}
+
+void DotsAndBoxesPage::mouseMoveEvent(QMouseEvent* event)
+{
+    hovered_h_row = hovered_h_col = -1;
+    hovered_v_row = hovered_v_col = -1;
+
+    int x = event->position().x();
+    int y = event->position().y();
+
+    for (int r = 0; r <= board_size; ++r)
+        for (int c = 0; c < board_size; ++c) {
+            int mid_x = margin_offset + c * cell_spacing + cell_spacing / 2;
+            int mid_y = margin_offset + r * cell_spacing;
+            if (std::abs(x - mid_x) < 20 && std::abs(y - mid_y) < 10) {
+                hovered_h_row = r;
+                hovered_h_col = c;
+                update();
+                return;
+            }
+        }
+
+    for (int r = 0; r < board_size; ++r)
+        for (int c = 0; c <= board_size; ++c) {
+            int mid_x = margin_offset + c * cell_spacing;
+            int mid_y = margin_offset + r * cell_spacing + cell_spacing / 2;
+            if (std::abs(x - mid_x) < 10 && std::abs(y - mid_y) < 20) {
+                hovered_v_row = r;
+                hovered_v_col = c;
+                update();
+                return;
+            }
+        }
+
+    update();
 }
 
 void DotsAndBoxesPage::updateFromGame(const Game *game)

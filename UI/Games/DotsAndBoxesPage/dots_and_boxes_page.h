@@ -21,11 +21,17 @@ public:
 protected:
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
     QVector<QVector<bool>> horizontal_lines;
     QVector<QVector<bool>> vertical_lines;
     QVector<QVector<int>> captured_boxes;
+
+    int hovered_h_row = -1;
+    int hovered_h_col = -1;
+    int hovered_v_row = -1;
+    int hovered_v_col = -1;
 };
 
 #endif // DOTS_AND_BOXES_PAGE_H

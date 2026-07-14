@@ -23,12 +23,11 @@ void DotsAndBoxesBoard::clear()
 
 void DotsAndBoxesBoard::applyMove(const Move& main_move)
 {
-    const auto& move = static_cast<const DotsAndBoxesMove &>(main_move);
-    const int row = move.getRow();
-    const int column = move.getColumn();
+    const DotsAndBoxesMove& move = static_cast<const DotsAndBoxesMove&>(main_move);
+    int row = move.getRow();
+    int column = move.getColumn();
     int direction;
     bool isHorizontal;
-    QVector<QVector<bool>> lines;
 
     if (move.getDirection() == lineDirection::HORIZONTAL)
         isHorizontal = true;
@@ -43,16 +42,21 @@ void DotsAndBoxesBoard::applyMove(const Move& main_move)
     if (!isValidLinePosition(row, column, direction))
         return;
 
-    if (isHorizontal)
-        lines = horizontal_lines;
-    else
-        lines = vertical_lines;
+    if (isHorizontal) {
+        if (horizontal_lines[row][column])
+            return;
 
-    if (lines[row][column])
-        return;
+        horizontal_lines[row][column] = true;
+    }
+    else {
+        if (vertical_lines[row][column])
+            return;
 
-    lines[row][column] = true;
+        vertical_lines[row][column] = true;
+    }
 }
+
+
 
 bool DotsAndBoxesBoard::isLineTaken(int row, int column, int direction_type) const
 {
