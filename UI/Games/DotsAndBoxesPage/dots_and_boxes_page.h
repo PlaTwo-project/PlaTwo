@@ -16,7 +16,7 @@ public:
 
     void setupBoard(const int size) override;
     void updateBoard(const QVector<QVector<bool>> &horizontal_lines, const QVector<QVector<bool>> &vertical_lines, const QVector<QVector<int>> &captured_boxes);
-    void updateFromGame(const class Game *game) override;
+    void updateFromGame(const Game *main_game) override;
 
 protected:
     void paintEvent(QPaintEvent *event) override;

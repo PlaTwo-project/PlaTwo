@@ -181,7 +181,7 @@ bool StorageManager::getUserByPhoneNumber(const QString &phone, User &user_to_fi
     return false;
 }
 
-bool StorageManager::getUserById(const int &id, User &user_to_find) const
+bool StorageManager::getUserById(const int id, User &user_to_find) const
 {
     for (const User &tmp_user : users_list)
     {

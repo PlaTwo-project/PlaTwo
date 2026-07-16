@@ -21,8 +21,8 @@ public:
     explicit GameManager(QObject *parent = nullptr);
     ~GameManager();
 
-    QString createRoom(const User& host_user, const int& port, const GameName& game_name, const int& board_size, const int& time_limit);
-    bool joinRoom(const User& guest_user, const QString& host_ip, const int& port, const GameName& game_name);
+    QString createRoom(const User& host_user, const int port, const GameName game_name, const int board_size, const int time_limit);
+    bool joinRoom(const User& guest_user, const QString& host_ip, const int port, const GameName game_name);
     bool cancelRoom();
 
     void startGame();

@@ -12,7 +12,7 @@ public:
     ~Guest();
 
     void connectHost(const QString& IP, int port);
-    void sendGuestInfo(const class User& guest_user);
+    void sendGuestInfo(const User& guest_user);
 
 signals:
     void roomConfigReceived(const User& host_user, int board_size, int time_limit);

@@ -12,24 +12,8 @@ DotsAndBoxes::~DotsAndBoxes() {
 }
 
 bool DotsAndBoxes::isValidMove(const Move& main_move) {
-    const auto& move = static_cast<const DotsAndBoxesMove &>(main_move);
-    int row = move.getRow();
-    int col = move.getColumn();
-    int dir = static_cast<int>(move.getDirection());
-
-    if (row < 0 || col < 0)
-        return false;
-
-    if (dir == 0) {
-        if (row > grid_size || col >= grid_size)
-            return false;
-    }
-    else {
-        if (row >= grid_size || col > grid_size)
-            return false;
-    }
-
-    return !game_board->isLineTaken(row, col, dir);
+    const DotsAndBoxesMove& move = static_cast<const DotsAndBoxesMove&>(main_move);
+    return !game_board->isLineTaken(move.getRow(), move.getColumn(), static_cast<int>(move.getDirection()));
 }
 
 bool DotsAndBoxes::makeMove(const Move& main_move) {
@@ -37,7 +21,7 @@ bool DotsAndBoxes::makeMove(const Move& main_move) {
         return false;
 
     game_board->applyMove(main_move);
-    const auto& move = static_cast<const DotsAndBoxesMove&>(main_move);
+    const DotsAndBoxesMove& move = static_cast<const DotsAndBoxesMove&>(main_move);
     int p_id;
     if (current_player.getId() == first_player.getId())
         p_id = 1;

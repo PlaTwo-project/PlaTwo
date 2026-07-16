@@ -32,9 +32,9 @@ private slots:
     void handleForgotPasswordStep2(const QString &username, const QString &phone);
     void handleResetPassword(const QString &username, const QString &phone, const QString &new_password);
     void handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password);
-    void handleShowHistory(const GameName& game_name);
-    void handleCreateRoom(const int& port, const int& board_size, const int& time_limit, const GameName& game_name);
-    void handleJoinRoom(const QString& IP, const int& port, const GameName& game_name);
+    void handleShowHistory(const GameName game_name);
+    void handleCreateRoom(const int port, const int board_size, const int time_limit, const GameName game_name);
+    void handleJoinRoom(const QString& IP, const int port, const GameName game_name);
     void handleCancelHost();
     void handleDotsAndBoxesMove(int row, int col, int direction);
     void handleGameStarted();

@@ -22,7 +22,7 @@ private slots:
     void handleIncomingData(const QByteArray &data);
 
 signals:
-    void guestJoined(const class User& guest_user);
+    void guestJoined(const User& guest_user);
     void moveReceived(const QByteArray& moveData);
 
 private:

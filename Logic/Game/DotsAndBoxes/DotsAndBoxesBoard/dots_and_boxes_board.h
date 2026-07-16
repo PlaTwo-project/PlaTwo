@@ -27,9 +27,6 @@ private:
     static const int horizontalDirection = 0;
     static const int verticalDirection   = 1;
 
-    bool isValidDirection(int direction_type) const;
-    bool isValidLinePosition(int row, int column, int direction_type) const;
-    bool isValidBoxPosition(int row, int column) const;
     bool closeBox(int row, int column, int player_id);
 
     int board_size;

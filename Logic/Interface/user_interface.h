@@ -16,5 +16,5 @@ public:
 
     virtual bool getUserByUsername(const QString& username, User& user_to_find) const = 0;
     virtual bool getUserByPhoneNumber(const QString& phone, User& user_to_find) const = 0;
-    virtual bool getUserById(const int& id, User& user_to_find) const = 0;
+    virtual bool getUserById(const int id, User& user_to_find) const = 0;
 };

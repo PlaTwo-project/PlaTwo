@@ -11,7 +11,7 @@ public:
     HistoryStorageManager();
 
     bool addMatchRecord(MatchRecord &new_record) override;
-    QList<MatchRecord> getHistoryForUser(const int& user_ID, const GameName& game_type) const override;
+    QList<MatchRecord> getHistoryForUser(const int user_ID, const GameName game_type) const override;
 
 private:
     QString file_path;

@@ -8,9 +8,6 @@ DotsAndBoxesBoard::DotsAndBoxesBoard(int size) : board_size(size)
 
 void DotsAndBoxesBoard::initialize()
 {
-    if (board_size < 0)
-        board_size = 0;
-
     horizontal_lines.assign(board_size + 1, QVector<bool>(board_size, false));
     vertical_lines.assign(board_size, QVector<bool>(board_size + 1, false));
     captured_boxes.assign(board_size, QVector<int>(board_size, 0));
@@ -26,21 +23,12 @@ void DotsAndBoxesBoard::applyMove(const Move& main_move)
     const DotsAndBoxesMove& move = static_cast<const DotsAndBoxesMove&>(main_move);
     int row = move.getRow();
     int column = move.getColumn();
-    int direction;
     bool isHorizontal;
 
     if (move.getDirection() == lineDirection::HORIZONTAL)
         isHorizontal = true;
     else
         isHorizontal = false;
-
-    if (isHorizontal)
-        direction = horizontalDirection;
-    else
-        direction = verticalDirection;
-
-    if (!isValidLinePosition(row, column, direction))
-        return;
 
     if (isHorizontal) {
         if (horizontal_lines[row][column])
@@ -56,13 +44,8 @@ void DotsAndBoxesBoard::applyMove(const Move& main_move)
     }
 }
 
-
-
 bool DotsAndBoxesBoard::isLineTaken(int row, int column, int direction_type) const
 {
-    if (!isValidLinePosition(row, column, direction_type))
-        return false;
-
     if (direction_type == horizontalDirection)
         return horizontal_lines[row][column];
 
@@ -71,9 +54,6 @@ bool DotsAndBoxesBoard::isLineTaken(int row, int column, int direction_type) con
 
 bool DotsAndBoxesBoard::checkAndCloseBoxes(int row, int column, int direction_type, int player_id)
 {
-    if (!isValidLinePosition(row, column, direction_type))
-        return false;
-
     bool boxClosed = false;
 
     if (direction_type == horizontalDirection) {
@@ -124,30 +104,9 @@ const QVector<QVector<bool>> &DotsAndBoxesBoard::getVerticalLines() const
     return vertical_lines;
 }
 
-bool DotsAndBoxesBoard::isValidDirection(int direction_type) const
-{
-    return direction_type == horizontalDirection || direction_type == verticalDirection;
-}
-
-bool DotsAndBoxesBoard::isValidLinePosition(int row, int column, int direction_type) const
-{
-    if (!isValidDirection(direction_type))
-        return false;
-
-    if (direction_type == horizontalDirection)
-        return row >= 0 && row <= board_size && column >= 0 && column < board_size;
-
-    return row >= 0 && row < board_size && column >= 0 && column <= board_size;
-}
-
-bool DotsAndBoxesBoard::isValidBoxPosition(int row, int column) const
-{
-    return row >= 0 && row < board_size && column >= 0 && column < board_size;
-}
-
 bool DotsAndBoxesBoard::closeBox(int row, int column, int player_id)
 {
-    if (!isValidBoxPosition(row, column) || captured_boxes[row][column] != 0)
+    if (captured_boxes[row][column] != 0)
         return false;
 
     captured_boxes[row][column] = player_id;

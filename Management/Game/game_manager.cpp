@@ -11,7 +11,7 @@ GameManager::~GameManager() {
     delete current_game;
 }
 
-QString GameManager::createRoom(const User& host_user, const int& port, const GameName& game_name, const int& board_size, const int& time_limit) {
+QString GameManager::createRoom(const User& host_user, const int port, const GameName game_name, const int board_size, const int time_limit) {
     role = Role::Host;
     host = new Host(this);
 
@@ -26,7 +26,7 @@ QString GameManager::createRoom(const User& host_user, const int& port, const Ga
     return local_ip;
 }
 
-bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const int& port, const GameName& game_name) {
+bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const int port, const GameName game_name) {
     role = Role::Guest;
     guest = new Guest(this);
 

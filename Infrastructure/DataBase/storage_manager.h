@@ -19,7 +19,7 @@ public:
 
     bool getUserByUsername(const QString &username, User &user_to_find) const override;
     bool getUserByPhoneNumber(const QString &phone, User &user_to_find) const override;
-    bool getUserById(const int& id, User& user_to_find) const override;
+    bool getUserById(const int id, User& user_to_find) const override;
 
 private:
     QString file_path;
