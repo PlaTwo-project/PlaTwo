@@ -13,6 +13,8 @@ SOURCES += \
     Logic/Game/DotsAndBoxes/DotsAndBoxesBoard/dots_and_boxes_board.cpp \
     Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.cpp \
     Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.cpp \
+    Logic/Game/Fanorona/FanoronaMove/fanorona_move.cpp \
+    Logic/Game/Fanorona/Fanoronaboard/fanorona_board.cpp \
     Logic/Game/Record/match_record.cpp \
     Logic/Game/room_state.cpp \
     Logic/Security/password_hasher.cpp \
@@ -47,6 +49,8 @@ HEADERS += \
     Logic/Game/DotsAndBoxes/DotsAndBoxesBoard/dots_and_boxes_board.h \
     Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.h \
     Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.h \
+    Logic/Game/Fanorona/FanoronaMove/fanorona_move.h \
+    Logic/Game/Fanorona/Fanoronaboard/fanorona_board.h \
     Logic/Game/Record/match_record.h \
     Logic/Game/game_name.h \
     Logic/Game/room_state.h \
