@@ -33,9 +33,9 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event)
     painter.drawText(margin_offset, 30, QString("Status: %1").arg(turn_status_text));
     painter.drawText(margin_offset, 50, QString("Player 1: %1  |  Player 2: %2").arg(first_player_score).arg(second_player_score));
 
-    QPen active_line_pen(Qt::black, 4);
-    QPen empty_pen(Qt::lightGray, 2, Qt::DashLine);
-    QPen hover_pen(Qt::darkGray, 4, Qt::DashLine);
+    QPen active_line_pen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    QPen empty_pen(Qt::lightGray, 2, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
+    QPen hover_pen(Qt::darkGray, 4, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
 
     // captured squares
     for (int r = 0; r < board_size; ++r) {
