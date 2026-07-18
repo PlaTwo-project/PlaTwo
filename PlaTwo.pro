@@ -17,6 +17,7 @@ SOURCES += \
     Logic/Game/Fanorona/FanoronaMove/fanorona_move.cpp \
     Logic/Game/Fanorona/Fanoronaboard/fanorona_board.cpp \
     Logic/Game/NineMensMorris/NineMensMorrisBoard/nine_mens_morris_board.cpp \
+    Logic/Game/NineMensMorris/NineMensMorrisLogic/nine_mens_morris.cpp \
     Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.cpp \
     Logic/Game/Record/match_record.cpp \
     Logic/Game/room_state.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
     Logic/Game/Fanorona/FanoronaMove/fanorona_move.h \
     Logic/Game/Fanorona/Fanoronaboard/fanorona_board.h \
     Logic/Game/NineMensMorris/NineMensMorrisBoard/nine_mens_morris_board.h \
+    Logic/Game/NineMensMorris/NineMensMorrisLogic/nine_mens_morris.h \
     Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.h \
     Logic/Game/Record/match_record.h \
     Logic/Game/game_name.h \
