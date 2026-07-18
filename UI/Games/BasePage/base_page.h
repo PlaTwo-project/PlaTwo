@@ -31,7 +31,7 @@ public:
     }
 
 signals:
-    void moveRequested(const int row, const int col, const int direction);
+    void moveRequested(const int, const int, const int);
 
 protected:
     int board_size;

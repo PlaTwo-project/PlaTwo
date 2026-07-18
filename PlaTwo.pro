@@ -1,6 +1,7 @@
 QT += widgets
 QT += network
 QT += gui
+QT += core
 
 CONFIG += c++17
 
@@ -33,6 +34,7 @@ SOURCES += \
     UI/Auth/SignUp/signup.cpp \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.cpp \
     UI/Games/Fanorona/fanorona_page.cpp \
+    UI/Games/NineMensMorrisPage/nine_mens_morris_page.cpp \
     UI/MainWindow/mainwindow.cpp \
     UI/Menu/game_menu.cpp \
     UI/Menu/history.cpp \
@@ -79,6 +81,7 @@ HEADERS += \
     UI/Games/BasePage/base_page.h \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.h \
     UI/Games/Fanorona/fanorona_page.h \
+    UI/Games/NineMensMorrisPage/nine_mens_morris_page.h \
     UI/MainWindow/mainwindow.h \
     UI/Menu/game_menu.h \
     UI/Menu/history.h \
