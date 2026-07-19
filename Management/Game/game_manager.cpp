@@ -92,7 +92,7 @@ bool GameManager::handleLocalMove(int arg1, int arg2, int arg3) {
         auto move_type = static_cast<MoveType>(arg3);
         int from = (move_type == MoveType::MOVE) ? arg1 : -1;
         int to = (move_type == MoveType::MOVE) ? arg2 : arg1;
-        proposed_move = new NineMensMorrisMove(move_type, from, to, mover_id);
+        proposed_move = new NineMensMorrisMove(move_type, mover_id, from, to);
     }
     else if (room_state->getGameName() == GameName::Fanorona) {
         int mover_id = (current_game->getCurrentPlayer().getId() == room_state->getHostUser().getId()) ? 1 : 2;

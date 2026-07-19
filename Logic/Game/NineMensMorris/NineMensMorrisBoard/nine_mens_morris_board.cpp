@@ -24,7 +24,7 @@ QVector<QVector<int>> NineMensMorrisBoard::buildProximityList() {
 QVector<QVector<int>> NineMensMorrisBoard::buildMillLinesList() {
     return QVector<QVector<int>> {
         {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {9, 10, 11}, {12, 13, 14}, {15, 16, 17}, {18, 19, 20}, {21, 22, 23},
-        {0, 9, 21}, {3, 10, 18}, {6, 11, 15}, {1, 4, 7}, {16, 19, 22}, {8, 12, 17}, {5, 13, 20}, {2, 14, 21}
+        {0, 9, 21}, {3, 10, 18}, {6, 11, 15}, {1, 4, 7}, {16, 19, 22}, {8, 12, 17}, {5, 13, 20}, {2, 14, 23}
     };
 }
 
@@ -87,10 +87,15 @@ bool NineMensMorrisBoard::isMill(int position, int player_id) const {
         if (!line.contains(position))
             continue;
 
-        for (int p : line)
-            if (position_owners[p] != player_id)
-                return false;
-        return true;
+        bool all_owned = true;
+        for (int p : line) {
+            if (position_owners[p] != player_id) {
+                all_owned = false;
+                break;
+            }
+        }
+        if (all_owned)
+            return true;
     }
 
     return false;
