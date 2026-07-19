@@ -67,8 +67,6 @@ void FanoronaPage::resizeEvent(QResizeEvent* event) {
 
 void FanoronaPage::updateFromGame(const Game* game) {
 
-    // BasePage::updateFromGame(game);
-
     const Fanorona* fanorona_game = dynamic_cast<const Fanorona*>(game);
     if (!fanorona_game || !fanorona_game->getBoard())
         return;

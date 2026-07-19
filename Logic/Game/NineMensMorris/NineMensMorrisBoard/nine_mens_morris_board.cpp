@@ -57,7 +57,7 @@ void NineMensMorrisBoard::applyMove(const Move& main_move) {
         break;
 
     case MoveType::MOVE:
-        if (isValidPosition(move.getToPosition() && isValidPosition(move.getFromPosition()))) {
+        if (isValidPosition(move.getToPosition()) && isValidPosition(move.getFromPosition())) {
             position_owners[move.getToPosition()] = position_owners[move.getFromPosition()];
             position_owners[move.getFromPosition()] = 0;
         }
@@ -164,7 +164,7 @@ const QVector<QVector<int>>& NineMensMorrisBoard::getMillLinesList() {
 }
 
 QPair<int, int> NineMensMorrisBoard::getCoordinates(int position) {
-    if (position < 0 && position >= TOTAL_POSITIONS)
+    if (position < 0 || position >= TOTAL_POSITIONS)
         return QPair<int, int> (0, 0);
 
     static const auto list = buildCoordinates();

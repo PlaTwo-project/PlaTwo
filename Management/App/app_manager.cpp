@@ -20,16 +20,21 @@ void AppManager::setupConnections()
     connect(main_window, &MainWindow::signupRequested, this, &AppManager::handleSignup);
     connect(main_window, &MainWindow::forgotPasswordStep2Requested, this, &AppManager::handleForgotPasswordStep2);
     connect(main_window, &MainWindow::resetPasswordRequested, this, &AppManager::handleResetPassword);
+
     connect(main_window, &MainWindow::editProfileRequested, this, &AppManager::handleEditProfile);
     connect(main_window, &MainWindow::showHistoryRequested, this, &AppManager::handleShowHistory);
     connect(main_window, &MainWindow::createRoomRequested, this, &AppManager::handleCreateRoom);
     connect(main_window, &MainWindow::joinRoomRequested, this, &AppManager::handleJoinRoom);
     connect(main_window, &MainWindow::cancelHostRequested, this, &AppManager::handleCancelHost);
-    connect(main_window, &MainWindow::dotsAndBoxesMoveRequested, this, &AppManager::handleDotsAndBoxesMove);
+
+    connect(main_window, &MainWindow::dotsAndBoxesMoveRequested, this, &AppManager::handleLocalMove);
+    connect(main_window, &MainWindow::nineMensMorrisMoveRequested, this, &AppManager::handleLocalMove);
+    connect(main_window, &MainWindow::fanoronaMoveRequested, this, &AppManager::handleLocalMove);
     connect(&game_manager, &GameManager::gameStarted, this, &AppManager::handleGameStarted);
     connect(&game_manager, &GameManager::moveAppliedSuccessfully, this, &AppManager::handleMoveApplied);
     connect(&game_manager, &GameManager::opponentMoveReceived, this, &AppManager::handleOpponentMoveReceived);
     connect(&game_manager, &GameManager::gameOver, this, &AppManager::handleGameOver);
+    connect(&game_manager, &GameManager::gameTimeUp, this, &AppManager::handleTimeUp);
 }
 
 
@@ -257,8 +262,8 @@ void AppManager::handleCancelHost()
     game_manager.cancelRoom();
 }
 
-void AppManager::handleDotsAndBoxesMove(int row, int col, int direction) {
-    game_manager.handleLocalMove(row, col, direction);
+void AppManager::handleLocalMove(int arg1, int arg2, int arg3) {
+    game_manager.handleLocalMove(arg1, arg2, arg3);
 }
 
 void AppManager::updateGameUI() {
@@ -281,8 +286,19 @@ void AppManager::handleGameStarted() {
         return;
     }
 
-    int board_size = game_manager.getRoomBoardSize();
-    main_window->showDotsAndBoxesPage(board_size);
+    GameName current_game_name = game_manager.getGameName();
+
+    if (current_game_name == GameName::DotsAndBoxes) {
+        int board_size = game_manager.getRoomBoardSize();
+        main_window->showDotsAndBoxesPage(board_size);
+    }
+    else if (current_game_name == GameName::NineMensMorris) {
+        main_window->showNineMensMorrisPage();
+    }
+    else if (current_game_name == GameName::Fanorona) {
+        main_window->showFanoronaPage();
+    }
+
     updateGameUI();
 }
 
@@ -316,4 +332,8 @@ void AppManager::handleGameOver(GameStatus status) {
     QMessageBox::information(main_window, "Match Result", message_text);
 
     main_window->showMainMenuPage();
+}
+void AppManager::handleTimeUp() {
+    QMessageBox::information(main_window, "Time's Up!", "بازی به پایان رسید! زمان شما تمام شد.");
+    //badan baiad shomaresh emtiaz va ina ezafe konim
 }

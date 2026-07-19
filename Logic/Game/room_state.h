@@ -16,6 +16,7 @@ public:
     QString getHostIp() const;
     int getBoardSize() const;
     int getTimeLimit() const;
+    int getDuration() const;
 
     void setPort(int port);
     void setHostUser(const User& host_user);
@@ -24,6 +25,7 @@ public:
     void setHostIp(const QString& host_ip);
     void setBoardSize(int board_size);
     void setTimeLimit(int time_limit);
+    void setDuration(int game_duration);
 
 private:
     int port;
@@ -33,6 +35,7 @@ private:
     QString host_ip;
     int board_size;
     int time_limit;
+    int game_duration;
 };
 
 #endif // ROOM_STATE_H

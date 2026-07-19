@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QTimer>
+#include <QElapsedTimer>
 #include "Logic/Game/room_state.h"
 #include "Infrastructure/Network/guest.h"
 #include "Infrastructure/Network/host.h"
@@ -26,14 +28,16 @@ public:
     bool cancelRoom();
 
     void startGame();
-    bool handleLocalMove(int row, int col, int direction);
+    bool handleLocalMove(int arg1, int arg2, int arg3);
     bool handleRemoteMove(const QByteArray& serialized_move);
     void handleGuestConnection(const User& guest_user);
     void handleRoomConfigReceived(const User& host_user, int board_size, int time_limit);
+    void handleTimeLimitReached();
 
     Role getRole() const;
     Game* getCurrentGame() const;
     int getRoomBoardSize() const;
+    GameName getGameName() const;
 
     void updateGuestUser(const User& guest_user);
     void updateRoomConfig(const User& host_user, int board_size, int time_limit);
@@ -43,6 +47,7 @@ signals:
     void moveAppliedSuccessfully(bool is_turn_kept);
     void opponentMoveReceived();
     void gameOver(GameStatus status);
+    void gameTimeUp();
 
 private:
     Role role;
@@ -50,6 +55,8 @@ private:
     Host* host;
     Guest* guest;
     Game* current_game;
+    QTimer* time_limit_timer;
+    QElapsedTimer game_duration_timer;
 };
 
 #endif // GAMEMANAGER_H

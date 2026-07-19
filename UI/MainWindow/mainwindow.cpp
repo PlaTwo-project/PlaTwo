@@ -10,6 +10,8 @@
 #include "UI/Network/host_page.h"
 #include "UI/Menu/history.h"
 #include "UI/Games/DotsAndBoxesPage/dots_and_boxes_page.h"
+#include "UI/Games/NineMensMorrisPage/nine_mens_morris_page.h"
+#include "UI/Games/Fanorona/fanorona_page.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -28,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     guest_page = new GuestPage(this);
     history_page = new History(this);
     dots_and_boxes_page = new DotsAndBoxesPage(this);
+    nine_mens_morris_page = new NineMensMorrisPage(this);
+    fanorona_page = new FanoronaPage(this);
 
     // add pages
     ui->stackedWidget->addWidget(login_page);
@@ -40,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(guest_page);
     ui->stackedWidget->addWidget(history_page);
     ui->stackedWidget->addWidget(dots_and_boxes_page);
+    ui->stackedWidget->addWidget(nine_mens_morris_page);
+    ui->stackedWidget->addWidget(fanorona_page);
 
     // received signals
     connect(login_page, &Login::navigateToSignup, this, [this](QString username, QString password) {
@@ -110,6 +116,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(host_page, &HostPage::cancelHostRequested, this, &MainWindow::cancelHostRequested);
 
     connect(dots_and_boxes_page, &DotsAndBoxesPage::moveRequested, this, &MainWindow::dotsAndBoxesMoveRequested);
+
+    connect(nine_mens_morris_page, &NineMensMorrisPage::moveRequested, this, &MainWindow::nineMensMorrisMoveRequested);
+
+    connect(fanorona_page, &FanoronaPage::moveRequested, this, &MainWindow::fanoronaMoveRequested);
 
     // show pages
     showLoginPage();
@@ -187,6 +197,15 @@ void MainWindow::showDotsAndBoxesPage(const int size) {
     ui->stackedWidget->setCurrentWidget(dots_and_boxes_page);
 }
 
+void MainWindow::showNineMensMorrisPage() {
+    nine_mens_morris_page->setupBoard(0);
+    ui->stackedWidget->setCurrentWidget(nine_mens_morris_page);
+}
+
+void MainWindow::showFanoronaPage() {
+    fanorona_page->setupBoard(0);
+    ui->stackedWidget->setCurrentWidget(fanorona_page);
+}
 void MainWindow::renderActivePage(const Game* game) {
     BasePage* active_page = qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
     if (active_page) {

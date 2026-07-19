@@ -16,6 +16,8 @@ class GuestPage;
 class History;
 class DotsAndBoxesPage;
 class BasePage;
+class NineMensMorrisPage;
+class FanoronaPage;
 
 namespace Ui {
 class MainWindow;
@@ -41,6 +43,8 @@ public:
     void showGuestPage(const GameName game_name);
     void showHistoryPage(const QList<MatchRecord>& historyList, int currentUserId, GameName game_name);
     void showDotsAndBoxesPage(const int size);
+    void showNineMensMorrisPage();
+    void showFanoronaPage();
     BasePage* getActivePage() const;
     void renderActivePage(const class Game* game);
 
@@ -62,6 +66,8 @@ signals:
     void joinRoomRequested(const QString& IP, const int& port, GameName game_name);
     void cancelHostRequested();
     void dotsAndBoxesMoveRequested(const int row, const int col, const int direction);
+    void nineMensMorrisMoveRequested(const int from, const int to, const int action_type);
+    void fanoronaMoveRequested(const int from, const int to, const int capture_choice);
 
 private:
     Ui::MainWindow *ui;
@@ -78,6 +84,8 @@ private:
     GuestPage* guest_page;
     History* history_page;
     DotsAndBoxesPage* dots_and_boxes_page;
+    NineMensMorrisPage* nine_mens_morris_page;
+    FanoronaPage* fanorona_page;
 };
 
 #endif // MAINWINDOW_H

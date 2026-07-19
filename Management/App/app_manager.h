@@ -36,11 +36,12 @@ private slots:
     void handleCreateRoom(const int port, const int board_size, const int time_limit, const GameName game_name);
     void handleJoinRoom(const QString& IP, const int port, const GameName game_name);
     void handleCancelHost();
-    void handleDotsAndBoxesMove(int row, int col, int direction);
+    void handleLocalMove(int arg1, int arg2, int arg3);
     void handleGameStarted();
     void handleMoveApplied(bool is_turn_kept);
     void handleOpponentMoveReceived();
     void handleGameOver(GameStatus status);
+    void handleTimeUp();
 };
 
 #endif // APP_MANAGER_H

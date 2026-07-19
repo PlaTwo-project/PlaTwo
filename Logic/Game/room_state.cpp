@@ -74,3 +74,13 @@ void RoomState::setTimeLimit(int time_limit)
 {
     this->time_limit = time_limit;
 }
+
+void RoomState::setDuration (const int game_duration)
+{
+    this->game_duration = game_duration;
+}
+
+int RoomState::getDuration() const
+{
+    return game_duration;
+}
