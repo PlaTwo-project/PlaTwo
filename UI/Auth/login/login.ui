@@ -80,13 +80,16 @@ QPushButton:pressed {
      </item>
      <item row="3" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>6</number>
+       </property>
        <property name="leftMargin">
-        <number>15</number>
+        <number>0</number>
        </property>
        <property name="rightMargin">
         <number>0</number>
        </property>
-       <item alignment="Qt::AlignmentFlag::AlignTop">
+       <item alignment="Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTop">
         <widget class="QPushButton" name="pushButton_signup">
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
@@ -119,7 +122,7 @@ QPushButton:pressed {
          </property>
         </widget>
        </item>
-       <item alignment="Qt::AlignmentFlag::AlignTop">
+       <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
         <widget class="QPushButton" name="pushButton_forgotPassword">
          <property name="styleSheet">
           <string notr="true">QPushButton {

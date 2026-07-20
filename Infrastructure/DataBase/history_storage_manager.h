@@ -12,6 +12,7 @@ public:
 
     bool addMatchRecord(MatchRecord &new_record) override;
     QList<MatchRecord> getHistoryForUser(const int user_ID, const GameName game_type) const override;
+    void reloadFromDisk() override;
 
 private:
     QString file_path;

@@ -41,6 +41,8 @@ public:
     GameName getGameName() const;
     QString getHostUsername() const;
     QString getGuestUsername() const;
+    int getHostUserId() const;
+    int getGuestUserId() const;
 
     void updateGuestUser(const User& guest_user);
     void updateRoomConfig(const User& host_user, int board_size, int time_limit);

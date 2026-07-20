@@ -1,14 +1,14 @@
 #include "match_record.h"
 
 MatchRecord::MatchRecord()
-    : record_id(0), game_type(), host_id(0), guest_id(0), winner_id(0), host_score(0), guest_score(0), date(QDateTime()), duration(0)
+    : record_id(0), game_type(), host_id(0), host_username(""), guest_id(0), guest_username(""), winner_id(0), host_score(0), guest_score(0), date(QDateTime()), duration(0)
 {
 }
 
-MatchRecord::MatchRecord(GameName game_name, int host, int guest, int winner, int hostS, int guestS,QDateTime &gameDate, int gameDuration)
-    : record_id(0), game_type(game_name), host_id(host), guest_id(guest), winner_id(winner), host_score(hostS), guest_score(guestS), date(gameDate), duration(gameDuration)
-{
-}
+MatchRecord::MatchRecord(GameName game_name, int host, const QString& host_username, int guest, const QString& guest_username, int winner, int hostS, int guestS,QDateTime &gameDate, int gameDuration)
+    : record_id(0), game_type(game_name), host_id(host), host_username(host_username), guest_id(guest), guest_username(guest_username),
+    winner_id(winner), host_score(hostS), guest_score(guestS), date(gameDate), duration(gameDuration)
+{}
 
 int MatchRecord::getRecordId() const
 {
@@ -25,9 +25,19 @@ int MatchRecord::getHostId() const
     return host_id;
 }
 
+QString MatchRecord::getHostUsername() const
+{
+    return host_username;
+}
+
 int MatchRecord::getGuestId() const
 {
     return guest_id;
+}
+
+QString MatchRecord::getGuestUsername() const
+{
+    return guest_username;
 }
 
 int MatchRecord::getWinnerId() const
@@ -72,6 +82,16 @@ void MatchRecord::setHostId(int host)
 void MatchRecord::setGuestId(int guest)
 {
     guest_id = guest;
+}
+
+void MatchRecord::setHostUsername(const QString& username)
+{
+    host_username = username;
+}
+
+void MatchRecord::setGuestUsername(const QString& username)
+{
+    guest_username = username;
 }
 
 void MatchRecord::setWinnerId(int winner)

@@ -42,7 +42,7 @@ QMessageBox QPushButton:pressed {
      <item row="0" column="0">
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">
-        <number>75</number>
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="label_2">

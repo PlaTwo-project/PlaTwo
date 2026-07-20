@@ -1,5 +1,6 @@
 #include "Management/App/app_manager.h"
 #include "session_manager.h"
+#include "Logic/Game/Record/match_record.h"
 #include <QMessageBox>
 
 AppManager::AppManager(QObject *parent)
@@ -222,8 +223,8 @@ void AppManager::handleEditProfile(const QString &name, const QString &username,
     }
 }
 
-void AppManager::handleShowHistory(const GameName game_name)
-{
+void AppManager::handleShowHistory(const GameName game_name) {
+    history_storage.reloadFromDisk();
     User cur_user = SessionManager::getInstance().getCurrentUser();
     QList<MatchRecord> user_history = history_storage.getHistoryForUser(cur_user.getId(), game_name);
     main_window->showHistoryPage(user_history, cur_user.getId(), game_name);
@@ -327,13 +328,13 @@ void AppManager::handleGameOver(GameStatus status, bool is_time_up) {
     QString title_text = is_time_up ? "Time's Up!" : "Match Result";
     QString message_text = is_time_up ? "The match is over. Time has expired!\n\n" : "";
     QString score_text = "";
-
+    QString host_name = game_manager.getHostUsername();
+    QString guest_name = game_manager.getGuestUsername();
     Game* game_logic = game_manager.getCurrentGame();
     if (game_logic) {
         int host_score = game_logic->getFirstPlayerScore();
         int guest_score = game_logic->getSecondPlayerScore();
-
-        score_text = QString("\nScores:\nHost: %1\nGuest: %2").arg(host_score).arg(guest_score);
+        score_text = QString("\nScores:\n%1: %2\n%3: %4").arg(host_name).arg(host_score).arg(guest_name).arg(guest_score);
     }
 
     switch (status) {
@@ -352,8 +353,6 @@ void AppManager::handleGameOver(GameStatus status, bool is_time_up) {
     }
 
     message_text += score_text;
-
     QMessageBox::information(main_window, title_text, message_text);
-
     main_window->showMainMenuPage();
 }

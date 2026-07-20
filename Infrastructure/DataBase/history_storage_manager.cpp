@@ -40,6 +40,8 @@ void HistoryStorageManager::loadHistory()
         record.setGameType(static_cast<GameName>(obj["game_type"].toInt()));
         record.setHostId(obj["host_id"].toInt());
         record.setGuestId(obj["guest_id"].toInt());
+        record.setHostUsername(obj["host_username"].toString());
+        record.setGuestUsername(obj["guest_username"].toString());
         record.setWinnerId(obj["winner_id"].toInt());
         record.setHostScore(obj["host_score"].toInt());
         record.setGuestScore(obj["guest_score"].toInt());
@@ -66,6 +68,8 @@ void HistoryStorageManager::saveHistory()
         obj["game_type"] = static_cast<int>(record.getGameType());
         obj["host_id"] = record.getHostId();
         obj["guest_id"] = record.getGuestId();
+        obj["host_username"] = record.getHostUsername();
+        obj["guest_username"] = record.getGuestUsername();
         obj["winner_id"] = record.getWinnerId();
         obj["host_score"] = record.getHostScore();
         obj["guest_score"] = record.getGuestScore();
@@ -99,4 +103,8 @@ QList<MatchRecord> HistoryStorageManager::getHistoryForUser(const int user_ID, c
             filtered_list.append(record);
 
     return filtered_list;
+}
+
+void HistoryStorageManager::reloadFromDisk() {
+    loadHistory();
 }

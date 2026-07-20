@@ -26,21 +26,21 @@ void History::setHistory(const QList<MatchRecord>& list, int current_user_id, Ga
         if (game_type != rec.getGameType())
             continue;
 
-        int opponent_id, your_score, opponent_score;
-        QString role = getRole(rec, current_user_id), winner = getWinner(rec, current_user_id);
+        int your_score, opponent_score;
+        QString role = getRole(rec, current_user_id), winner = getWinner(rec, current_user_id), opponent_username;
 
         if (rec.getHostId() == current_user_id) {
-            opponent_id = rec.getGuestId();
+            opponent_username = rec.getGuestUsername();
             your_score = rec.getHostScore();
             opponent_score = rec.getGuestScore();
         }
         else {
-            opponent_id = rec.getHostId();
+            opponent_username = rec.getHostUsername();
             your_score = rec.getGuestScore();
             opponent_score = rec.getHostScore();
         }
 
-        ui->tableWidget_history->setItem(i, 0, new QTableWidgetItem(QString::number(opponent_id)));
+        ui->tableWidget_history->setItem(i, 0, new QTableWidgetItem(opponent_username));
         ui->tableWidget_history->setItem(i, 1, new QTableWidgetItem(rec.getDate().toString("yyyy-MM-dd hh:mm")));
         ui->tableWidget_history->setItem(i, 2, new QTableWidgetItem(role));
         ui->tableWidget_history->setItem(i, 3, new QTableWidgetItem(QString::number(your_score)));
@@ -59,7 +59,9 @@ QString History::getRole(const MatchRecord& rec, int currentUserId) const
 
 QString History::getWinner(const MatchRecord& rec, int currentUserId) const
 {
-    if (rec.getWinnerId() == currentUserId)
+    if (currentUserId == -1)
+        return "Draw";
+    else if (rec.getWinnerId() == currentUserId)
         return "You";
     else
         return "Opponent";

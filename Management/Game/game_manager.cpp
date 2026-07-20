@@ -226,6 +226,14 @@ QString GameManager::getGuestUsername() const {
     return room_state->getGuestUser().getUsername();
 }
 
+int GameManager::getHostUserId() const {
+    return room_state->getHostUser().getId();
+}
+
+int GameManager::getGuestUserId() const {
+    return room_state->getGuestUser().getId();
+}
+
 void GameManager::updateGuestUser(const User& guest_user) {
     if (room_state)
         room_state->setGuestUser(guest_user);
@@ -279,9 +287,10 @@ void GameManager::saveMatchRecord(GameStatus status) {
     GameName game_name = room_state->getGameName();
     int host_id = room_state->getHostUser().getId();
     int guest_id = room_state->getGuestUser().getId();
-
     int host_score = current_game->getFirstPlayerScore();
     int guest_score = current_game->getSecondPlayerScore();
+    QString host_username = getHostUsername();
+    QString guest_username = getGuestUsername();
 
     int winner_id = -1;
     if (status == GameStatus::HOST_WIN) {
@@ -294,7 +303,7 @@ void GameManager::saveMatchRecord(GameStatus status) {
     QDateTime current_date = QDateTime::currentDateTime();
     int game_duration = room_state->getDuration();
 
-    MatchRecord new_record(game_name, host_id, guest_id, winner_id, host_score, guest_score, current_date, game_duration);
+    MatchRecord new_record(game_name, host_id, host_username, guest_id, guest_username, winner_id, host_score, guest_score, current_date, game_duration);
 
     history_db.addMatchRecord(new_record);
 }
