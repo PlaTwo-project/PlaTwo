@@ -31,13 +31,29 @@ QMessageBox QPushButton:pressed {
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="1">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="3" column="1">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="leftMargin">
-      <number>200</number>
+      <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>200</number>
+      <number>0</number>
      </property>
      <property name="bottomMargin">
       <number>0</number>
@@ -334,22 +350,6 @@ QPushButton:pressed {
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Policy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="1" alignment="Qt::AlignmentFlag::AlignTop">
     <widget class="QLabel" name="label_title">
      <property name="font">
@@ -370,13 +370,13 @@ QPushButton:pressed {
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <spacer name="verticalSpacer_2">
+   <item row="4" column="1">
+    <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+      <enum>QSizePolicy::Policy::Expanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
