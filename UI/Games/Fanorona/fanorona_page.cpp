@@ -94,8 +94,8 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
 
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 12, QFont::Bold));
-    painter.drawText(margin_offset, 25, QString("Status: %1").arg(turn_status_text));
-    painter.drawText(margin_offset, 45, QString("Captured - Player 1: %1  |  Player 2: %2") .arg(first_player_score).arg(second_player_score));
+    painter.drawText(margin_offset, 25, turn_status_text);
+    painter.drawText(margin_offset, 45, QString("Captured - %1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
     if (chain_active)
         painter.drawText(margin_offset, 65, "Capture chain in progress - continue capturing or press End Turn");
 

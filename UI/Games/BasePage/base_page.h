@@ -7,7 +7,7 @@ class BasePage : public QWidget {
     Q_OBJECT
 
 public:
-    explicit BasePage(QWidget* parent = nullptr) : QWidget(parent), board_size(0), cell_spacing(50), margin_offset(60),
+    explicit BasePage(QWidget* parent = nullptr) : QWidget(parent), board_size(0), cell_spacing(70), margin_offset(90),
         is_input_enabled(false), first_player_score(0), second_player_score(0), turn_status_text("") {}
 
     virtual ~BasePage() = default;
@@ -30,6 +30,12 @@ public:
         update();
     }
 
+    virtual void setPlayerNames(const QString& name1, const QString& name2) {
+        first_player_name = name1;
+        second_player_name = name2;
+        update();
+    }
+
 signals:
     void moveRequested(const int, const int, const int);
 
@@ -42,4 +48,6 @@ protected:
     int first_player_score;
     int second_player_score;
     QString turn_status_text;
+    QString first_player_name;
+    QString second_player_name;
 };

@@ -54,7 +54,7 @@ QString Host::getLocalIP() const {
 void Host::sendRoomConfig(const User& host_user, int board_size, int time_limit) {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out << qint8(1) << host_user.getName() << board_size << time_limit;
+    out << qint8(1) << host_user.getName() << host_user.getUsername() << board_size << time_limit;
     sendData(block);
 }
 
@@ -64,9 +64,12 @@ void Host::handleIncomingData(const QByteArray &data) {
     in >> packet_type;
 
     if (packet_type == 2) {
-        QString guest_name;
-        in >> guest_name;
-        emit guestJoined(User(guest_name));
+        QString guest_name, guest_username;
+        in >> guest_name >> guest_username;
+
+        User guest_user(guest_name);
+        guest_user.setUsername(guest_username);
+        emit guestJoined(guest_user);
     }
 
     if (packet_type == 3) {

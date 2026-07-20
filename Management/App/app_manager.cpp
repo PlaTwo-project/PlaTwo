@@ -273,9 +273,13 @@ void AppManager::updateGameUI() {
 
     User cur_user = SessionManager::getInstance().getCurrentUser();
     bool is_my_turn = (game_logic->getCurrentPlayer().getId() == cur_user.getId());
-    QString turn_text = is_my_turn ? "Your Turn" : "Opponent's Turn";
+    QString cur_user_username = cur_user.getUsername(), turn_text;
+    if (is_my_turn)
+        turn_text = ("Your Username: " + cur_user_username + "  |  Status: Your Turn");
+    else
+        turn_text = ("Your Username: " + cur_user_username + "  |  Status: Opponent's Turn");
 
-    main_window->updateScoresAndTurn( game_logic->getFirstPlayerScore(), game_logic->getSecondPlayerScore(), turn_text, is_my_turn );
+    main_window->updateScoresAndTurn(game_logic->getFirstPlayerScore(), game_logic->getSecondPlayerScore(), turn_text, is_my_turn);
 
     main_window->renderActivePage(game_logic);
 }
@@ -299,6 +303,7 @@ void AppManager::handleGameStarted() {
         main_window->showFanoronaPage();
     }
 
+    main_window->setPlayerNames(game_manager.getHostUsername(), game_manager.getGuestUsername());
     updateGameUI();
 }
 

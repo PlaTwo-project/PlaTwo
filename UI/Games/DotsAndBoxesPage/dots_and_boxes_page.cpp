@@ -30,8 +30,8 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 12, QFont::Bold));
-    painter.drawText(margin_offset, 30, QString("Status: %1").arg(turn_status_text));
-    painter.drawText(margin_offset, 50, QString("Player 1: %1  |  Player 2: %2").arg(first_player_score).arg(second_player_score));
+    painter.drawText(margin_offset, 30, turn_status_text);
+    painter.drawText(margin_offset, 50, QString("%1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
 
     QPen active_line_pen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     QPen empty_pen(Qt::lightGray, 2, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
@@ -57,9 +57,9 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event)
                     painter.setPen(Qt::red);
 
                 if (captured_boxes[r][c] == 1)
-                    painter.drawText(rect, Qt::AlignCenter,  "P1");
+                    painter.drawText(rect, Qt::AlignCenter,  first_player_name[0]);
                 else
-                    painter.drawText(rect, Qt::AlignCenter,  "P2");
+                    painter.drawText(rect, Qt::AlignCenter,  second_player_name[0]);
             }
         }
     }

@@ -105,3 +105,8 @@ FORMS += \
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
+
+RESOURCES += \
+    recources.qrc
+
+RC_ICONS = Resources/icon.ico

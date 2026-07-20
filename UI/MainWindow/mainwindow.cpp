@@ -226,6 +226,12 @@ void MainWindow::updateScoresAndTurn(const int score1, const int score2, const Q
     }
 }
 
+void MainWindow::setPlayerNames(const QString& name1, const QString& name2) {
+    BasePage* active_page = qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
+    if (active_page)
+        active_page->setPlayerNames(name1, name2);
+}
+
 BasePage* MainWindow::getActivePage() const {
     return qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
 }

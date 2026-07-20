@@ -52,26 +52,18 @@ void NineMensMorrisBoard::applyMove(const Move& main_move) {
     const NineMensMorrisMove& move = static_cast<const NineMensMorrisMove&>(main_move);
     switch (move.getMoveType()) {
     case MoveType::PLACE:
-        if (isValidPosition(move.getToPosition()))
-            position_owners[move.getToPosition()] = move.getPlayerId();
+        position_owners[move.getToPosition()] = move.getPlayerId();
         break;
 
     case MoveType::MOVE:
-        if (isValidPosition(move.getToPosition()) && isValidPosition(move.getFromPosition())) {
-            position_owners[move.getToPosition()] = position_owners[move.getFromPosition()];
-            position_owners[move.getFromPosition()] = 0;
-        }
+        position_owners[move.getToPosition()] = position_owners[move.getFromPosition()];
+        position_owners[move.getFromPosition()] = 0;
         break;
 
     case MoveType::REMOVE:
-        if (isValidPosition(move.getToPosition()))
-            position_owners[move.getToPosition()] = 0;
+        position_owners[move.getToPosition()] = 0;
         break;
     }
-}
-
-bool NineMensMorrisBoard::isValidPosition(int position) const {
-    return position >= 0 && position < TOTAL_POSITIONS;
 }
 
 bool NineMensMorrisBoard::isEmpty(int position) const {

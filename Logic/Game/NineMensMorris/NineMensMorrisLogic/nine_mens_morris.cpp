@@ -118,16 +118,13 @@ bool NineMensMorris::isValidMove(const Move& main_move) {
         if (move.getMoveType() != MoveType::PLACE)
             return false;
 
-        return game_board->isValidPosition(move.getToPosition()) && game_board->isEmpty(move.getToPosition());
+        return game_board->isEmpty(move.getToPosition());
     }
     else if (move.getMoveType() != MoveType::MOVE)
         return false;
 
     int from = move.getFromPosition();
     int to = move.getToPosition();
-
-    if (!game_board->isValidPosition(from) || !game_board->isValidPosition(to))
-        return false;
 
     if (game_board->getPositionOwner(from) != mover || !game_board->isEmpty(to))
         return false;

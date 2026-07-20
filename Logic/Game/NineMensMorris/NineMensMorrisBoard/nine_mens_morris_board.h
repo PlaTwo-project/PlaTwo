@@ -32,7 +32,6 @@ public:
     void clear() override;
     void applyMove(const Move& main_move) override;
 
-    bool isValidPosition(int position) const;
     bool isEmpty(int position) const;
     bool isProximate(int from, int to) const;
     bool isMill(int position, int player_id) const;

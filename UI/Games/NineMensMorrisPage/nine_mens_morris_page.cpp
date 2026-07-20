@@ -56,9 +56,13 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 12, QFont::Bold));
-    painter.drawText(margin_offset, 25, QString("Status: %1").arg(turn_status_text));
-    painter.drawText(margin_offset, 45, QString("Player 1: %1  |  Player 2: %2").arg(first_player_score).arg(second_player_score));
-    painter.drawText(margin_offset, 65, QString("Placed - P1: %1/9  P2: %2/9%3").arg(placed_count_p1).arg(placed_count_p2).arg(awaiting_removal ? "   [Remove an opponent piece]" : ""));
+    painter.drawText(margin_offset, 25, turn_status_text);
+    painter.drawText(margin_offset, 45, QString("%1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
+
+    QString removal_state = "";
+    if (awaiting_removal)
+        removal_state = "   [Remove an opponent piece]";
+    painter.drawText(margin_offset, 65, QString("Placed - %1: %2/9  |  %3: %4/9%5").arg(first_player_name).arg(placed_count_p1).arg(second_player_name).arg(placed_count_p2).arg(removal_state));
 
     // board lines
     QPen line_pen(Qt::darkGray, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);

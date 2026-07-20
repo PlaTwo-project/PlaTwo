@@ -207,11 +207,19 @@ Game* GameManager::getCurrentGame() const {
 }
 
 int GameManager::getRoomBoardSize() const {
-    return room_state ? room_state->getBoardSize() : 8;
+    return room_state->getBoardSize();
 }
 
 GameName GameManager::getGameName() const {
-    return room_state ? room_state->getGameName() : GameName::None;
+    return room_state->getGameName();
+}
+
+QString GameManager::getHostUsername() const {
+    return room_state->getHostUser().getUsername();
+}
+
+QString GameManager::getGuestUsername() const {
+    return room_state->getGuestUser().getUsername();
 }
 
 void GameManager::updateGuestUser(const User& guest_user) {

@@ -50,6 +50,7 @@ public:
 
     void loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone);
     void updateScoresAndTurn(const int score1, const int score2, const QString& turn_text, const bool is_my_turn);
+    void setPlayerNames(const QString& name1, const QString& name2);
 
     void clearLoginFields();
     void clearSignupFields();
