@@ -251,9 +251,27 @@ void GameManager::handleRoomConfigReceived(const User& host_user, int board_size
 }
 
 void GameManager::handleTimeLimitReached() {
+    if (!current_game || !room_state) return;
+
     room_state->setDuration(game_duration_timer.elapsed() / 1000);
 
-    emit gameTimeUp();
+    int host_score = current_game->getFirstPlayerScore();
+    int guest_score = current_game->getSecondPlayerScore();
+    GameStatus final_status;
+
+    if (host_score > guest_score) {
+        final_status = GameStatus::HOST_WIN;
+    }
+    else if (guest_score > host_score) {
+        final_status = GameStatus::GUEST_WIN;
+    }
+    else {
+        final_status = GameStatus::DRAW;
+    }
+
+    saveMatchRecord(final_status);
+
+    emit gameOver(final_status, true);
 }
 
 void GameManager::saveMatchRecord(GameStatus status) {

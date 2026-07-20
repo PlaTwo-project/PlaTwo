@@ -40,8 +40,7 @@ private slots:
     void handleGameStarted();
     void handleMoveApplied(bool is_turn_kept);
     void handleOpponentMoveReceived();
-    void handleGameOver(GameStatus status);
-    void handleTimeUp();
+    void handleGameOver(GameStatus status, bool is_time_up = false);
 };
 
 #endif // APP_MANAGER_H

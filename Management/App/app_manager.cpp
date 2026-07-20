@@ -34,7 +34,6 @@ void AppManager::setupConnections()
     connect(&game_manager, &GameManager::moveAppliedSuccessfully, this, &AppManager::handleMoveApplied);
     connect(&game_manager, &GameManager::opponentMoveReceived, this, &AppManager::handleOpponentMoveReceived);
     connect(&game_manager, &GameManager::gameOver, this, &AppManager::handleGameOver);
-    connect(&game_manager, &GameManager::gameTimeUp, this, &AppManager::handleTimeUp);
 }
 
 void AppManager::handleLogin(const QString &username, const QString &password)
@@ -324,42 +323,37 @@ void AppManager::handleOpponentMoveReceived()
     updateGameUI();
 }
 
-void AppManager::handleGameOver(GameStatus status) {
-    QString message_text;
-    QString score_text;
+void AppManager::handleGameOver(GameStatus status, bool is_time_up) {
+    QString title_text = is_time_up ? "Time's Up!" : "Match Result";
+    QString message_text = is_time_up ? "The match is over. Time has expired!\n\n" : "";
+    QString score_text = "";
 
     Game* game_logic = game_manager.getCurrentGame();
     if (game_logic) {
         int host_score = game_logic->getFirstPlayerScore();
         int guest_score = game_logic->getSecondPlayerScore();
 
-        score_text = QString("\n\nScores:\nHost: %1\nGuest: %2").arg(host_score).arg(guest_score);
+        score_text = QString("\nScores:\nHost: %1\nGuest: %2").arg(host_score).arg(guest_score);
     }
 
     switch (status) {
     case GameStatus::HOST_WIN:
-        message_text = "Host Wins the game!";
+        message_text += "Host Wins the game!";
         break;
     case GameStatus::GUEST_WIN:
-        message_text = "Guest Wins the game!";
+        message_text += "Guest Wins the game!";
         break;
     case GameStatus::DRAW:
-        message_text = "The game ended in a Draw!";
+        message_text += "The game ended in a Draw!";
         break;
     default:
-        message_text = "Game Over!";
+        message_text += "Game Over!";
         break;
     }
 
     message_text += score_text;
 
-    QMessageBox::information(main_window, "Match Result", message_text);
+    QMessageBox::information(main_window, title_text, message_text);
 
     main_window->showMainMenuPage();
-}
-
-void AppManager::handleTimeUp()
-{
-    QMessageBox::information(main_window, "Time's Up!", "The match is over. Time has expired!");
-    // badan baiad shomaresh emtiaz va ina ezafe konim
 }

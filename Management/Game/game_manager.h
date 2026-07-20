@@ -50,7 +50,7 @@ signals:
     void gameStarted();
     void moveAppliedSuccessfully(bool is_turn_kept);
     void opponentMoveReceived();
-    void gameOver(GameStatus status);
+    void gameOver(GameStatus status, bool is_time_up = false);
     void gameTimeUp();
 
 private:
