@@ -1,12 +1,12 @@
 #include "match_record.h"
 
 MatchRecord::MatchRecord()
-    : record_id(0), game_type(), host_id(0), guest_id(0), winner_id(0), host_score(0), guest_score(0), date(QDateTime())
+    : record_id(0), game_type(), host_id(0), guest_id(0), winner_id(0), host_score(0), guest_score(0), date(QDateTime()), duration(0)
 {
 }
 
-MatchRecord::MatchRecord(GameName game_name, int host, int guest, int winner, int hostS, int guestS, const QDateTime &gameDate)
-    : record_id(0), game_type(game_name), host_id(host), guest_id(guest), winner_id(winner), host_score(hostS), guest_score(guestS), date(gameDate)
+MatchRecord::MatchRecord(GameName game_name, int host, int guest, int winner, int hostS, int guestS,QDateTime &gameDate, int gameDuration)
+    : record_id(0), game_type(game_name), host_id(host), guest_id(guest), winner_id(winner), host_score(hostS), guest_score(guestS), date(gameDate), duration(gameDuration)
 {
 }
 
@@ -50,6 +50,10 @@ QDateTime MatchRecord::getDate() const
     return date;
 }
 
+int MatchRecord::getDuration() const {
+    return duration;
+}
+
 void MatchRecord::setRecordId(int id)
 {
     record_id = id;
@@ -88,4 +92,8 @@ void MatchRecord::setGuestScore(int score)
 void MatchRecord::setDate(const QDateTime &gameDate)
 {
     date = gameDate;
+}
+
+void MatchRecord::setDuration(int time) {
+    duration = time;
 }

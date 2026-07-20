@@ -2,7 +2,7 @@
 #include "Logic/Game/Fanorona/FanoronaMove/fanorona_move.h"
 #include <QStringList>
 
-Fanorona::Fanorona(const User& player_one, const User& player_two)
+Fanorona::Fanorona(const User &player_one, const User &player_two)
     : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0)
 {
     game_board = new FanoronaBoard();
@@ -15,7 +15,7 @@ Fanorona::~Fanorona()
     delete game_board;
 }
 
-int Fanorona::idOf(const User& user) const
+int Fanorona::idOf(const User &user) const
 {
     return user.getId() == first_player.getId() ? 1 : 2;
 }
@@ -59,7 +59,7 @@ bool Fanorona::mustCapture() const
     return game_board->hasAnyCaptureAvailable(currentPlayerId());
 }
 
-FanoronaCaptureType Fanorona::resolveCaptureType(int from, int to, FanoronaCaptureType requested, bool& is_ambiguous) const
+FanoronaCaptureType Fanorona::resolveCaptureType(int from, int to, FanoronaCaptureType requested, bool &is_ambiguous) const
 {
     is_ambiguous = false;
 
@@ -69,7 +69,7 @@ FanoronaCaptureType Fanorona::resolveCaptureType(int from, int to, FanoronaCaptu
     if (can_approach && can_withdrawal)
     {
         is_ambiguous = true;
-        if (requested == FanoronaCaptureType::APPROACH || requested == FanoronaCaptureType::WITHDRAWAL)  
+        if (requested == FanoronaCaptureType::APPROACH || requested == FanoronaCaptureType::WITHDRAWAL)
             return requested;
 
         return FanoronaCaptureType::NONE;
@@ -84,7 +84,7 @@ FanoronaCaptureType Fanorona::resolveCaptureType(int from, int to, FanoronaCaptu
     return FanoronaCaptureType::NONE;
 }
 
-bool Fanorona::hasContinuation(int position, int incoming_dr, int incoming_dc, const QVector<int>& visited) const
+bool Fanorona::hasContinuation(int position, int incoming_dr, int incoming_dc, const QVector<int> &visited) const
 {
     for (int neighbour : game_board->getNeighbours(position))
     {
@@ -100,16 +100,16 @@ bool Fanorona::hasContinuation(int position, int incoming_dr, int incoming_dc, c
         if (dr == incoming_dr && dc == incoming_dc)
             continue;
 
-        if (game_board->canApproachCapture(position, neighbour) || game_board->canWithdrawalCapture(position, neighbour)) 
+        if (game_board->canApproachCapture(position, neighbour) || game_board->canWithdrawalCapture(position, neighbour))
             return true;
     }
 
     return false;
 }
 
-bool Fanorona::isValidMove(const Move& main_move)
+bool Fanorona::isValidMove(const Move &main_move)
 {
-    const auto& move = static_cast<const FanoronaMove&>(main_move);
+    const auto &move = static_cast<const FanoronaMove &>(main_move);
     int mover = move.getPlayerId();
 
     if (mover != 1 && mover != 2)
@@ -184,12 +184,12 @@ bool Fanorona::isValidMove(const Move& main_move)
     return true;
 }
 
-bool Fanorona::makeMove(const Move& main_move)
+bool Fanorona::makeMove(const Move &main_move)
 {
     if (!isValidMove(main_move))
         return false;
 
-    const auto& move = static_cast<const FanoronaMove&>(main_move);
+    const auto &move = static_cast<const FanoronaMove &>(main_move);
     int mover = move.getPlayerId();
 
     if (move.isEndTurn())
@@ -225,7 +225,7 @@ bool Fanorona::makeMove(const Move& main_move)
 
     if (chosen != FanoronaCaptureType::NONE)
     {
-        QVector<int> visited = chain_active ? chain_visited : QVector<int>{ from };
+        QVector<int> visited = chain_active ? chain_visited : QVector<int>{from};
         visited.append(to);
 
         if (hasContinuation(to, dr, dc, visited))
@@ -260,14 +260,14 @@ GameStatus Fanorona::checkWin()
     int p2_count = game_board->getPieceCount(2);
 
     if (p1_count == 0)
-        return GameStatus::PLAYER_TWO_WIN;
+        return GameStatus::GUEST_WIN;
 
     if (p2_count == 0)
-        return GameStatus::PLAYER_ONE_WIN;
+        return GameStatus::HOST_WIN;
 
     int mover = currentPlayerId();
     if (!game_board->hasAnyLegalMove(mover))
-        return (mover == 1) ? GameStatus::PLAYER_TWO_WIN : GameStatus::PLAYER_ONE_WIN;
+        return (mover == 1) ? GameStatus::GUEST_WIN : GameStatus::HOST_WIN;
 
     return GameStatus::ONGOING;
 }
@@ -287,9 +287,8 @@ QString Fanorona::serializeState() const
     for (int position : chain_visited)
         visited_strings.append(QString::number(position));
 
-    
     QStringList occ_list;
-    const QVector<int>& occ = game_board->getOccupants();
+    const QVector<int> &occ = game_board->getOccupants();
     for (int v : occ)
         occ_list.append(QString::number(v));
 
@@ -302,10 +301,10 @@ QString Fanorona::serializeState() const
         .arg(chain_last_dr)
         .arg(chain_last_dc)
         .arg(visited_strings.join('|'))
-        .arg(occ_list.join('-')); 
+        .arg(occ_list.join('-'));
 }
 
-void Fanorona::loadState(const QString& state_data)
+void Fanorona::loadState(const QString &state_data)
 {
     QStringList tokens = state_data.split(',');
     if (tokens.size() < 9)
@@ -321,15 +320,14 @@ void Fanorona::loadState(const QString& state_data)
 
     chain_visited.clear();
     if (!tokens[7].isEmpty())
-        for (const QString& part : tokens[7].split('|'))
+        for (const QString &part : tokens[7].split('|'))
             chain_visited.append(part.toInt());
-
 
     QVector<int> occ;
     if (!tokens[8].isEmpty())
     {
         QStringList occ_parts = tokens[8].split('-');
-        for (const QString& s : occ_parts)
+        for (const QString &s : occ_parts)
             occ.append(s.toInt());
     }
     if (occ.size() == FanoronaBoard::TOTAL_POSITIONS)
@@ -348,7 +346,7 @@ int Fanorona::getSecondPlayerScore() const
     return second_player_score;
 }
 
-Board* Fanorona::getBoard() const
+Board *Fanorona::getBoard() const
 {
     return game_board;
 }

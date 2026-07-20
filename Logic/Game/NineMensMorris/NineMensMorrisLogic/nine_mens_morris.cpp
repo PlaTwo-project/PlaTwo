@@ -1,26 +1,30 @@
 #include "nine_mens_morris.h"
 
-NineMensMorris::NineMensMorris(const User& player_one, const User& player_two)
-    : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0), awaiting_removal(false) {
+NineMensMorris::NineMensMorris(const User &player_one, const User &player_two)
+    : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0), awaiting_removal(false)
+{
     game_board = new NineMensMorrisBoard();
     placed_count[0] = 0;
     placed_count[1] = 0;
     current_player = first_player;
 }
 
-NineMensMorris::~NineMensMorris() {
+NineMensMorris::~NineMensMorris()
+{
     delete game_board;
 }
 
-bool NineMensMorris::makeMove(const Move& main_move) {
+bool NineMensMorris::makeMove(const Move &main_move)
+{
     if (!isValidMove(main_move))
         return false;
 
-    const NineMensMorrisMove& move = static_cast<const NineMensMorrisMove&>(main_move);
+    const NineMensMorrisMove &move = static_cast<const NineMensMorrisMove &>(main_move);
     int mover = move.getPlayerId();
     game_board->applyMove(main_move);
 
-    if (move.getMoveType() == MoveType::REMOVE) {
+    if (move.getMoveType() == MoveType::REMOVE)
+    {
         if (mover == 1)
             first_player_score++;
         else
@@ -41,31 +45,34 @@ bool NineMensMorris::makeMove(const Move& main_move) {
     return true;
 }
 
-GameStatus NineMensMorris::checkWin() {
+GameStatus NineMensMorris::checkWin()
+{
     if (awaiting_removal)
         return GameStatus::ONGOING;
 
     if (placed_count[0] == PIECES_PER_PLAYER && game_board->getPieceCount(1) < 3)
-        return GameStatus::PLAYER_TWO_WIN;
+        return GameStatus::GUEST_WIN;
 
     if (placed_count[1] == PIECES_PER_PLAYER && game_board->getPieceCount(2) < 3)
-        return GameStatus::PLAYER_ONE_WIN;
+        return GameStatus::HOST_WIN;
 
     int mover = getCurrentPlayerId();
     bool mover_placing = placed_count[mover - 1] < PIECES_PER_PLAYER;
 
     if (!mover_placing)
-        if (!game_board->hasAnyMove(mover, isFlying(mover))) {
+        if (!game_board->hasAnyMove(mover, isFlying(mover)))
+        {
             if (mover == 1)
-                return GameStatus::PLAYER_TWO_WIN;
+                return GameStatus::GUEST_WIN;
             else
-                return GameStatus::PLAYER_ONE_WIN;
+                return GameStatus::HOST_WIN;
         }
 
     return GameStatus::ONGOING;
 }
 
-void NineMensMorris::resetGame() {
+void NineMensMorris::resetGame()
+{
     first_player_score = 0;
     second_player_score = 0;
     placed_count[0] = 0;
@@ -75,15 +82,17 @@ void NineMensMorris::resetGame() {
     current_player = first_player;
 }
 
-QString NineMensMorris::serializeState() const {
+QString NineMensMorris::serializeState() const
+{
     int _awaiting_removal = awaiting_removal;
-    return QString("%1,%2,%3,%4,%5,%6").arg(current_player.getId()).arg(first_player_score).arg(second_player_score)
-        .arg(placed_count[0]).arg(placed_count[1]).arg(_awaiting_removal);
+    return QString("%1,%2,%3,%4,%5,%6").arg(current_player.getId()).arg(first_player_score).arg(second_player_score).arg(placed_count[0]).arg(placed_count[1]).arg(_awaiting_removal);
 }
 
-void NineMensMorris::loadState(const QString& state_data) {
+void NineMensMorris::loadState(const QString &state_data)
+{
     QStringList tokens = state_data.split(',');
-    if (tokens.size() >= 6) {
+    if (tokens.size() >= 6)
+    {
         int current_id = tokens[0].toInt();
         first_player_score = tokens[1].toInt();
         second_player_score = tokens[2].toInt();
@@ -97,14 +106,16 @@ void NineMensMorris::loadState(const QString& state_data) {
     }
 }
 
-bool NineMensMorris::isValidMove(const Move& main_move) {
-    const NineMensMorrisMove& move = static_cast<const NineMensMorrisMove&>(main_move);
+bool NineMensMorris::isValidMove(const Move &main_move)
+{
+    const NineMensMorrisMove &move = static_cast<const NineMensMorrisMove &>(main_move);
     int mover = move.getPlayerId();
 
     if (mover != getCurrentPlayerId())
         return false;
 
-    if (awaiting_removal) {
+    if (awaiting_removal)
+    {
         if (move.getMoveType() != MoveType::REMOVE)
             return false;
 
@@ -114,7 +125,8 @@ bool NineMensMorris::isValidMove(const Move& main_move) {
         return false;
 
     bool placing_phase = placed_count[mover - 1] < PIECES_PER_PLAYER;
-    if (placing_phase) {
+    if (placing_phase)
+    {
         if (move.getMoveType() != MoveType::PLACE)
             return false;
 
@@ -135,45 +147,54 @@ bool NineMensMorris::isValidMove(const Move& main_move) {
     return game_board->isProximate(from, to);
 }
 
-int NineMensMorris::getFirstPlayerScore() const {
+int NineMensMorris::getFirstPlayerScore() const
+{
     return first_player_score;
 }
 
-int NineMensMorris::getSecondPlayerScore() const {
+int NineMensMorris::getSecondPlayerScore() const
+{
     return second_player_score;
 }
 
-Board* NineMensMorris::getBoard() const {
+Board *NineMensMorris::getBoard() const
+{
     return game_board;
 }
 
-bool NineMensMorris::getAwaitingRemoval() const {
+bool NineMensMorris::getAwaitingRemoval() const
+{
     return awaiting_removal;
 }
 
-int NineMensMorris::getPlacedCount(int player_id) const {
+int NineMensMorris::getPlacedCount(int player_id) const
+{
     return placed_count[player_id - 1];
 }
 
-bool NineMensMorris::isFlying(int player_id) const {
+bool NineMensMorris::isFlying(int player_id) const
+{
     return game_board->getPieceCount(player_id) == FLYING_THRESHOLD;
 }
 
-int NineMensMorris::getCurrentPlayerId() const {
+int NineMensMorris::getCurrentPlayerId() const
+{
     if (current_player.getId() == first_player.getId())
         return 1;
     else
         return 2;
 }
 
-int NineMensMorris::getOpponentId(int player_id) const {
+int NineMensMorris::getOpponentId(int player_id) const
+{
     if (player_id == 1)
         return 2;
     else
         return 1;
 }
 
-void NineMensMorris::switchTurn() {
+void NineMensMorris::switchTurn()
+{
     if (getCurrentPlayerId() == 1)
         current_player = second_player;
     else

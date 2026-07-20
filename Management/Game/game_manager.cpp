@@ -1,10 +1,12 @@
 #include "Management/Game/game_manager.h"
+#include "Infrastructure/DataBase/history_storage_manager.h"
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.h"
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.h"
 #include "Logic/Game/Fanorona/FanoronaLogic/fanorona.h"
 #include "Logic/Game/Fanorona/FanoronaMove/fanorona_move.h"
 #include "Logic/Game/NineMensMorris/NineMensMorrisLogic/nine_mens_morris.h"
 #include "Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.h"
+#include "Logic/Game/Record/match_record.h"
 
 GameManager::GameManager(QObject *parent)
     : QObject(parent), room_state(nullptr), host(nullptr), guest(nullptr), current_game(nullptr) {
@@ -132,6 +134,7 @@ bool GameManager::handleLocalMove(int arg1, int arg2, int arg3) {
             if (room_state)
                 room_state->setDuration(game_duration_timer.elapsed() / 1000);
 
+            saveMatchRecord(status);
             emit gameOver(status);
         }
         else
@@ -187,6 +190,7 @@ bool GameManager::handleRemoteMove(const QByteArray& serialized_move) {
             if (room_state)
                 room_state->setDuration(game_duration_timer.elapsed() / 1000);
 
+            saveMatchRecord(status);
             emit gameOver(status);
         }
         else
@@ -250,4 +254,29 @@ void GameManager::handleTimeLimitReached() {
     room_state->setDuration(game_duration_timer.elapsed() / 1000);
 
     emit gameTimeUp();
+}
+
+void GameManager::saveMatchRecord(GameStatus status) {
+
+    GameName game_name = room_state->getGameName();
+    int host_id = room_state->getHostUser().getId();
+    int guest_id = room_state->getGuestUser().getId();
+
+    int host_score = current_game->getFirstPlayerScore();
+    int guest_score = current_game->getSecondPlayerScore();
+
+    int winner_id = -1;
+    if (status == GameStatus::HOST_WIN) {
+        winner_id = host_id;
+    }
+    else if (status == GameStatus::GUEST_WIN) {
+        winner_id = guest_id;
+    }
+
+    QDateTime current_date = QDateTime::currentDateTime();
+    int game_duration = room_state->getDuration();
+
+    MatchRecord new_record(game_name, host_id, guest_id, winner_id, host_score, guest_score, current_date, game_duration);
+
+    history_db.addMatchRecord(new_record);
 }

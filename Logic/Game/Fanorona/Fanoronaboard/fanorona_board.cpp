@@ -21,12 +21,15 @@ void FanoronaBoard::initialize()
     for (int col = 0; col < COLS; ++col)
     {
         int centre_col = COLS / 2;
-        if (col < centre_col)
-            occupants[positionOf(2, col)] = 1;
-        else if (col > centre_col)
-            occupants[positionOf(2, col)] = 2;
-        else
+        if (col == centre_col) {
             occupants[positionOf(2, col)] = 0;
+        }
+        else if (col < centre_col) {
+            occupants[positionOf(2, col)] = (col % 2 == 0) ? 1 : 2;
+        }
+        else {
+            occupants[positionOf(2, col)] = (col % 2 == 0) ? 2 : 1;
+        }
     }
 }
 

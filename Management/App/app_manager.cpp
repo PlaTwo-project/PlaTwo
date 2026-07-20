@@ -2,8 +2,8 @@
 #include "session_manager.h"
 #include <QMessageBox>
 
-AppManager::AppManager(QObject* parent)
-    : QObject{parent}, authenticator(userStorage),history_storage(), game_manager()
+AppManager::AppManager(QObject *parent)
+    : QObject{parent}, authenticator(userStorage), history_storage(), game_manager()
 {
     main_window = new MainWindow();
     setupConnections();
@@ -36,7 +36,6 @@ void AppManager::setupConnections()
     connect(&game_manager, &GameManager::gameOver, this, &AppManager::handleGameOver);
     connect(&game_manager, &GameManager::gameTimeUp, this, &AppManager::handleTimeUp);
 }
-
 
 void AppManager::handleLogin(const QString &username, const QString &password)
 {
@@ -173,7 +172,6 @@ void AppManager::handleResetPassword(const QString &username, const QString &pho
     }
 }
 
-
 void AppManager::handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password)
 {
     User cur_user = SessionManager::getInstance().getCurrentUser();
@@ -228,8 +226,8 @@ void AppManager::handleEditProfile(const QString &name, const QString &username,
 void AppManager::handleShowHistory(const GameName game_name)
 {
     User cur_user = SessionManager::getInstance().getCurrentUser();
-    QList<MatchRecord> user_history =  history_storage.getHistoryForUser(cur_user.getId(), game_name);
-    main_window->showHistoryPage(user_history,cur_user.getId(),game_name);
+    QList<MatchRecord> user_history = history_storage.getHistoryForUser(cur_user.getId(), game_name);
+    main_window->showHistoryPage(user_history, cur_user.getId(), game_name);
 }
 
 void AppManager::handleCreateRoom(const int port, const int board_size, const int time_limit, const GameName game_name)
@@ -238,12 +236,13 @@ void AppManager::handleCreateRoom(const int port, const int board_size, const in
     main_window->showWatingHostPage(game_manager.createRoom(cur_user, port, game_name, board_size, time_limit));
 }
 
-void AppManager::handleJoinRoom(const QString& IP, const int port, const GameName game_name)
+void AppManager::handleJoinRoom(const QString &IP, const int port, const GameName game_name)
 {
     User cur_user = SessionManager::getInstance().getCurrentUser();
     AuthResult result = authenticator.verifyIP(IP);
 
-    switch (result) {
+    switch (result)
+    {
     case AuthResult::SUCCESS:
         game_manager.joinRoom(cur_user, IP, port, game_name);
         break;
@@ -262,12 +261,14 @@ void AppManager::handleCancelHost()
     game_manager.cancelRoom();
 }
 
-void AppManager::handleLocalMove(int arg1, int arg2, int arg3) {
+void AppManager::handleLocalMove(int arg1, int arg2, int arg3)
+{
     game_manager.handleLocalMove(arg1, arg2, arg3);
 }
 
-void AppManager::updateGameUI() {
-    Game* game_logic = game_manager.getCurrentGame();
+void AppManager::updateGameUI()
+{
+    Game *game_logic = game_manager.getCurrentGame();
     if (!game_logic)
         return;
 
@@ -284,22 +285,27 @@ void AppManager::updateGameUI() {
     main_window->renderActivePage(game_logic);
 }
 
-void AppManager::handleGameStarted() {
-    Game* game_logic = game_manager.getCurrentGame();
-    if (!game_logic) {
+void AppManager::handleGameStarted()
+{
+    Game *game_logic = game_manager.getCurrentGame();
+    if (!game_logic)
+    {
         return;
     }
 
     GameName current_game_name = game_manager.getGameName();
 
-    if (current_game_name == GameName::DotsAndBoxes) {
+    if (current_game_name == GameName::DotsAndBoxes)
+    {
         int board_size = game_manager.getRoomBoardSize();
         main_window->showDotsAndBoxesPage(board_size);
     }
-    else if (current_game_name == GameName::NineMensMorris) {
+    else if (current_game_name == GameName::NineMensMorris)
+    {
         main_window->showNineMensMorrisPage();
     }
-    else if (current_game_name == GameName::Fanorona) {
+    else if (current_game_name == GameName::Fanorona)
+    {
         main_window->showFanoronaPage();
     }
 
@@ -307,24 +313,35 @@ void AppManager::handleGameStarted() {
     updateGameUI();
 }
 
-void AppManager::handleMoveApplied(bool is_turn_kept) {
+void AppManager::handleMoveApplied(bool is_turn_kept)
+{
     Q_UNUSED(is_turn_kept);
     updateGameUI();
 }
 
-void AppManager::handleOpponentMoveReceived() {
+void AppManager::handleOpponentMoveReceived()
+{
     updateGameUI();
 }
 
 void AppManager::handleGameOver(GameStatus status) {
-    QString message_text = "";
+    QString message_text;
+    QString score_text;
+
+    Game* game_logic = game_manager.getCurrentGame();
+    if (game_logic) {
+        int host_score = game_logic->getFirstPlayerScore();
+        int guest_score = game_logic->getSecondPlayerScore();
+
+        score_text = QString("\n\nScores:\nHost: %1\nGuest: %2").arg(host_score).arg(guest_score);
+    }
 
     switch (status) {
-    case GameStatus::PLAYER_ONE_WIN:
-        message_text = "Player 1 Wins the game!";
+    case GameStatus::HOST_WIN:
+        message_text = "Host Wins the game!";
         break;
-    case GameStatus::PLAYER_TWO_WIN:
-        message_text = "Player 2 Wins the game!";
+    case GameStatus::GUEST_WIN:
+        message_text = "Guest Wins the game!";
         break;
     case GameStatus::DRAW:
         message_text = "The game ended in a Draw!";
@@ -334,11 +351,15 @@ void AppManager::handleGameOver(GameStatus status) {
         break;
     }
 
+    message_text += score_text;
+
     QMessageBox::information(main_window, "Match Result", message_text);
 
     main_window->showMainMenuPage();
 }
-void AppManager::handleTimeUp() {
-    QMessageBox::information(main_window, "Time's Up!", "بازی به پایان رسید! زمان شما تمام شد.");
-    //badan baiad shomaresh emtiaz va ina ezafe konim
+
+void AppManager::handleTimeUp()
+{
+    QMessageBox::information(main_window, "Time's Up!", "The match is over. Time has expired!");
+    // badan baiad shomaresh emtiaz va ina ezafe konim
 }

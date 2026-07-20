@@ -9,6 +9,7 @@
 #include "Infrastructure/Network/guest.h"
 #include "Infrastructure/Network/host.h"
 #include "Logic/Game/BaseLogicClasses/Game.h"
+#include "Infrastructure/DataBase/history_storage_manager.h"
 
 enum class Role {
     Host,
@@ -43,6 +44,7 @@ public:
 
     void updateGuestUser(const User& guest_user);
     void updateRoomConfig(const User& host_user, int board_size, int time_limit);
+    void saveMatchRecord(GameStatus status);
 
 signals:
     void gameStarted();
@@ -59,6 +61,7 @@ private:
     Game* current_game;
     QTimer* time_limit_timer;
     QElapsedTimer game_duration_timer;
+    HistoryStorageManager history_db;
 };
 
 #endif // GAMEMANAGER_H

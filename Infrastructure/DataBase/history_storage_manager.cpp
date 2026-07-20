@@ -43,6 +43,7 @@ void HistoryStorageManager::loadHistory()
         record.setWinnerId(obj["winner_id"].toInt());
         record.setHostScore(obj["host_score"].toInt());
         record.setGuestScore(obj["guest_score"].toInt());
+        record.setDuration(obj["duration"].toInt());
 
         if (obj.contains("date") && obj["date"].isString())
             record.setDate(QDateTime::fromString(obj["date"].toString(), Qt::ISODate));
@@ -69,6 +70,7 @@ void HistoryStorageManager::saveHistory()
         obj["host_score"] = record.getHostScore();
         obj["guest_score"] = record.getGuestScore();
         obj["date"] = record.getDate().toString(Qt::ISODate);
+        obj["duration"] = record.getDuration();
 
         json_array.append(obj);
     }

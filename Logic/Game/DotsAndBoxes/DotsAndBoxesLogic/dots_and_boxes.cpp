@@ -1,27 +1,31 @@
 #include "dots_and_boxes.h"
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.h"
 
-DotsAndBoxes::DotsAndBoxes(int size, const User& player_one, const User& player_two)
-    : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0), grid_size(size) {
+DotsAndBoxes::DotsAndBoxes(int size, const User &player_one, const User &player_two)
+    : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0), grid_size(size)
+{
     game_board = new DotsAndBoxesBoard(grid_size);
     current_player = first_player;
 }
 
-DotsAndBoxes::~DotsAndBoxes() {
+DotsAndBoxes::~DotsAndBoxes()
+{
     delete game_board;
 }
 
-bool DotsAndBoxes::isValidMove(const Move& main_move) {
-    const DotsAndBoxesMove& move = static_cast<const DotsAndBoxesMove&>(main_move);
+bool DotsAndBoxes::isValidMove(const Move &main_move)
+{
+    const DotsAndBoxesMove &move = static_cast<const DotsAndBoxesMove &>(main_move);
     return !game_board->isLineTaken(move.getRow(), move.getColumn(), static_cast<int>(move.getDirection()));
 }
 
-bool DotsAndBoxes::makeMove(const Move& main_move) {
+bool DotsAndBoxes::makeMove(const Move &main_move)
+{
     if (!isValidMove(main_move))
         return false;
 
     game_board->applyMove(main_move);
-    const DotsAndBoxesMove& move = static_cast<const DotsAndBoxesMove&>(main_move);
+    const DotsAndBoxesMove &move = static_cast<const DotsAndBoxesMove &>(main_move);
     int p_id;
     if (current_player.getId() == first_player.getId())
         p_id = 1;
@@ -29,13 +33,15 @@ bool DotsAndBoxes::makeMove(const Move& main_move) {
         p_id = 2;
 
     bool closed = game_board->checkAndCloseBoxes(move.getRow(), move.getColumn(), static_cast<int>(move.getDirection()), p_id);
-    if (closed) {
+    if (closed)
+    {
         if (p_id == 1)
             first_player_score++;
         else
             second_player_score++;
     }
-    else {
+    else
+    {
         if (current_player.getId() == first_player.getId())
             current_player = second_player;
         else
@@ -45,33 +51,38 @@ bool DotsAndBoxes::makeMove(const Move& main_move) {
     return true;
 }
 
-GameStatus DotsAndBoxes::checkWin() {
+GameStatus DotsAndBoxes::checkWin()
+{
     if (!game_board->isFull())
         return GameStatus::ONGOING;
 
     if (first_player_score > second_player_score)
-        return GameStatus::PLAYER_ONE_WIN;
+        return GameStatus::HOST_WIN;
 
     if (second_player_score > first_player_score)
-        return GameStatus::PLAYER_TWO_WIN;
+        return GameStatus::GUEST_WIN;
 
     return GameStatus::DRAW;
 }
 
-void DotsAndBoxes::resetGame() {
+void DotsAndBoxes::resetGame()
+{
     first_player_score = 0;
     second_player_score = 0;
     game_board->clear();
     current_player = first_player;
 }
 
-QString DotsAndBoxes::serializeState() const {
+QString DotsAndBoxes::serializeState() const
+{
     return QString("%1,%2,%3").arg(current_player.getId()).arg(first_player_score).arg(second_player_score);
 }
 
-void DotsAndBoxes::loadState(const QString& state_data) {
+void DotsAndBoxes::loadState(const QString &state_data)
+{
     QStringList tokens = state_data.split(',');
-    if (tokens.size() >= 3) {
+    if (tokens.size() >= 3)
+    {
         int current_id = tokens[0].toInt();
         first_player_score = tokens[1].toInt();
         second_player_score = tokens[2].toInt();
@@ -82,14 +93,17 @@ void DotsAndBoxes::loadState(const QString& state_data) {
     }
 }
 
-int DotsAndBoxes::getFirstPlayerScore() const {
+int DotsAndBoxes::getFirstPlayerScore() const
+{
     return first_player_score;
 }
 
-int DotsAndBoxes::getSecondPlayerScore() const {
+int DotsAndBoxes::getSecondPlayerScore() const
+{
     return second_player_score;
 }
 
-Board* DotsAndBoxes::getBoard() const {
+Board *DotsAndBoxes::getBoard() const
+{
     return game_board;
 }
