@@ -32,6 +32,7 @@ SOURCES += \
     UI/Auth/ForgotPassword/forgot_password.cpp \
     UI/Auth/Login/login.cpp \
     UI/Auth/SignUp/signup.cpp \
+    UI/Chat/chat_widget.cpp \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.cpp \
     UI/Games/Fanorona/fanorona_page.cpp \
     UI/Games/NineMensMorrisPage/nine_mens_morris_page.cpp \
@@ -79,6 +80,7 @@ HEADERS += \
     UI/Auth/ForgotPassword/forgot_password.h \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
+    UI/Chat/chat_widget.h \
     UI/Games/BasePage/base_page.h \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.h \
     UI/Games/Fanorona/fanorona_page.h \

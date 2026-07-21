@@ -41,6 +41,8 @@ private slots:
     void handleMoveApplied(bool is_turn_kept);
     void handleOpponentMoveReceived();
     void handleGameOver(GameStatus status, GameEndReason reason = GameEndReason::LOGIC);
+    void handleChatMessageSend(const QString& text);
+    void handleChatMessageReceived(const QString& sender_name, const QString& text);
 };
 
 #endif // APP_MANAGER_H

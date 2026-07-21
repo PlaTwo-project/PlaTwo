@@ -51,4 +51,10 @@ void Guest::handleIncomingData(const QByteArray &data) {
 
     if (packet_type == 4)
         emit resignReceived();
+
+    if (packet_type == 5) {
+        QString chat_message;
+        in >> chat_message;
+        emit chatMessageReceived(chat_message);
+    }
 }

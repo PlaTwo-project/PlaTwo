@@ -19,7 +19,7 @@ public:
 
 private slots:
     void connectNewClient();
-    void handleIncomingData(const QByteArray &data);
+    void handleIncomingData(const QByteArray &data); // 1 = creat room, 2 = guest join, 3 = move, 4 = resign, 5 = chat
 
 signals:
     void guestJoined(const User& guest_user);

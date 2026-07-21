@@ -36,6 +36,8 @@ void AppManager::setupConnections()
     connect(&game_manager, &GameManager::opponentMoveReceived, this, &AppManager::handleOpponentMoveReceived);
     connect(&game_manager, &GameManager::gameOver, this, &AppManager::handleGameOver);
     connect(main_window, &MainWindow::resignRequested, &game_manager, &GameManager::handleLocalResign);
+    connect(main_window, &MainWindow::chatMessageSendRequested, this, &AppManager::handleChatMessageSend);
+    connect(&game_manager, &GameManager::chatMessageReceived, this, &AppManager::handleChatMessageReceived);
 }
 
 void AppManager::handleLogin(const QString &username, const QString &password)
@@ -290,27 +292,21 @@ void AppManager::handleGameStarted()
 {
     Game *game_logic = game_manager.getCurrentGame();
     if (!game_logic)
-    {
         return;
-    }
 
     GameName current_game_name = game_manager.getGameName();
-
-    if (current_game_name == GameName::DotsAndBoxes)
-    {
+    if (current_game_name == GameName::DotsAndBoxes) {
         int board_size = game_manager.getRoomBoardSize();
         main_window->showDotsAndBoxesPage(board_size);
     }
     else if (current_game_name == GameName::NineMensMorris)
-    {
         main_window->showNineMensMorrisPage();
-    }
+
     else if (current_game_name == GameName::Fanorona)
-    {
         main_window->showFanoronaPage();
-    }
 
     main_window->setPlayerNames(game_manager.getHostUsername(), game_manager.getGuestUsername());
+    main_window->clearChat();
     updateGameUI();
 }
 
@@ -370,4 +366,16 @@ void AppManager::handleGameOver(GameStatus status, GameEndReason reason) {
     message_text += score_text;
     QMessageBox::information(main_window, title_text, message_text);
     main_window->showMainMenuPage();
+}
+
+void AppManager::handleChatMessageSend(const QString& text) {
+    if (text.trimmed().isEmpty())
+        return;
+
+    game_manager.sendChatMessage(text);
+    main_window->appendOwnChatMessage(text);
+}
+
+void AppManager::handleChatMessageReceived(const QString& sender_name, const QString& text) {
+    main_window->receiveChatMessage(sender_name, text);
 }

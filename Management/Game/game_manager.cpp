@@ -7,6 +7,7 @@
 #include "Logic/Game/NineMensMorris/NineMensMorrisLogic/nine_mens_morris.h"
 #include "Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.h"
 #include "Logic/Game/Record/match_record.h"
+#include <QDataStream>
 
 GameManager::GameManager(QObject *parent)
     : QObject(parent), room_state(nullptr), host(nullptr), guest(nullptr), current_game(nullptr) {
@@ -32,6 +33,9 @@ QString GameManager::createRoom(const User& host_user, const int port, const Gam
     connect(host, &Host::guestJoined, this, &GameManager::handleGuestConnection);
     connect(host, &Host::moveReceived, this, &GameManager::handleRemoteMove);
     connect(host, &Host::resignReceived, this, &GameManager::handleRemoteResign);
+    connect(host, &Host::chatMessageReceived, this, [this](const QString& message) {
+        emit chatMessageReceived(room_state->getGuestUser().getUsername(), message);
+    });
 
     return local_ip;
 }
@@ -47,6 +51,9 @@ bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const
     connect(guest, &Guest::roomConfigReceived, this, &GameManager::handleRoomConfigReceived);
     connect(guest, &Guest::moveReceived, this, &GameManager::handleRemoteMove);
     connect(guest, &Guest::resignReceived, this, &GameManager::handleRemoteResign);
+    connect(guest, &Guest::chatMessageReceived, this, [this](const QString& message) {
+        emit chatMessageReceived(room_state->getHostUser().getUsername(), message);
+    });
 
     return true;
 }
@@ -203,6 +210,12 @@ bool GameManager::handleRemoteMove(const QByteArray& serialized_move) {
     return success;
 }
 
+void GameManager::sendChatMessage(const QString& message) {
+    if (role == Role::Host)
+        host->sendChatMessage(message);
+    else if (role == Role::Guest)
+        guest->sendChatMessage(message);
+}
 
 Role GameManager::getRole() const {
     return role;

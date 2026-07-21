@@ -13,6 +13,7 @@ public:
     virtual ~Network();
     
     void sendData(const QByteArray &data);
+    void sendChatMessage(const QString &message);
 
 signals:
     void connected();
@@ -20,6 +21,7 @@ signals:
     void disconnected();
     void error(const QString &error);
     void resignReceived();
+    void chatMessageReceived(const QString &message);
 
 private slots:
     void readData();

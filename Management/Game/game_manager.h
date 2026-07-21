@@ -37,6 +37,7 @@ public:
     void handleTimeLimitReached();
     void handleLocalResign();
     void handleRemoteResign();
+    void sendChatMessage(const QString& message);
 
     Role getRole() const;
     Game* getCurrentGame() const;
@@ -56,6 +57,7 @@ signals:
     void moveAppliedSuccessfully(bool is_turn_kept);
     void opponentMoveReceived();
     void gameOver(GameStatus status, GameEndReason reason = GameEndReason::LOGIC);
+    void chatMessageReceived(const QString& sender_name, const QString& message);
 
 private:
     Role role;

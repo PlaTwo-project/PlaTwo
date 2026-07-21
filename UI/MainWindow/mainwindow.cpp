@@ -12,6 +12,9 @@
 #include "UI/Games/DotsAndBoxesPage/dots_and_boxes_page.h"
 #include "UI/Games/NineMensMorrisPage/nine_mens_morris_page.h"
 #include "UI/Games/Fanorona/fanorona_page.h"
+#include "UI/Chat/chat_widget.h"
+#include <QStackedWidget>
+#include <QHBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -33,6 +36,21 @@ MainWindow::MainWindow(QWidget *parent)
     nine_mens_morris_page = new NineMensMorrisPage(this);
     fanorona_page = new FanoronaPage(this);
 
+    // chat
+    game_stack = new QStackedWidget(this);
+    game_stack->addWidget(dots_and_boxes_page);
+    game_stack->addWidget(nine_mens_morris_page);
+    game_stack->addWidget(fanorona_page);
+
+    chat_widget = new ChatWidget(this);
+    game_room_page = new QWidget(this);
+    QHBoxLayout* game_room_layout = new QHBoxLayout(game_room_page);
+    game_room_layout->setContentsMargins(0, 0, 0, 0);
+    game_room_layout->setSpacing(0);
+    game_room_layout->addWidget(game_stack, 1);
+    game_room_layout->addWidget(chat_widget, 0);
+    connect(chat_widget, &ChatWidget::messageSubmitted, this, &MainWindow::chatMessageSendRequested);
+
     // add pages
     ui->stackedWidget->addWidget(login_page);
     ui->stackedWidget->addWidget(signup_page);
@@ -43,9 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(host_page);
     ui->stackedWidget->addWidget(guest_page);
     ui->stackedWidget->addWidget(history_page);
-    ui->stackedWidget->addWidget(dots_and_boxes_page);
-    ui->stackedWidget->addWidget(nine_mens_morris_page);
-    ui->stackedWidget->addWidget(fanorona_page);
+    ui->stackedWidget->addWidget(game_room_page);
 
     // received signals
     connect(login_page, &Login::navigateToSignup, this, [this](QString username, QString password) {
@@ -190,32 +206,35 @@ void MainWindow::showHistoryPage(const QList<MatchRecord>& historyList, int curr
 
 void MainWindow::showDotsAndBoxesPage(const int size) {
     dots_and_boxes_page->setupBoard(size);
-    ui->stackedWidget->setCurrentWidget(dots_and_boxes_page);
+    game_stack->setCurrentWidget(dots_and_boxes_page);
+    ui->stackedWidget->setCurrentWidget(game_room_page);
 }
 
 void MainWindow::showNineMensMorrisPage() {
     nine_mens_morris_page->setupBoard(0);
-    ui->stackedWidget->setCurrentWidget(nine_mens_morris_page);
+    game_stack->setCurrentWidget(nine_mens_morris_page);
+    ui->stackedWidget->setCurrentWidget(game_room_page);
 }
 
 void MainWindow::showFanoronaPage() {
     fanorona_page->setupBoard(0);
-    ui->stackedWidget->setCurrentWidget(fanorona_page);
+    game_stack->setCurrentWidget(fanorona_page);
+    ui->stackedWidget->setCurrentWidget(game_room_page);
 }
+
 void MainWindow::renderActivePage(const Game* game) {
-    BasePage* active_page = qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
+    BasePage* active_page = qobject_cast<BasePage*>(game_stack->currentWidget());
     if (active_page) {
         active_page->updateFromGame(game);
     }
 }
 
-void MainWindow::loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone)
-{
+void MainWindow::loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone) {
     edit_profile_page->setInitialValues(name, username, email, phone);
 }
 
 void MainWindow::updateScoresAndTurn(const int score1, const int score2, const QString& turn_text, const bool is_my_turn) {
-    BasePage* active_page = qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
+    BasePage* active_page = qobject_cast<BasePage*>(game_stack->currentWidget());
     if (active_page) {
         active_page->updateScores(score1, score2);
         active_page->setTurnInfo(turn_text, is_my_turn);
@@ -223,26 +242,35 @@ void MainWindow::updateScoresAndTurn(const int score1, const int score2, const Q
 }
 
 void MainWindow::setPlayerNames(const QString& name1, const QString& name2) {
-    BasePage* active_page = qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
+    BasePage* active_page = qobject_cast<BasePage*>(game_stack->currentWidget());
     if (active_page)
         active_page->setPlayerNames(name1, name2);
 }
 
 BasePage* MainWindow::getActivePage() const {
-    return qobject_cast<BasePage*>(ui->stackedWidget->currentWidget());
+    return qobject_cast<BasePage*>(game_stack->currentWidget());
 }
 
-void MainWindow::clearLoginFields()
-{
+void MainWindow::clearLoginFields() {
     login_page->clearFields();
 }
 
-void MainWindow::clearSignupFields()
-{
+void MainWindow::clearSignupFields() {
     signup_page->clearFields();
 }
 
-void MainWindow::clearFPFields()
-{
+void MainWindow::clearFPFields() {
     forgot_password_page->clearFields();
+}
+
+void MainWindow::appendOwnChatMessage(const QString& text) {
+    chat_widget->appendMessage(QString(), text, true);
+}
+
+void MainWindow::receiveChatMessage(const QString& sender_name, const QString& text) {
+    chat_widget->appendMessage(sender_name, text, false);
+}
+
+void MainWindow::clearChat() {
+    chat_widget->clearMessages();
 }

@@ -1,4 +1,5 @@
 #include "network.h"
+#include <QDataStream>
 
 Network::Network(QObject *parent) : QObject(parent), socket(nullptr) {}
 
@@ -9,6 +10,13 @@ void Network::sendData(const QByteArray &data)
         socket->write(data);
         socket->flush();
     }
+}
+
+void Network::sendChatMessage(const QString &message) {
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out << qint8(5) << message;
+    sendData(block);
 }
 
 Network::~Network()

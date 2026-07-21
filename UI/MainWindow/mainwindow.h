@@ -18,6 +18,8 @@ class DotsAndBoxesPage;
 class BasePage;
 class NineMensMorrisPage;
 class FanoronaPage;
+class ChatWidget;
+class QStackedWidget;
 
 namespace Ui {
 class MainWindow;
@@ -47,6 +49,9 @@ public:
     void showFanoronaPage();
     BasePage* getActivePage() const;
     void renderActivePage(const class Game* game);
+    void appendOwnChatMessage(const QString& text);
+    void receiveChatMessage(const QString& sender_name, const QString& text);
+    void clearChat();
 
     void loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone);
     void updateScoresAndTurn(const int score1, const int score2, const QString& turn_text, const bool is_my_turn);
@@ -70,6 +75,7 @@ signals:
     void nineMensMorrisMoveRequested(const int from, const int to, const int action_type);
     void fanoronaMoveRequested(const int from, const int to, const int capture_choice);
     void resignRequested();
+    void chatMessageSendRequested(const QString& text);
 
 private:
     Ui::MainWindow *ui;
@@ -88,6 +94,9 @@ private:
     DotsAndBoxesPage* dots_and_boxes_page;
     NineMensMorrisPage* nine_mens_morris_page;
     FanoronaPage* fanorona_page;
+    QStackedWidget* game_stack;
+    QWidget* game_room_page;
+    ChatWidget* chat_widget;
 };
 
 #endif // MAINWINDOW_H
