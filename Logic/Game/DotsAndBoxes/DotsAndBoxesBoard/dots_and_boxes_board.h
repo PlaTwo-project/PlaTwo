@@ -22,6 +22,7 @@ public:
     const QVector<QVector<int>> &getCapturedBoxes() const;
     const QVector<QVector<bool>> &getVerticalLines() const;
     const QVector<QVector<bool>> &getHorizontalLines() const;
+    void restoreState(const QVector<QVector<bool>>& h_lines, const QVector<QVector<bool>>& v_lines, const QVector<QVector<int>>& boxes);
 
 private:
     static const int horizontalDirection = 0;

@@ -40,6 +40,7 @@ public:
     bool hasAnyMove(int player_id, bool is_flying) const;
 
     int getPositionOwner(int position) const;
+    void setPositionOwners(const QVector<int>& owners);
     int getPieceCount(int player_id) const;
     const QVector<int>& getPositionOwners() const;
     static const QVector<QVector<int>>& getProximityList();

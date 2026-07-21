@@ -1,4 +1,7 @@
 #include "nine_mens_morris.h"
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
 
 NineMensMorris::NineMensMorris(const User &player_one, const User &player_two)
     : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0), awaiting_removal(false)
@@ -82,28 +85,47 @@ void NineMensMorris::resetGame()
     current_player = first_player;
 }
 
-QString NineMensMorris::serializeState() const
-{
-    int _awaiting_removal = awaiting_removal;
-    return QString("%1,%2,%3,%4,%5,%6").arg(current_player.getId()).arg(first_player_score).arg(second_player_score).arg(placed_count[0]).arg(placed_count[1]).arg(_awaiting_removal);
+QString NineMensMorris::serializeState() const {
+
+    QJsonObject stateObj;
+    stateObj["current_player_id"] = current_player.getId();
+    stateObj["first_player_score"] = first_player_score;
+    stateObj["second_player_score"] = second_player_score;
+    stateObj["placed_count_0"] = placed_count[0];
+    stateObj["placed_count_1"] = placed_count[1];
+    stateObj["awaiting_removal"] = awaiting_removal;
+
+    QJsonArray boardArray;
+    NineMensMorrisBoard* nmm_board = static_cast<NineMensMorrisBoard*>(game_board);
+    for (int owner : nmm_board->getPositionOwners())
+        boardArray.append(owner);
+
+    stateObj["board_state"] = boardArray;
+
+    return QJsonDocument(stateObj).toJson(QJsonDocument::Compact);
 }
 
-void NineMensMorris::loadState(const QString &state_data)
-{
-    QStringList tokens = state_data.split(',');
-    if (tokens.size() >= 6)
-    {
-        int current_id = tokens[0].toInt();
-        first_player_score = tokens[1].toInt();
-        second_player_score = tokens[2].toInt();
-        placed_count[0] = tokens[3].toInt();
-        placed_count[1] = tokens[4].toInt();
-        awaiting_removal = tokens[5].toInt() != 0;
-        if (current_id == first_player.getId())
-            current_player = first_player;
-        else
-            current_player = second_player;
-    }
+void NineMensMorris::loadState(const QString &state_data) {
+    QJsonDocument doc = QJsonDocument::fromJson(state_data.toUtf8());
+    if (!doc.isObject()) return;
+    QJsonObject stateObj = doc.object();
+
+    int current_id = stateObj["current_player_id"].toInt();
+    current_player = (current_id == first_player.getId()) ? first_player : second_player;
+
+    first_player_score = stateObj["first_player_score"].toInt();
+    second_player_score = stateObj["second_player_score"].toInt();
+    placed_count[0] = stateObj["placed_count_0"].toInt();
+    placed_count[1] = stateObj["placed_count_1"].toInt();
+    awaiting_removal = stateObj["awaiting_removal"].toBool();
+
+    QJsonArray boardArray = stateObj["board_state"].toArray();
+    QVector<int> owners;
+    for (const QJsonValue& val : boardArray)
+        owners.append(val.toInt());
+
+    NineMensMorrisBoard* nmm_board = static_cast<NineMensMorrisBoard*>(game_board);
+    nmm_board->setPositionOwners(owners);
 }
 
 bool NineMensMorris::isValidMove(const Move &main_move)

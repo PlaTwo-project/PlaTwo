@@ -1,6 +1,9 @@
 #include "fanorona.h"
 #include "Logic/Game/Fanorona/FanoronaMove/fanorona_move.h"
 #include <QStringList>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
 
 Fanorona::Fanorona(const User &player_one, const User &player_two)
     : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0)
@@ -281,60 +284,69 @@ void Fanorona::resetGame()
     current_player = first_player;
 }
 
-QString Fanorona::serializeState() const
-{
-    QStringList visited_strings;
-    for (int position : chain_visited)
-        visited_strings.append(QString::number(position));
+QString Fanorona::serializeState() const {
+    QJsonObject state_object;
 
-    QStringList occ_list;
-    const QVector<int> &occ = game_board->getOccupants();
-    for (int v : occ)
-        occ_list.append(QString::number(v));
+    state_object["current_player_id"] = current_player.getId();
+    state_object["first_player_score"] = first_player_score;
+    state_object["second_player_score"] = second_player_score;
 
-    return QString("%1,%2,%3,%4,%5,%6,%7,%8,%9")
-        .arg(current_player.getId())
-        .arg(first_player_score)
-        .arg(second_player_score)
-        .arg(chain_active ? 1 : 0)
-        .arg(chain_position)
-        .arg(chain_last_dr)
-        .arg(chain_last_dc)
-        .arg(visited_strings.join('|'))
-        .arg(occ_list.join('-'));
+    state_object["chain_active"] = chain_active;
+    state_object["chain_position"] = chain_position;
+    state_object["chain_last_dr"] = chain_last_dr;
+    state_object["chain_last_dc"] = chain_last_dc;
+
+    QJsonArray serialized_chain_visited;
+    for (int visited_position : chain_visited) {
+        serialized_chain_visited.append(visited_position);
+    }
+    state_object["chain_visited"] = serialized_chain_visited;
+
+    FanoronaBoard* fanorona_board = static_cast<FanoronaBoard*>(game_board);
+    QJsonArray serialized_occupants;
+    QVector<int> board_occupants = fanorona_board->getOccupants();
+    for (int occupant_value : board_occupants) {
+        serialized_occupants.append(occupant_value);
+    }
+    state_object["occupants"] = serialized_occupants;
+
+    return QJsonDocument(state_object).toJson(QJsonDocument::Compact);
 }
 
-void Fanorona::loadState(const QString &state_data)
-{
-    QStringList tokens = state_data.split(',');
-    if (tokens.size() < 9)
-        return;
+void Fanorona::loadState(const QString &state_data) {
+    QJsonDocument json_document = QJsonDocument::fromJson(state_data.toUtf8());
+    if (!json_document.isObject()) return;
 
-    int current_id = tokens[0].toInt();
-    first_player_score = tokens[1].toInt();
-    second_player_score = tokens[2].toInt();
-    chain_active = tokens[3].toInt() != 0;
-    chain_position = tokens[4].toInt();
-    chain_last_dr = tokens[5].toInt();
-    chain_last_dc = tokens[6].toInt();
+    QJsonObject state_object = json_document.object();
+
+    int current_player_id = state_object["current_player_id"].toInt();
+    current_player = (current_player_id == first_player.getId()) ? first_player : second_player;
+    first_player_score = state_object["first_player_score"].toInt();
+    second_player_score = state_object["second_player_score"].toInt();
+
+    chain_active = state_object["chain_active"].toBool();
+    chain_position = state_object["chain_position"].toInt();
+    chain_last_dr = state_object["chain_last_dr"].toInt();
+    chain_last_dc = state_object["chain_last_dc"].toInt();
 
     chain_visited.clear();
-    if (!tokens[7].isEmpty())
-        for (const QString &part : tokens[7].split('|'))
-            chain_visited.append(part.toInt());
-
-    QVector<int> occ;
-    if (!tokens[8].isEmpty())
-    {
-        QStringList occ_parts = tokens[8].split('-');
-        for (const QString &s : occ_parts)
-            occ.append(s.toInt());
+    QJsonArray serialized_chain_visited = state_object["chain_visited"].toArray();
+    for (const QJsonValue& visited_position_value : serialized_chain_visited) {
+        chain_visited.append(visited_position_value.toInt());
     }
-    if (occ.size() == FanoronaBoard::TOTAL_POSITIONS)
-        game_board->setOccupants(occ);
 
-    current_player = (current_id == first_player.getId()) ? first_player : second_player;
+    QJsonArray serialized_occupants = state_object["occupants"].toArray();
+    QVector<int> board_occupants;
+    for (const QJsonValue& occupant_value : serialized_occupants) {
+        board_occupants.append(occupant_value.toInt());
+    }
+
+    FanoronaBoard* fanorona_board = static_cast<FanoronaBoard*>(game_board);
+    if (board_occupants.size() == FanoronaBoard::TOTAL_POSITIONS) {
+        fanorona_board->setOccupants(board_occupants);
+    }
 }
+
 
 int Fanorona::getFirstPlayerScore() const
 {

@@ -112,3 +112,9 @@ bool DotsAndBoxesBoard::closeBox(int row, int column, int player_id)
     captured_boxes[row][column] = player_id;
     return true;
 }
+
+void DotsAndBoxesBoard::restoreState(const QVector<QVector<bool>>& h_lines, const QVector<QVector<bool>>& v_lines, const QVector<QVector<int>>& boxes) {
+    horizontal_lines = h_lines;
+    vertical_lines = v_lines;
+    captured_boxes = boxes;
+}

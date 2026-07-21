@@ -137,6 +137,10 @@ int NineMensMorrisBoard::getPositionOwner(int position) const {
     return position_owners[position];
 }
 
+void NineMensMorrisBoard::setPositionOwners(const QVector<int>& owners) {
+    position_owners = owners;
+}
+
 int NineMensMorrisBoard::getPieceCount(int player_id) const {
     int count = 0;
     for (int owner : position_owners)
