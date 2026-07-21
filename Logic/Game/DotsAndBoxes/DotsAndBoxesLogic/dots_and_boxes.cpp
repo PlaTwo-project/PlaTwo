@@ -158,8 +158,6 @@ void DotsAndBoxes::loadState(const QString &state_data) {
     db_board->restoreState(horizontal_lines, vertical_lines, captured_boxes);
 }
 
-
-
 int DotsAndBoxes::getFirstPlayerScore() const
 {
     return first_player_score;

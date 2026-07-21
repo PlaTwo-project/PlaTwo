@@ -7,6 +7,7 @@ CONFIG += c++17
 
 SOURCES += \
     Infrastructure/DataBase/history_storage_manager.cpp \
+    Infrastructure/DataBase/saved_game_storage_manager.cpp \
     Infrastructure/Database/storage_manager.cpp \
     Infrastructure/Network/guest.cpp \
     Infrastructure/Network/host.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
     Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.cpp \
     Logic/Game/Record/match_record.cpp \
     Logic/Game/room_state.cpp \
+    Logic/Game/saved_game.cpp \
     Logic/Security/password_hasher.cpp \
     Logic/Security/validator.cpp \
     Logic/User/user.cpp \
@@ -47,6 +49,7 @@ SOURCES += \
 
 HEADERS += \
     Infrastructure/DataBase/history_storage_manager.h \
+    Infrastructure/DataBase/saved_game_storage_manager.h \
     Infrastructure/Database/storage_manager.h \
     Infrastructure/Network/guest.h \
     Infrastructure/Network/host.h \
@@ -67,6 +70,7 @@ HEADERS += \
     Logic/Game/game_end_reason.h \
     Logic/Game/game_name.h \
     Logic/Game/room_state.h \
+    Logic/Game/saved_game.h \
     Logic/Interface/history_interface.h \
     Logic/Interface/network_interface.h \
     Logic/Interface/user_interface.h \
