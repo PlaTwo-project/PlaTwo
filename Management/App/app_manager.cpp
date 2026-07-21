@@ -35,6 +35,7 @@ void AppManager::setupConnections()
     connect(&game_manager, &GameManager::moveAppliedSuccessfully, this, &AppManager::handleMoveApplied);
     connect(&game_manager, &GameManager::opponentMoveReceived, this, &AppManager::handleOpponentMoveReceived);
     connect(&game_manager, &GameManager::gameOver, this, &AppManager::handleGameOver);
+    connect(main_window, &MainWindow::resignRequested, &game_manager, &GameManager::handleLocalResign);
 }
 
 void AppManager::handleLogin(const QString &username, const QString &password)
@@ -324,9 +325,23 @@ void AppManager::handleOpponentMoveReceived()
     updateGameUI();
 }
 
-void AppManager::handleGameOver(GameStatus status, bool is_time_up) {
-    QString title_text = is_time_up ? "Time's Up!" : "Match Result";
-    QString message_text = is_time_up ? "The match is over. Time has expired!\n\n" : "";
+void AppManager::handleGameOver(GameStatus status, GameEndReason reason) {
+    QString title_text;
+    QString message_text;
+
+    if (reason == GameEndReason::TIME_UP) {
+        title_text = "Time's Up!";
+        message_text = "The match is over. Time has expired!\n\n";
+    }
+    else if (reason == GameEndReason::RESIGNATION) {
+        title_text = "Resignation";
+        message_text = "The match ended due to a player resigning.\n\n";
+    }
+    else {
+        title_text = "Match Result";
+        message_text = "";
+    }
+
     QString score_text = "";
     QString host_name = game_manager.getHostUsername();
     QString guest_name = game_manager.getGuestUsername();

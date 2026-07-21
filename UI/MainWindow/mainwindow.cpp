@@ -94,32 +94,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Mediator signals
     connect(login_page, &Login::loginRequested, this, &MainWindow::loginRequested);
-
     connect(signup_page, &Signup::signupRequested, this, &MainWindow::signupRequested);
-
     connect(forgot_password_page, &ForgotPassword::forgotPasswordStep2Requested, this, &MainWindow::forgotPasswordStep2Requested);
-
     connect(forgot_password_page, &ForgotPassword::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
 
     connect(edit_profile_page, &EditProfile::editProfileRequested, this, &MainWindow::editProfileRequested);
-
     connect(game_menu_page, &GameMenu::navigateToHistory, this, &MainWindow::showHistoryRequested);
 
     connect(host_page, &HostPage::createRoomRequested, this, [this](int port, int board_size, int time_limit) {
         emit createRoomRequested(port, board_size, time_limit, cur_game);
     });
-
     connect(guest_page, &GuestPage::joinRequested, this, [this](const QString& IP, const int& port) {
         emit joinRoomRequested(IP, port, cur_game);
     });
-
     connect(host_page, &HostPage::cancelHostRequested, this, &MainWindow::cancelHostRequested);
 
     connect(dots_and_boxes_page, &DotsAndBoxesPage::moveRequested, this, &MainWindow::dotsAndBoxesMoveRequested);
-
     connect(nine_mens_morris_page, &NineMensMorrisPage::moveRequested, this, &MainWindow::nineMensMorrisMoveRequested);
-
     connect(fanorona_page, &FanoronaPage::moveRequested, this, &MainWindow::fanoronaMoveRequested);
+
+    connect(dots_and_boxes_page, &BasePage::resignRequested, this, &MainWindow::resignRequested);
+    connect(nine_mens_morris_page, &BasePage::resignRequested, this, &MainWindow::resignRequested);
+    connect(fanorona_page, &BasePage::resignRequested, this, &MainWindow::resignRequested);
 
     // show pages
     showLoginPage();

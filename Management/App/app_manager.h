@@ -40,7 +40,7 @@ private slots:
     void handleGameStarted();
     void handleMoveApplied(bool is_turn_kept);
     void handleOpponentMoveReceived();
-    void handleGameOver(GameStatus status, bool is_time_up = false);
+    void handleGameOver(GameStatus status, GameEndReason reason = GameEndReason::LOGIC);
 };
 
 #endif // APP_MANAGER_H

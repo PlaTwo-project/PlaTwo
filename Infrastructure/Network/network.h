@@ -19,6 +19,7 @@ signals:
     void dataReceived(const QByteArray &data);
     void disconnected();
     void error(const QString &error);
+    void resignReceived();
 
 private slots:
     void readData();

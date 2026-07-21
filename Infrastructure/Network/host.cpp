@@ -79,4 +79,7 @@ void Host::handleIncomingData(const QByteArray &data) {
         in >> move_data;
         emit moveReceived(move_data);
     }
+
+    if (packet_type == 4)
+        emit resignReceived();
 }

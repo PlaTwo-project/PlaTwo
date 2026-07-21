@@ -63,6 +63,7 @@ HEADERS += \
     Logic/Game/NineMensMorris/NineMensMorrisLogic/nine_mens_morris.h \
     Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.h \
     Logic/Game/Record/match_record.h \
+    Logic/Game/game_end_reason.h \
     Logic/Game/game_name.h \
     Logic/Game/room_state.h \
     Logic/Interface/history_interface.h \

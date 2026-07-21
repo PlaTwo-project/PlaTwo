@@ -69,6 +69,7 @@ signals:
     void dotsAndBoxesMoveRequested(const int row, const int col, const int direction);
     void nineMensMorrisMoveRequested(const int from, const int to, const int action_type);
     void fanoronaMoveRequested(const int from, const int to, const int capture_choice);
+    void resignRequested();
 
 private:
     Ui::MainWindow *ui;

@@ -31,6 +31,7 @@ QString GameManager::createRoom(const User& host_user, const int port, const Gam
 
     connect(host, &Host::guestJoined, this, &GameManager::handleGuestConnection);
     connect(host, &Host::moveReceived, this, &GameManager::handleRemoteMove);
+    connect(host, &Host::resignReceived, this, &GameManager::handleRemoteResign);
 
     return local_ip;
 }
@@ -45,6 +46,7 @@ bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const
     connect(guest, &Network::connected, this, [this, guest_user]() { guest->sendGuestInfo(guest_user);});
     connect(guest, &Guest::roomConfigReceived, this, &GameManager::handleRoomConfigReceived);
     connect(guest, &Guest::moveReceived, this, &GameManager::handleRemoteMove);
+    connect(guest, &Guest::resignReceived, this, &GameManager::handleRemoteResign);
 
     return true;
 }
@@ -279,7 +281,7 @@ void GameManager::handleTimeLimitReached() {
 
     saveMatchRecord(final_status);
 
-    emit gameOver(final_status, true);
+    emit gameOver(final_status, GameEndReason::TIME_UP);
 }
 
 void GameManager::saveMatchRecord(GameStatus status) {
@@ -306,4 +308,41 @@ void GameManager::saveMatchRecord(GameStatus status) {
     MatchRecord new_record(game_name, host_id, host_username, guest_id, guest_username, winner_id, host_score, guest_score, current_date, game_duration);
 
     history_db.addMatchRecord(new_record);
+}
+
+void GameManager::handleLocalResign() {
+    if (!current_game) return;
+
+    if (time_limit_timer->isActive())
+        time_limit_timer->stop();
+    if (room_state)
+        room_state->setDuration(game_duration_timer.elapsed() / 1000);
+
+    QByteArray packet;
+    QDataStream out(&packet, QIODevice::WriteOnly);
+    out << qint8(4);
+
+    if (role == Role::Host)
+        host->sendData(packet);
+    else
+        guest->sendData(packet);
+
+    GameStatus final_status = (role == Role::Host) ? GameStatus::GUEST_WIN : GameStatus::HOST_WIN;
+
+    saveMatchRecord(final_status);
+    emit gameOver(final_status, GameEndReason::RESIGNATION);
+}
+
+void GameManager::handleRemoteResign() {
+    if (!current_game) return;
+
+    if (time_limit_timer->isActive())
+        time_limit_timer->stop();
+    if (room_state)
+        room_state->setDuration(game_duration_timer.elapsed() / 1000);
+
+    GameStatus final_status = (role == Role::Host) ? GameStatus::HOST_WIN : GameStatus::GUEST_WIN;
+
+    saveMatchRecord(final_status);
+    emit gameOver(final_status, GameEndReason::RESIGNATION);
 }

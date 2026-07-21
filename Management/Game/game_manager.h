@@ -10,6 +10,7 @@
 #include "Infrastructure/Network/host.h"
 #include "Logic/Game/BaseLogicClasses/Game.h"
 #include "Infrastructure/DataBase/history_storage_manager.h"
+#include "Logic/Game/game_end_reason.h"
 
 enum class Role {
     Host,
@@ -34,6 +35,8 @@ public:
     void handleGuestConnection(const User& guest_user);
     void handleRoomConfigReceived(const User& host_user, int board_size, int time_limit);
     void handleTimeLimitReached();
+    void handleLocalResign();
+    void handleRemoteResign();
 
     Role getRole() const;
     Game* getCurrentGame() const;
@@ -52,8 +55,7 @@ signals:
     void gameStarted();
     void moveAppliedSuccessfully(bool is_turn_kept);
     void opponentMoveReceived();
-    void gameOver(GameStatus status, bool is_time_up = false);
-    void gameTimeUp();
+    void gameOver(GameStatus status, GameEndReason reason = GameEndReason::LOGIC);
 
 private:
     Role role;
