@@ -36,6 +36,8 @@ QString GameManager::createRoom(const User& host_user, const int port, const Gam
     connect(host, &Host::chatMessageReceived, this, [this](const QString& message) {
         emit chatMessageReceived(room_state->getGuestUser().getUsername(), message);
     });
+    connect(host, &Network::pauseRequested, this, &GameManager::opponentPauseRequested);
+    connect(host, &Network::pauseResponded, this, &GameManager::handleRemotePauseResponse);
 
     return local_ip;
 }
@@ -54,6 +56,8 @@ bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const
     connect(guest, &Guest::chatMessageReceived, this, [this](const QString& message) {
         emit chatMessageReceived(room_state->getHostUser().getUsername(), message);
     });
+    connect(guest, &Network::pauseRequested, this, &GameManager::opponentPauseRequested);
+    connect(guest, &Network::pauseResponded, this, &GameManager::handleRemotePauseResponse);
 
     return true;
 }
@@ -72,6 +76,7 @@ bool GameManager::cancelRoom() {
 void GameManager::startGame() {
     delete current_game;
     current_game = nullptr;
+    accumulated_time = 0;
 
     if (room_state->getGameName() == GameName::DotsAndBoxes)
         current_game = new DotsAndBoxes(room_state->getBoardSize(), room_state->getHostUser(), room_state->getGuestUser());
@@ -80,11 +85,21 @@ void GameManager::startGame() {
     else if (room_state->getGameName() == GameName::Fanorona)
         current_game = new Fanorona(room_state->getHostUser(), room_state->getGuestUser());
 
+    SavedGameStorageManager storage;
+    SavedGame saved_record;
+    if (storage.findSavedGame(room_state->getHostUser().getId(), room_state->getGuestUser().getId(), room_state->getGameName(), saved_record)) {
+        current_game->loadState(saved_record.getStateData());
+        accumulated_time = saved_record.getElapsedTime(); 
+    }
+
     game_duration_timer.start();
 
     int limit_minutes = room_state->getTimeLimit();
-    if (limit_minutes > 0)
-        time_limit_timer->start(limit_minutes * 60 * 1000);
+    if (limit_minutes > 0) {
+        int remaining_time = (limit_minutes * 60 * 1000) - (accumulated_time * 1000);
+        if (remaining_time < 0) remaining_time = 0;
+        time_limit_timer->start(remaining_time);
+    }
     else
         time_limit_timer->stop();
 
@@ -276,7 +291,7 @@ void GameManager::handleRoomConfigReceived(const User& host_user, int board_size
 void GameManager::handleTimeLimitReached() {
     if (!current_game || !room_state) return;
 
-    room_state->setDuration(game_duration_timer.elapsed() / 1000);
+    room_state->setDuration((game_duration_timer.elapsed() / 1000) + accumulated_time);
 
     int host_score = current_game->getFirstPlayerScore();
     int guest_score = current_game->getSecondPlayerScore();
@@ -321,6 +336,9 @@ void GameManager::saveMatchRecord(GameStatus status) {
     MatchRecord new_record(game_name, host_id, host_username, guest_id, guest_username, winner_id, host_score, guest_score, current_date, game_duration);
 
     history_db.addMatchRecord(new_record);
+
+    SavedGameStorageManager storage;
+    storage.removeSavedGame(host_id, guest_id, game_name);
 }
 
 void GameManager::handleLocalResign() {
@@ -329,7 +347,7 @@ void GameManager::handleLocalResign() {
     if (time_limit_timer->isActive())
         time_limit_timer->stop();
     if (room_state)
-        room_state->setDuration(game_duration_timer.elapsed() / 1000);
+        room_state->setDuration((game_duration_timer.elapsed() / 1000) + accumulated_time);
 
     QByteArray packet;
     QDataStream out(&packet, QIODevice::WriteOnly);
@@ -352,10 +370,46 @@ void GameManager::handleRemoteResign() {
     if (time_limit_timer->isActive())
         time_limit_timer->stop();
     if (room_state)
-        room_state->setDuration(game_duration_timer.elapsed() / 1000);
+        room_state->setDuration((game_duration_timer.elapsed() / 1000) + accumulated_time);
 
     GameStatus final_status = (role == Role::Host) ? GameStatus::HOST_WIN : GameStatus::GUEST_WIN;
 
     saveMatchRecord(final_status);
     emit gameOver(final_status, GameEndReason::RESIGNATION);
+}
+
+void GameManager::requestPause() {
+    if (role == Role::Host) 
+        host->sendPauseRequest();
+    else 
+        guest->sendPauseRequest();
+}
+
+void GameManager::respondToPause(bool accepted) {
+    if (role == Role::Host) 
+        host->sendPauseResponse(accepted);
+    else 
+        guest->sendPauseResponse(accepted);
+
+    if (accepted) 
+        executePauseAndSave();
+}
+
+void GameManager::handleRemotePauseResponse(bool accepted) {
+    emit pauseResponded(accepted);
+    if (accepted) 
+        executePauseAndSave();
+}
+
+void GameManager::executePauseAndSave() {
+    if (time_limit_timer->isActive()) 
+        time_limit_timer->stop();
+
+    int current_elapsed = (game_duration_timer.elapsed() / 1000) + accumulated_time;
+
+    SavedGameStorageManager storage;
+    storage.saveOrUpdateGame(room_state->getGameName(), room_state->getHostUser().getId(), room_state->getGuestUser().getId(),
+        room_state->getBoardSize(),room_state->getTimeLimit(), current_elapsed, current_game->serializeState());
+
+    emit gamePausedSuccessfully();
 }

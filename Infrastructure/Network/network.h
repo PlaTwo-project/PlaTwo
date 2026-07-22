@@ -14,6 +14,8 @@ public:
     
     void sendData(const QByteArray &data);
     void sendChatMessage(const QString &message);
+    void sendPauseRequest();
+    void sendPauseResponse(bool accepted);
 
 signals:
     void connected();
@@ -22,6 +24,8 @@ signals:
     void error(const QString &error);
     void resignReceived();
     void chatMessageReceived(const QString &message);
+    void pauseRequested();
+    void pauseResponded(bool accepted);
 
 private slots:
     void readData();

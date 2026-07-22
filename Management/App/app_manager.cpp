@@ -38,6 +38,11 @@ void AppManager::setupConnections()
     connect(main_window, &MainWindow::resignRequested, &game_manager, &GameManager::handleLocalResign);
     connect(main_window, &MainWindow::chatMessageSendRequested, this, &AppManager::handleChatMessageSend);
     connect(&game_manager, &GameManager::chatMessageReceived, this, &AppManager::handleChatMessageReceived);
+
+    connect(main_window, &MainWindow::pauseRequested, this, &AppManager::handleLocalPauseRequest);
+    connect(&game_manager, &GameManager::opponentPauseRequested, this, &AppManager::handleOpponentPauseRequest);
+    connect(&game_manager, &GameManager::pauseResponded, this, &AppManager::handlePauseResponse);
+    connect(&game_manager, &GameManager::gamePausedSuccessfully, this, &AppManager::handleGamePausedSuccessfully);
 }
 
 void AppManager::handleLogin(const QString &username, const QString &password)
@@ -378,4 +383,26 @@ void AppManager::handleChatMessageSend(const QString& text) {
 
 void AppManager::handleChatMessageReceived(const QString& sender_name, const QString& text) {
     main_window->receiveChatMessage(sender_name, text);
+}
+
+void AppManager::handleLocalPauseRequest() {
+    QMessageBox::information(main_window, "Pause Request", "Pause request sent to the opponent. Waiting for response...");
+    game_manager.requestPause();
+}
+
+void AppManager::handleOpponentPauseRequest() {
+    QMessageBox::StandardButton reply = QMessageBox::question(main_window,
+    "Pause Request", "Your opponent has requested to pause and save the game. Do you accept?", QMessageBox::Yes | QMessageBox::No);
+
+    game_manager.respondToPause(reply == QMessageBox::Yes);
+}
+
+void AppManager::handlePauseResponse(bool accepted) {
+    if (!accepted)
+        QMessageBox::warning(main_window, "Pause Rejected", "Your opponent rejected the pause request.");
+}
+
+void AppManager::handleGamePausedSuccessfully() {
+    QMessageBox::information(main_window, "Game Paused", "The match has been successfully paused and saved.");
+    main_window->showMainMenuPage();
 }

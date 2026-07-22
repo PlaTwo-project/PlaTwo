@@ -28,7 +28,6 @@ void SavedGameStorageManager::loadSavedGames()
         QJsonObject obj = value.toObject();
         SavedGame record;
 
-        record.setGameId(obj["game_id"].toInt());
         record.setGameName(static_cast<GameName>(obj["game_name"].toInt()));
         record.setHostId(obj["host_id"].toInt());
         record.setGuestId(obj["guest_id"].toInt());
@@ -47,7 +46,6 @@ void SavedGameStorageManager::saveSavedGames() const
     for (const SavedGame &record : saved_games_list)
     {
         QJsonObject obj;
-        obj["game_id"] = record.getGameId();
         obj["game_name"] = static_cast<int>(record.getGameName());
         obj["host_id"] = record.getHostId();
         obj["guest_id"] = record.getGuestId();
@@ -67,9 +65,9 @@ void SavedGameStorageManager::saveSavedGames() const
     }
 }
 
-void SavedGameStorageManager::saveOrUpdateGame(int game_id, GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time, const QString &state_data)
+void SavedGameStorageManager::saveOrUpdateGame(GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time, const QString &state_data)
 {
-    SavedGame newRecord(game_id, game_name, host_id, guest_id, board_size, time_limit, elapsed_time, state_data);
+    SavedGame newRecord(game_name, host_id, guest_id, board_size, time_limit, elapsed_time, state_data);
 
     for (int i = 0; i < saved_games_list.size(); ++i)
         if (saved_games_list[i].getHostId() == host_id && saved_games_list[i].getGuestId() == guest_id && saved_games_list[i].getGameName() == game_name){

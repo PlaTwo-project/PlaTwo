@@ -43,6 +43,10 @@ private slots:
     void handleGameOver(GameStatus status, GameEndReason reason = GameEndReason::LOGIC);
     void handleChatMessageSend(const QString& text);
     void handleChatMessageReceived(const QString& sender_name, const QString& text);
+    void handleLocalPauseRequest();
+    void handleOpponentPauseRequest();
+    void handlePauseResponse(bool accepted);
+    void handleGamePausedSuccessfully();
 };
 
 #endif // APP_MANAGER_H

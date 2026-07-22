@@ -7,10 +7,7 @@ class SavedGame
 {
 public:
     SavedGame();
-    SavedGame(int game_id, GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time, const QString &state_data);
-
-    int getGameId() const;
-    void setGameId(int game_id);
+    SavedGame(GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time, const QString &state_data);
 
     GameName getGameName() const;
     void setGameName(GameName game_name);
@@ -34,7 +31,6 @@ public:
     void setStateData(const QString &state_data);
 
 private:
-    int game_id;
     GameName game_name;
     int host_id;
     int guest_id;

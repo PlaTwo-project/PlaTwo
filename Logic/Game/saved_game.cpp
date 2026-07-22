@@ -1,22 +1,12 @@
 #include "saved_game.h"
 
-SavedGame::SavedGame(): game_id(0), game_name(static_cast<GameName>(0)), host_id(0), guest_id(0), board_size(0), time_limit(0), elapsed_time(0), state_data("")
+SavedGame::SavedGame(): game_name(static_cast<GameName>(0)), host_id(0), guest_id(0), board_size(0), time_limit(0), elapsed_time(0), state_data("")
 {
 }
 
-SavedGame::SavedGame(int game_id, GameName game_name, int host_id, int guest_id,int board_size, int time_limit, int elapsed_time, const QString &state_data)
-    : game_id(game_id), game_name(game_name), host_id(host_id), guest_id(guest_id), board_size(board_size), time_limit(time_limit), elapsed_time(elapsed_time), state_data(state_data)
+SavedGame::SavedGame( GameName game_name, int host_id, int guest_id,int board_size, int time_limit, int elapsed_time, const QString &state_data)
+    : game_name(game_name), host_id(host_id), guest_id(guest_id), board_size(board_size), time_limit(time_limit), elapsed_time(elapsed_time), state_data(state_data)
 {
-}
-
-int SavedGame::getGameId() const
-{
-    return game_id;
-}
-
-void SavedGame::setGameId(int game_id)
-{
-    this->game_id = game_id;
 }
 
 GameName SavedGame::getGameName() const

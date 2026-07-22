@@ -15,6 +15,10 @@ public:
         resign_button = new QPushButton("Resign", this);
         resign_button->setStyleSheet("background-color: #ff4d4d; color: white; font-weight: bold; border-radius: 5px;");
         connect(resign_button, &QPushButton::clicked, this, &BasePage::resignRequested);
+
+        pause_button = new QPushButton("Pause", this);
+        pause_button->setStyleSheet("background-color: #ffaa00; color: white; font-weight: bold; border-radius: 5px;");
+        connect(pause_button, &QPushButton::clicked, this, &BasePage::pauseRequested);
     }
 
     virtual ~BasePage() = default;
@@ -46,6 +50,7 @@ public:
 signals:
     void moveRequested(const int, const int, const int);
     void resignRequested();
+    void pauseRequested();
 
 protected:
 
@@ -58,6 +63,14 @@ protected:
         int y = 20;
 
         resign_button->setGeometry(x, y, button_width, button_height);
+
+        int p_width = 80;
+        int p_height = 30;
+        int p_x = x;
+        int gap = 5;
+        int p_y = y + button_height + gap;
+
+        pause_button->setGeometry(p_x, p_y, p_width, p_height);
     }
 
     int board_size;
@@ -72,4 +85,5 @@ protected:
     QString second_player_name;
 
     QPushButton* resign_button;
+    QPushButton* pause_button;
 };

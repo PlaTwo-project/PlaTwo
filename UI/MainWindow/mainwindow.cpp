@@ -133,6 +133,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(nine_mens_morris_page, &BasePage::resignRequested, this, &MainWindow::resignRequested);
     connect(fanorona_page, &BasePage::resignRequested, this, &MainWindow::resignRequested);
 
+    connect(dots_and_boxes_page, &BasePage::pauseRequested, this, &MainWindow::pauseRequested);
+    connect(nine_mens_morris_page, &BasePage::pauseRequested, this, &MainWindow::pauseRequested);
+    connect(fanorona_page, &BasePage::pauseRequested, this, &MainWindow::pauseRequested);
+
     // show pages
     showLoginPage();
 }

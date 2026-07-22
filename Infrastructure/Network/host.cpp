@@ -88,4 +88,14 @@ void Host::handleIncomingData(const QByteArray &data) {
         in >> chat_message;
         emit chatMessageReceived(chat_message);
     }
+
+    if (packet_type == 6) {
+        emit pauseRequested();
+    }
+
+    if (packet_type == 7) {
+        bool accepted;
+        in >> accepted;
+        emit pauseResponded(accepted);
+    }
 }

@@ -76,6 +76,7 @@ signals:
     void fanoronaMoveRequested(const int from, const int to, const int capture_choice);
     void resignRequested();
     void chatMessageSendRequested(const QString& text);
+    void pauseRequested();
 
 private:
     Ui::MainWindow *ui;

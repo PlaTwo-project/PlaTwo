@@ -17,7 +17,7 @@ public:
     void loadSavedGames();
     void saveSavedGames() const;
 
-    void saveOrUpdateGame(int game_id, GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time, const QString &state_data);
+    void saveOrUpdateGame(GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time, const QString &state_data);
 
     bool findSavedGame(int host_id, int guest_id, GameName game_name, SavedGame &out_record) const;
     void removeSavedGame(int host_id, int guest_id, GameName game_name);

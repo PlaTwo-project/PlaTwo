@@ -11,6 +11,7 @@
 #include "Logic/Game/BaseLogicClasses/Game.h"
 #include "Infrastructure/DataBase/history_storage_manager.h"
 #include "Logic/Game/game_end_reason.h"
+#include "Infrastructure/DataBase/saved_game_storage_manager.h"
 
 enum class Role {
     Host,
@@ -38,6 +39,10 @@ public:
     void handleLocalResign();
     void handleRemoteResign();
     void sendChatMessage(const QString& message);
+    void requestPause();
+    void respondToPause(bool accepted);
+    void handleRemotePauseResponse(bool accepted);
+    void executePauseAndSave();
 
     Role getRole() const;
     Game* getCurrentGame() const;
@@ -58,6 +63,9 @@ signals:
     void opponentMoveReceived();
     void gameOver(GameStatus status, GameEndReason reason = GameEndReason::LOGIC);
     void chatMessageReceived(const QString& sender_name, const QString& message);
+    void opponentPauseRequested();
+    void pauseResponded(bool accepted);
+    void gamePausedSuccessfully();
 
 private:
     Role role;
@@ -68,6 +76,7 @@ private:
     QTimer* time_limit_timer;
     QElapsedTimer game_duration_timer;
     HistoryStorageManager history_db;
+    int accumulated_time;
 };
 
 #endif // GAMEMANAGER_H

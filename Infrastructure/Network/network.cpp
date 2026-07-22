@@ -49,3 +49,16 @@ void Network::disconnectSocket()
 {
     emit disconnected();
 }
+void Network::sendPauseRequest() {
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out << qint8(6);
+    sendData(block);
+}
+
+void Network::sendPauseResponse(bool accepted) {
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out << qint8(7) << accepted;
+    sendData(block);
+}
