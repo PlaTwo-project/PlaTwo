@@ -24,8 +24,8 @@ void DotsAndBoxesPage::updateBoard(const QVector<QVector<bool>> &horizontal_line
     update();
 }
 
-void DotsAndBoxesPage::paintEvent(QPaintEvent *event)
-{
+void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
+    Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::black);

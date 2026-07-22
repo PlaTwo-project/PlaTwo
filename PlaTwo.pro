@@ -35,6 +35,7 @@ SOURCES += \
     UI/Auth/Login/login.cpp \
     UI/Auth/SignUp/signup.cpp \
     UI/Chat/chat_widget.cpp \
+    UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.cpp \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.cpp \
     UI/Games/Fanorona/fanorona_page.cpp \
     UI/Games/NineMensMorrisPage/nine_mens_morris_page.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     Logic/Game/BaseLogicClasses/Game.h \
     Logic/Game/BaseLogicClasses/Move.h \
     Logic/Game/DotsAndBoxes/DotsAndBoxesBoard/dots_and_boxes_board.h \
+    Logic/Game/DotsAndBoxes/DotsAndBoxesColors/dots_and_boxes_colors.h \
     Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.h \
     Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.h \
     Logic/Game/Fanorona/FanoronaLogic/fanorona.h \
@@ -86,6 +88,7 @@ HEADERS += \
     UI/Auth/signup/signup.h \
     UI/Chat/chat_widget.h \
     UI/Games/BasePage/base_page.h \
+    UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.h \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.h \
     UI/Games/Fanorona/fanorona_page.h \
     UI/Games/NineMensMorrisPage/nine_mens_morris_page.h \
@@ -101,6 +104,7 @@ FORMS += \
     UI/Auth/ForgotPassword/forgot_password.ui \
     UI/Auth/Login/login.ui \
     UI/Auth/SignUp/signup.ui \
+    UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.ui \
     UI/MainWindow/mainwindow.ui \
     UI/Menu/game_menu.ui \
     UI/Menu/history.ui \
