@@ -19,10 +19,10 @@ void Guest::connectHost(const QString& IP, int port)
     connect(this, &Network::dataReceived, this, &Guest::handleIncomingData);
 }
 
-void Guest::sendGuestInfo(const User& guest_user) {
+void Guest::sendGuestInfo(const User& guest_user, int guest_color_index) {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out << qint8(2) << guest_user.getId() << guest_user.getName() << guest_user.getUsername();
+    out << qint8(2) << guest_user.getId() << guest_user.getName() << guest_user.getUsername() << guest_color_index;
     sendData(block);
 }
 
@@ -35,12 +35,13 @@ void Guest::handleIncomingData(const QByteArray &data) {
         int host_id;
         QString host_name, host_username;
         int board_size, time_limit;
-        in >> host_id >> host_name >> host_username >> board_size >> time_limit;
+        int host_color_index, guest_color_index;
+        in >> host_id >> host_name >> host_username >> board_size >> time_limit >> host_color_index >> guest_color_index;
 
         User host_user(host_name);
         host_user.setId(host_id);
         host_user.setUsername(host_username);
-        emit roomConfigReceived(host_user, board_size, time_limit);
+        emit roomConfigReceived(host_user, board_size, time_limit, host_color_index, guest_color_index);
     }
 
     if (packet_type == 3) {

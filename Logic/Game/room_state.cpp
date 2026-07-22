@@ -84,3 +84,19 @@ int RoomState::getDuration() const
 {
     return game_duration;
 }
+
+int RoomState::getHostColorIndex() const {
+    return host_color_index;
+}
+
+void RoomState::setHostColorIndex(int color_index) {
+    this->host_color_index = color_index;
+}
+
+int RoomState::getGuestColorIndex() const {
+    return guest_color_index;
+}
+
+void RoomState::setGuestColorIndex(int color_index) {
+    this->guest_color_index = color_index;
+}

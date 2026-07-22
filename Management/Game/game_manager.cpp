@@ -21,13 +21,12 @@ GameManager::~GameManager() {
     delete current_game;
 }
 
-QString GameManager::createRoom(const User& host_user, const int port, const GameName game_name, const int board_size, const int time_limit) {
+QString GameManager::createRoom(const User& host_user, const int port, const GameName game_name, const int board_size, const int time_limit, const int host_color_index) {
     role = Role::Host;
     host = new Host(this);
-
     QString local_ip = host->getLocalIP();
-
     room_state = new RoomState(port, host_user, User(), game_name, local_ip, board_size, time_limit);
+    room_state->setHostColorIndex(host_color_index);
     host->startHosting(port);
 
     connect(host, &Host::guestJoined, this, &GameManager::handleGuestConnection);
@@ -42,14 +41,14 @@ QString GameManager::createRoom(const User& host_user, const int port, const Gam
     return local_ip;
 }
 
-bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const int port, const GameName game_name) {
+bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const int port, const GameName game_name, const int guest_color_index) {
     role = Role::Guest;
     guest = new Guest(this);
-
     room_state = new RoomState(port, User(), guest_user, game_name, host_ip, 0, 0);
+    room_state->setGuestColorIndex(guest_color_index);
     guest->connectHost(host_ip, port);
 
-    connect(guest, &Network::connected, this, [this, guest_user]() { guest->sendGuestInfo(guest_user);});
+    connect(guest, &Network::connected, this, [this, guest_user, guest_color_index]() { guest->sendGuestInfo(guest_user, guest_color_index);});
     connect(guest, &Guest::roomConfigReceived, this, &GameManager::handleRoomConfigReceived);
     connect(guest, &Guest::moveReceived, this, &GameManager::handleRemoteMove);
     connect(guest, &Guest::resignReceived, this, &GameManager::handleRemoteResign);
@@ -277,14 +276,27 @@ void GameManager::updateRoomConfig(const User& host_user, int board_size, int ti
     }
 }
 
-void GameManager::handleGuestConnection(const User& guest_user) {
+void GameManager::handleGuestConnection(const User& guest_user, int guest_color_index) {
     updateGuestUser(guest_user);
-    host->sendRoomConfig(room_state->getHostUser(), room_state->getBoardSize(), room_state->getTimeLimit());
+    int host_color_index = room_state->getHostColorIndex();
+    int final_guest_color_index = guest_color_index;
+
+    if (room_state->getGameName() == GameName::DotsAndBoxes) {
+        int palette_size = DotsAndBoxesColors::palette().size();
+
+        if (final_guest_color_index == host_color_index)
+            final_guest_color_index = (host_color_index + 1) % palette_size;
+    }
+
+    room_state->setGuestColorIndex(final_guest_color_index);
+    host->sendRoomConfig(room_state->getHostUser(), room_state->getBoardSize(), room_state->getTimeLimit(), host_color_index, final_guest_color_index);
     startGame();
 }
 
-void GameManager::handleRoomConfigReceived(const User& host_user, int board_size, int time_limit) {
+void GameManager::handleRoomConfigReceived(const User& host_user, int board_size, int time_limit, int host_color_index, int guest_color_index) {
     updateRoomConfig(host_user, board_size, time_limit);
+    room_state->setHostColorIndex(host_color_index);
+    room_state->setGuestColorIndex(guest_color_index);
     startGame();
 }
 
@@ -412,4 +424,12 @@ void GameManager::executePauseAndSave() {
         room_state->getBoardSize(),room_state->getTimeLimit(), current_elapsed, current_game->serializeState());
 
     emit gamePausedSuccessfully();
+}
+
+QColor GameManager::getHostColor() const {
+    return DotsAndBoxesColors::colorAt(room_state ? room_state->getHostColorIndex() : -1);
+}
+
+QColor GameManager::getGuestColor() const {
+    return DotsAndBoxesColors::colorAt(room_state ? room_state->getGuestColorIndex() : -1);
 }

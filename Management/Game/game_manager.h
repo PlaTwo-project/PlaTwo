@@ -12,6 +12,7 @@
 #include "Infrastructure/DataBase/history_storage_manager.h"
 #include "Logic/Game/game_end_reason.h"
 #include "Infrastructure/DataBase/saved_game_storage_manager.h"
+#include "Logic/Game/DotsAndBoxes/DotsAndBoxesColors/dots_and_boxes_colors.h"
 
 enum class Role {
     Host,
@@ -26,15 +27,15 @@ public:
     explicit GameManager(QObject *parent = nullptr);
     ~GameManager();
 
-    QString createRoom(const User& host_user, const int port, const GameName game_name, const int board_size, const int time_limit);
-    bool joinRoom(const User& guest_user, const QString& host_ip, const int port, const GameName game_name);
+    QString createRoom(const User& host_user, const int port, const GameName game_name, const int board_size, const int time_limit, const int host_color_index = -1);
+    bool joinRoom(const User& guest_user, const QString& host_ip, const int port, const GameName game_name, const int guest_color_index = -1);
     bool cancelRoom();
 
     void startGame();
     bool handleLocalMove(int arg1, int arg2, int arg3);
     bool handleRemoteMove(const QByteArray& serialized_move);
-    void handleGuestConnection(const User& guest_user);
-    void handleRoomConfigReceived(const User& host_user, int board_size, int time_limit);
+    void handleGuestConnection(const User& guest_user, int guest_color_index);
+    void handleRoomConfigReceived(const User& host_user, int board_size, int time_limit, int host_color_index, int guest_color_index);
     void handleTimeLimitReached();
     void handleLocalResign();
     void handleRemoteResign();
@@ -52,6 +53,8 @@ public:
     QString getGuestUsername() const;
     int getHostUserId() const;
     int getGuestUserId() const;
+    QColor getHostColor() const;
+    QColor getGuestColor() const;
 
     void updateGuestUser(const User& guest_user);
     void updateRoomConfig(const User& host_user, int board_size, int time_limit);

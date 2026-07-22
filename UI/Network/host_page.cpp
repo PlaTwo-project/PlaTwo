@@ -1,20 +1,18 @@
 #include "host_page.h"
 #include "ui_host_page.h"
+#include "UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.h"
+#include <QGraphicsBlurEffect>
 
-HostPage::HostPage(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::HostPage)
-{
+HostPage::HostPage(QWidget *parent) : QWidget(parent), ui(new Ui::HostPage) {
     ui->setupUi(this);
 }
 
-HostPage::~HostPage()
-{
+HostPage::~HostPage() {
     delete ui;
 }
 
-void HostPage::setPage(GameName game_name)
-{
+void HostPage::setPage(GameName game_name) {
+    current_game_name = game_name;
     if (game_name == GameName::DotsAndBoxes) {
         ui->label_game_name->setText("Boxes And Dots");
         ui->label_game_name_2->setText("Boxes And Dots");
@@ -45,32 +43,41 @@ void HostPage::setPage(GameName game_name)
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void HostPage::on_pushButton_create_clicked()
-{
+void HostPage::on_pushButton_create_clicked() {
     int port = ui->spinBox_port->value();
     int boardSize = ui->comboBox__board_size->currentData().toInt();
-
     int timeLimit = 0;
-    if (ui->checkBox_time_limit->isChecked()) {
+    if (ui->checkBox_time_limit->isChecked())
         timeLimit = ui->spinBox_time_limit->value();
+
+    int colorIndex = -1;
+    if (current_game_name == GameName::DotsAndBoxes) {
+        QGraphicsBlurEffect* blur_effect = new QGraphicsBlurEffect(this);
+        blur_effect->setBlurRadius(15);
+        this->setGraphicsEffect(blur_effect);
+        ColorSelectionDialog color_dialog(this);
+        int result = color_dialog.exec();
+        this->setGraphicsEffect(nullptr);
+
+        if (result != QDialog::Accepted)
+            return;
+
+        colorIndex = color_dialog.selectedColorIndex();
     }
 
-    emit createRoomRequested(port, boardSize, timeLimit);
+    emit createRoomRequested(port, boardSize, timeLimit, colorIndex);
 }
 
-void HostPage::on_pushButton_back_clicked()
-{
+void HostPage::on_pushButton_back_clicked() {
     emit navigateToGameMenu();
 }
 
-void HostPage::on_pushButton_cancelHost_clicked()
-{
+void HostPage::on_pushButton_cancelHost_clicked() {
     emit cancelHostRequested();
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void HostPage::switchToWaitingStatus(const QString& Ip)
-{
+void HostPage::switchToWaitingStatus(const QString& Ip) {
     ui->label_server_IP->setText("IP Address: " + Ip);
     ui->stackedWidget->setCurrentIndex(1);
 }

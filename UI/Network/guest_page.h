@@ -24,10 +24,11 @@ private slots:
 
 signals:
     void navigateToGameMenu();
-    void joinRequested(QString ip, int port);
+    void joinRequested(QString ip, int port, int colorIndex);
 
 private:
     Ui::GuestPage *ui;
+    GameName current_game_name = GameName::None;
 };
 
 #endif // GUEST_PAGE_H

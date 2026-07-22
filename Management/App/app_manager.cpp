@@ -238,21 +238,17 @@ void AppManager::handleShowHistory(const GameName game_name) {
     main_window->showHistoryPage(user_history, cur_user.getId(), game_name);
 }
 
-void AppManager::handleCreateRoom(const int port, const int board_size, const int time_limit, const GameName game_name)
-{
+void AppManager::handleCreateRoom(const int port, const int board_size, const int time_limit, const GameName game_name, const int color_index) {
     User cur_user = SessionManager::getInstance().getCurrentUser();
-    main_window->showWatingHostPage(game_manager.createRoom(cur_user, port, game_name, board_size, time_limit));
+    main_window->showWatingHostPage(game_manager.createRoom(cur_user, port, game_name, board_size, time_limit, color_index));
 }
 
-void AppManager::handleJoinRoom(const QString &IP, const int port, const GameName game_name)
-{
+void AppManager::handleJoinRoom(const QString &IP, const int port, const GameName game_name, const int color_index) {
     User cur_user = SessionManager::getInstance().getCurrentUser();
     AuthResult result = authenticator.verifyIP(IP);
-
-    switch (result)
-    {
+    switch (result) {
     case AuthResult::SUCCESS:
-        game_manager.joinRoom(cur_user, IP, port, game_name);
+        game_manager.joinRoom(cur_user, IP, port, game_name, color_index);
         break;
 
     case AuthResult::INVALID_IP:
@@ -293,8 +289,7 @@ void AppManager::updateGameUI()
     main_window->renderActivePage(game_logic);
 }
 
-void AppManager::handleGameStarted()
-{
+void AppManager::handleGameStarted() {
     Game *game_logic = game_manager.getCurrentGame();
     if (!game_logic)
         return;
@@ -303,6 +298,7 @@ void AppManager::handleGameStarted()
     if (current_game_name == GameName::DotsAndBoxes) {
         int board_size = game_manager.getRoomBoardSize();
         main_window->showDotsAndBoxesPage(board_size);
+        main_window->setDotsAndBoxesColors(game_manager.getHostColor(), game_manager.getGuestColor());
     }
     else if (current_game_name == GameName::NineMensMorris)
         main_window->showNineMensMorrisPage();

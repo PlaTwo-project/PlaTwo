@@ -1,59 +1,51 @@
 #include "dots_and_boxes_board.h"
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.h"
 
-DotsAndBoxesBoard::DotsAndBoxesBoard(int size) : board_size(size)
-{
+DotsAndBoxesBoard::DotsAndBoxesBoard(int size) : board_size(size) {
     initialize();
 }
 
-void DotsAndBoxesBoard::initialize()
-{
-    horizontal_lines.assign(board_size + 1, QVector<bool>(board_size, false));
-    vertical_lines.assign(board_size, QVector<bool>(board_size + 1, false));
+void DotsAndBoxesBoard::initialize() {
+    horizontal_lines.assign(board_size + 1, QVector<int>(board_size, 0));
+    vertical_lines.assign(board_size, QVector<int>(board_size + 1, 0));
     captured_boxes.assign(board_size, QVector<int>(board_size, 0));
 }
 
-void DotsAndBoxesBoard::clear()
-{
+void DotsAndBoxesBoard::clear() {
     initialize();
 }
 
-void DotsAndBoxesBoard::applyMove(const Move& main_move)
-{
+void DotsAndBoxesBoard::applyMove(const Move& main_move) {
+    applyMove(main_move, 0);
+}
+
+void DotsAndBoxesBoard::applyMove(const Move& main_move, int player_id) {
     const DotsAndBoxesMove& move = static_cast<const DotsAndBoxesMove&>(main_move);
     int row = move.getRow();
     int column = move.getColumn();
-    bool isHorizontal;
-
-    if (move.getDirection() == lineDirection::HORIZONTAL)
-        isHorizontal = true;
-    else
-        isHorizontal = false;
-
+    bool isHorizontal = (move.getDirection() == lineDirection::HORIZONTAL);
     if (isHorizontal) {
-        if (horizontal_lines[row][column])
+        if (horizontal_lines[row][column] != 0)
             return;
 
-        horizontal_lines[row][column] = true;
+        horizontal_lines[row][column] = player_id;
     }
     else {
-        if (vertical_lines[row][column])
+        if (vertical_lines[row][column] != 0)
             return;
 
-        vertical_lines[row][column] = true;
+        vertical_lines[row][column] = player_id;
     }
 }
 
-bool DotsAndBoxesBoard::isLineTaken(int row, int column, int direction_type) const
-{
+bool DotsAndBoxesBoard::isLineTaken(int row, int column, int direction_type) const {
     if (direction_type == horizontalDirection)
-        return horizontal_lines[row][column];
+        return horizontal_lines[row][column] != 0;
 
-    return vertical_lines[row][column];
+    return vertical_lines[row][column] != 0;
 }
 
-bool DotsAndBoxesBoard::checkAndCloseBoxes(int row, int column, int direction_type, int player_id)
-{
+bool DotsAndBoxesBoard::checkAndCloseBoxes(int row, int column, int direction_type, int player_id) {
     bool boxClosed = false;
 
     if (direction_type == horizontalDirection) {
@@ -74,8 +66,7 @@ bool DotsAndBoxesBoard::checkAndCloseBoxes(int row, int column, int direction_ty
     return boxClosed;
 }
 
-bool DotsAndBoxesBoard::isFull() const
-{
+bool DotsAndBoxesBoard::isFull() const {
     for (const QVector<int> &row : captured_boxes)
         for (int playerId : row)
             if (playerId == 0)
@@ -84,28 +75,23 @@ bool DotsAndBoxesBoard::isFull() const
     return true;
 }
 
-int DotsAndBoxesBoard::getBoardSize() const
-{
+int DotsAndBoxesBoard::getBoardSize() const {
     return board_size;
 }
 
-const QVector<QVector<int>> &DotsAndBoxesBoard::getCapturedBoxes() const
-{
+const QVector<QVector<int>> &DotsAndBoxesBoard::getCapturedBoxes() const {
     return captured_boxes;
 }
 
-const QVector<QVector<bool>> &DotsAndBoxesBoard::getHorizontalLines() const
-{
+const QVector<QVector<int>> &DotsAndBoxesBoard::getHorizontalLines() const {
     return horizontal_lines;
 }
 
-const QVector<QVector<bool>> &DotsAndBoxesBoard::getVerticalLines() const
-{
+const QVector<QVector<int>> &DotsAndBoxesBoard::getVerticalLines() const {
     return vertical_lines;
 }
 
-bool DotsAndBoxesBoard::closeBox(int row, int column, int player_id)
-{
+bool DotsAndBoxesBoard::closeBox(int row, int column, int player_id) {
     if (captured_boxes[row][column] != 0)
         return false;
 
@@ -113,7 +99,7 @@ bool DotsAndBoxesBoard::closeBox(int row, int column, int player_id)
     return true;
 }
 
-void DotsAndBoxesBoard::restoreState(const QVector<QVector<bool>>& h_lines, const QVector<QVector<bool>>& v_lines, const QVector<QVector<int>>& boxes) {
+void DotsAndBoxesBoard::restoreState(const QVector<QVector<int>>& h_lines, const QVector<QVector<int>>& v_lines, const QVector<QVector<int>>& boxes) {
     horizontal_lines = h_lines;
     vertical_lines = v_lines;
     captured_boxes = boxes;

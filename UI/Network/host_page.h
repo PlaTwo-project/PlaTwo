@@ -20,7 +20,7 @@ public:
     void switchToWaitingStatus(const QString& Ip);
 
 signals:
-    void createRoomRequested(int port, int boardSize, int timeLimitMinutes);
+    void createRoomRequested(int port, int boardSize, int timeLimitMinutes, int colorIndex);
     void navigateToGameMenu();
     void cancelHostRequested();
 
@@ -31,6 +31,7 @@ private slots:
 
 private:
     Ui::HostPage *ui;
+    GameName current_game_name = GameName::None;
 };
 
 #endif // HOST_PAGE_H

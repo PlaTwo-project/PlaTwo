@@ -16,10 +16,7 @@
 #include <QStackedWidget>
 #include <QHBoxLayout>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     //create pages
@@ -117,11 +114,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(edit_profile_page, &EditProfile::editProfileRequested, this, &MainWindow::editProfileRequested);
     connect(game_menu_page, &GameMenu::navigateToHistory, this, &MainWindow::showHistoryRequested);
 
-    connect(host_page, &HostPage::createRoomRequested, this, [this](int port, int board_size, int time_limit) {
-        emit createRoomRequested(port, board_size, time_limit, cur_game);
+    connect(host_page, &HostPage::createRoomRequested, this, [this](int port, int board_size, int time_limit, int color_index) {
+        emit createRoomRequested(port, board_size, time_limit, cur_game, color_index);
     });
-    connect(guest_page, &GuestPage::joinRequested, this, [this](const QString& IP, const int& port) {
-        emit joinRoomRequested(IP, port, cur_game);
+    connect(guest_page, &GuestPage::joinRequested, this, [this](const QString& IP, const int& port, int color_index) {
+        emit joinRoomRequested(IP, port, cur_game, color_index);
     });
     connect(host_page, &HostPage::cancelHostRequested, this, &MainWindow::cancelHostRequested);
 
@@ -277,4 +274,8 @@ void MainWindow::receiveChatMessage(const QString& sender_name, const QString& t
 
 void MainWindow::clearChat() {
     chat_widget->clearMessages();
+}
+
+void MainWindow::setDotsAndBoxesColors(const QColor& host_color, const QColor& guest_color) {
+    dots_and_boxes_page->setPlayerColors(host_color, guest_color);
 }

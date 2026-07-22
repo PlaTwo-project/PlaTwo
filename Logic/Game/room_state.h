@@ -17,6 +17,8 @@ public:
     int getBoardSize() const;
     int getTimeLimit() const;
     int getDuration() const;
+    int getHostColorIndex() const;
+    int getGuestColorIndex() const;
 
     void setPort(int port);
     void setHostUser(const User& host_user);
@@ -26,6 +28,8 @@ public:
     void setBoardSize(int board_size);
     void setTimeLimit(int time_limit);
     void setDuration(int game_duration);
+    void setHostColorIndex(int color_index);
+    void setGuestColorIndex(int color_index);
 
 private:
     int port;
@@ -36,6 +40,8 @@ private:
     int board_size;
     int time_limit;
     int game_duration;
+    int host_color_index = -1;
+    int guest_color_index = -1;
 };
 
 #endif // ROOM_STATE_H

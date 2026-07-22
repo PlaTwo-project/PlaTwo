@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QColor>
 #include "Logic/Game/game_name.h"
 
 class MatchRecord;
@@ -49,6 +50,7 @@ public:
     void showFanoronaPage();
     BasePage* getActivePage() const;
     void renderActivePage(const class Game* game);
+    void setDotsAndBoxesColors(const QColor& host_color, const QColor& guest_color);
     void appendOwnChatMessage(const QString& text);
     void receiveChatMessage(const QString& sender_name, const QString& text);
     void clearChat();
@@ -68,8 +70,8 @@ signals:
     void resetPasswordRequested(const QString& username, const QString& phone, const QString& newPassword);
     void editProfileRequested(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& new_password, const QString& old_password);\
     void showHistoryRequested(GameName game_name);
-    void createRoomRequested(int port, int board_size, int time_limit, GameName game_name);
-    void joinRoomRequested(const QString& IP, const int& port, GameName game_name);
+    void createRoomRequested(int port, int board_size, int time_limit, GameName game_name, int color_index);
+    void joinRoomRequested(const QString& IP, const int& port, GameName game_name, int color_index);
     void cancelHostRequested();
     void dotsAndBoxesMoveRequested(const int row, const int col, const int direction);
     void nineMensMorrisMoveRequested(const int from, const int to, const int action_type);

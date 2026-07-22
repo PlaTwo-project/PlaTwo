@@ -6,9 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>638</width>
-    <height>396</height>
+    <width>547</width>
+    <height>339</height>
    </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::FocusPolicy::NoFocus</enum>
   </property>
   <property name="windowTitle">
    <string>Choose Your Color</string>
@@ -17,75 +20,34 @@
    <iconset resource="../../../../recources.qrc">
     <normaloff>:/icons/Resources/icon.ico</normaloff>:/icons/Resources/icon.ico</iconset>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialogButtonBox QPushButton {
+    background-color: white;
+    color: black;
+    border: 1px solid #0078d7;
+    padding: 5px 12px;
+    border-radius: 4px;
+}
+
+QDialogButtonBox QPushButton:hover {
+    background-color: #e6f2ff;
+}
+
+QDialogButtonBox QPushButton:pressed {
+    background-color: #C7E3FF;
+}
+</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="1" alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignBottom">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="mouseTracking">
-      <bool>false</bool>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::TabFocus</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
-     </property>
-     <property name="centerButtons">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="0" colspan="3" alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
     <widget class="QLabel" name="label">
      <property name="font">
       <font>
        <family>Orbitron SemiBold</family>
-       <pointsize>50</pointsize>
+       <pointsize>45</pointsize>
        <underline>true</underline>
       </font>
      </property>
@@ -94,7 +56,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="leftMargin">
       <number>20</number>
@@ -129,9 +91,15 @@
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: green;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: green;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -159,9 +127,15 @@ border: 1.5px solid #444;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: blue;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: blue;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -192,9 +166,15 @@ border: 1.5px solid #444;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: yellow;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: yellow;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -223,9 +203,15 @@ border: 1.5px solid #444;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: red;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: red;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -253,9 +239,15 @@ border: 1.5px solid #444;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: pink;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: pink;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -283,9 +275,15 @@ border: 1.5px solid #444;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: purple;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: purple;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -313,9 +311,15 @@ border: 1.5px solid #444;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: teal;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: teal;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -343,9 +347,15 @@ border: 1.5px solid #444;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: orange;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: orange;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -376,9 +386,15 @@ border: 1.5px solid #444;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: brown;
-border-radius: 10px;
-border: 1.5px solid #444;</string>
+        <string notr="true">QPushButton {
+	background-color: brown;
+	border-radius: 10px;
+	border: 1.5px solid #444;
+}
+
+QPushButton:hover {
+	border: 3px solid #000;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -393,12 +409,51 @@ border: 1.5px solid #444;</string>
       <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Policy::Fixed</enum>
+      <enum>QSizePolicy::Policy::Expanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>30</height>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="0">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="1">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
       </size>
      </property>
     </spacer>
@@ -408,38 +463,5 @@ border: 1.5px solid #444;</string>
  <resources>
   <include location="../../../../recources.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>ColorSelectionDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>ColorSelectionDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

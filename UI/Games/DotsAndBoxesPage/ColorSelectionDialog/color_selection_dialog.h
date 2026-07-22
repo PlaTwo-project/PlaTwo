@@ -2,8 +2,6 @@
 #define COLOR_SELECTION_DIALOG_H
 
 #include <QDialog>
-#include <QPushButton>
-#include <QVector>
 
 namespace Ui {
 class ColorSelectionDialog;
@@ -15,6 +13,8 @@ class ColorSelectionDialog : public QDialog
 
 public:
     explicit ColorSelectionDialog(QWidget* parent = nullptr);
+    ~ColorSelectionDialog();
+
     int selectedColorIndex() const;
 
 private slots:
@@ -32,7 +32,6 @@ private:
     void selectColor(int index);
 
     Ui::ColorSelectionDialog *ui;
-    QVector<QPushButton*> color_buttons;
     int selected_index;
 };
 
