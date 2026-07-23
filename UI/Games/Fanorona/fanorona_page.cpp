@@ -5,8 +5,8 @@
 #include <QMessageBox>
 #include <cmath>
 
-static const int PIECE_RADIUS = 17;
-static const int CLICK_THRESHOLD = 23;
+static const int PIECE_RADIUS = 16;
+static const int CLICK_THRESHOLD = 30;
 
 FanoronaPage::FanoronaPage(QWidget* parent) : BasePage(parent), chain_active(false), chain_position(-1), current_player_id(0), selected_position(-1), hovered_position(-1) {
     setMouseTracking(true);
@@ -18,7 +18,7 @@ void FanoronaPage::setupBoard(const int size) {
     selected_position = -1;
     chain_active = false;
     chain_position = -1;
-    update();
+    highlighted_positions.clear();
 }
 
 QPoint FanoronaPage::pixelOf(int position) const {
@@ -47,14 +47,61 @@ void FanoronaPage::updateFromGame(const Game* game) {
         return;
 
     const FanoronaBoard* board = dynamic_cast<const FanoronaBoard*>(fanorona_game->getBoard());
-    if (!board) return;
+    if (!board)
+        return;
 
     snapshot_board.setOccupants(board->getOccupants());
     chain_active = fanorona_game->isChainActive();
     chain_position = fanorona_game->getChainPosition();
     current_player_id = fanorona_game->currentPlayerId();
     selected_position = -1;
+
+    updateHighlights();
     update();
+}
+
+void FanoronaPage::updateHighlights() {
+    highlighted_positions.clear();
+    if (!is_input_enabled)
+        return;
+
+    if (chain_active) {
+        highlighted_positions = computeChainTargets();
+        return;
+    }
+
+    if (selected_position != -1)
+        highlighted_positions = computeLegalTargets(selected_position);
+}
+
+QVector<int> FanoronaPage::computeLegalTargets(int from) const {
+    QVector<int> targets;
+    bool force_capture = snapshot_board.hasAnyCaptureAvailable(current_player_id);
+    for (int neighbour : snapshot_board.getNeighbours(from)) {
+        if (!snapshot_board.isEmpty(neighbour))
+            continue;
+
+        bool captures = snapshot_board.canApproachCapture(from, neighbour) || snapshot_board.canWithdrawalCapture(from, neighbour);
+        if (force_capture && !captures)
+            continue;
+
+        targets.append(neighbour);
+    }
+
+    return targets;
+}
+
+QVector<int> FanoronaPage::computeChainTargets() const {
+    QVector<int> targets;
+    for (int neighbour : snapshot_board.getNeighbours(chain_position)) {
+        if (!snapshot_board.isEmpty(neighbour))
+            continue;
+
+        if (snapshot_board.canApproachCapture(chain_position, neighbour) || snapshot_board.canWithdrawalCapture(chain_position, neighbour))
+            targets.append(neighbour);
+    }
+
+    return targets;
 }
 
 void FanoronaPage::paintEvent(QPaintEvent* event) {
@@ -84,6 +131,12 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
             painter.setPen(QPen(Qt::darkGray, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.setBrush(Qt::NoBrush);
             painter.drawEllipse(p, PIECE_RADIUS + 4, PIECE_RADIUS + 4);
+        }
+
+        if (highlighted_positions.contains(position)) {
+            painter.setPen(QPen(QColor(46, 204, 113), 3));
+            painter.setBrush(QColor(46, 204, 113, 80));
+            painter.drawEllipse(p, PIECE_RADIUS + 3, PIECE_RADIUS + 3);
         }
 
         int occupant = snapshot_board.getOccupant(position);
@@ -148,6 +201,7 @@ void FanoronaPage::mousePressEvent(QMouseEvent* event) {
     if (selected_position == -1) {
         if (snapshot_board.getOccupant(clicked) == current_player_id){
             selected_position = clicked;
+            updateHighlights();
             update();
         }
         return;
@@ -155,12 +209,14 @@ void FanoronaPage::mousePressEvent(QMouseEvent* event) {
 
     if (clicked == selected_position) {
         selected_position = -1;
+        updateHighlights();
         update();
         return;
     }
 
     if (snapshot_board.getOccupant(clicked) == current_player_id) {
         selected_position = clicked;
+        updateHighlights();
         update();
         return;
     }
@@ -168,6 +224,7 @@ void FanoronaPage::mousePressEvent(QMouseEvent* event) {
     if (snapshot_board.getOccupant(clicked) == 0) {
         tryEmitMove(selected_position, clicked);
         selected_position = -1;
+        updateHighlights();
     }
 }
 

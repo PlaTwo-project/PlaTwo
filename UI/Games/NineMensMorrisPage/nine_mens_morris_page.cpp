@@ -6,11 +6,11 @@
 
 using namespace std;
 
-static const int POINT_RADIUS = 17;
-static const int CLICK_THRESHOLD = 23;
+static const int POINT_RADIUS = 16;
+static const int CLICK_THRESHOLD = 34;
 
 NineMensMorrisPage::NineMensMorrisPage(QWidget* parent)
-    : BasePage(parent), awaiting_removal(false), placed_count_p1(0), placed_count_p2(0), selected_position(-1), hovered_position(-1) {
+    : BasePage(parent), awaiting_removal(false), placed_count_p1(0), placed_count_p2(0), current_player_id(0), selected_position(-1), hovered_position(-1) {
     setMouseTracking(true);
     position_owners.assign(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
 }
@@ -18,7 +18,9 @@ NineMensMorrisPage::NineMensMorrisPage(QWidget* parent)
 void NineMensMorrisPage::setupBoard(const int size) {
     BasePage::setupBoard(size);
     position_owners.assign(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
+    snapshot_board.setPositionOwners(position_owners);
     selected_position = -1;
+    highlighted_positions.clear();
     update();
 }
 
@@ -43,11 +45,60 @@ void NineMensMorrisPage::updateFromGame(const Game* main_game) {
     if (game && game->getBoard()) {
         const NineMensMorrisBoard* game_board = static_cast<NineMensMorrisBoard*>(game->getBoard());
         position_owners = game_board->getPositionOwners();
+        snapshot_board.setPositionOwners(position_owners);
         awaiting_removal = game->getAwaitingRemoval();
         placed_count_p1 = game->getPlacedCount(1);
         placed_count_p2 = game->getPlacedCount(2);
+        current_player_id = game->getCurrentPlayerId();
         selected_position = -1;
+        updateHighlights();
         update();
+    }
+}
+
+void NineMensMorrisPage::updateHighlights() {
+    highlighted_positions.clear();
+
+    if (!is_input_enabled)
+        return;
+
+    if (awaiting_removal) {
+        int opponent_id;
+        if (current_player_id == 1)
+            opponent_id = 2;
+        else
+            opponent_id = 1;
+
+        for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position)
+            if (snapshot_board.isPieceRemovable(position, opponent_id))
+                highlighted_positions.append(position);
+
+        return;
+    }
+
+    int my_placed_count;
+    if (current_player_id == 1)
+        my_placed_count = placed_count_p1;
+    else
+        my_placed_count = placed_count_p2;
+
+    bool placing_phase = my_placed_count < NineMensMorris::PIECES_PER_PLAYER;
+    if (selected_position == -1) {
+        if (placing_phase)
+            for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position)
+                if (snapshot_board.isEmpty(position))
+                    highlighted_positions.append(position);
+
+        return;
+    }
+
+    bool is_flying = snapshot_board.getPieceCount(current_player_id) == NineMensMorris::FLYING_THRESHOLD;
+    for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
+        if (!snapshot_board.isEmpty(position))
+            continue;
+
+        if (is_flying || snapshot_board.isProximate(selected_position, position))
+            highlighted_positions.append(position);
     }
 }
 
@@ -80,6 +131,14 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     // points and pieces
     for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
         QPoint p = positionToCoordinates(position);
+
+        if (highlighted_positions.contains(position)) {
+            QColor highlight_color = awaiting_removal ? QColor(231, 76, 60) : QColor(46, 204, 113);
+            painter.setPen(QPen(highlight_color, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.setBrush(QColor(highlight_color.red(), highlight_color.green(), highlight_color.blue(), 70));
+            painter.drawEllipse(p, POINT_RADIUS + 6, POINT_RADIUS + 6);
+        }
+
         if (position == selected_position) {
             painter.setPen(QPen(QColor(255, 200, 0), 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.setBrush(Qt::NoBrush);
@@ -122,29 +181,40 @@ void NineMensMorrisPage::mousePressEvent(QMouseEvent* event) {
     }
 
     if (selected_position == -1) {
-        if (position_owners.value(clicked, 0) != 0) {
+        int owner = position_owners.value(clicked, 0);
+
+        if (owner == current_player_id) {
             selected_position = clicked;
+            updateHighlights();
             update();
         }
-        else
+        else if (owner == 0) {
             emit moveRequested(clicked, -1, 0); // place
+        }
+
         return;
     }
 
     if (clicked == selected_position) {
         selected_position = -1;
+        updateHighlights();
         update();
         return;
     }
 
-    if (position_owners.value(clicked, 0) != 0) {
+    int owner = position_owners.value(clicked, 0);
+    if (owner == current_player_id) {
         selected_position = clicked;
+        updateHighlights();
         update();
         return;
     }
 
-    emit moveRequested(selected_position, clicked, 1); // move
-    selected_position = -1;
+    if (owner == 0) {
+        emit moveRequested(selected_position, clicked, 1); // move
+        selected_position = -1;
+        updateHighlights();
+    }
 }
 
 void NineMensMorrisPage::mouseMoveEvent(QMouseEvent* event) {

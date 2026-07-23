@@ -23,6 +23,7 @@ public:
     int getPlacedCount(int player_id) const;
     bool getAwaitingRemoval() const;
     bool isFlying(int player_id) const;
+    int getCurrentPlayerId() const;
 
     static const int PIECES_PER_PLAYER = 9;
     static const int FLYING_THRESHOLD = 3;
@@ -36,7 +37,6 @@ private:
     int placed_count[2];
     bool awaiting_removal;
 
-    int getCurrentPlayerId() const;
     int getOpponentId(int player_id) const;
     void switchTurn();
 

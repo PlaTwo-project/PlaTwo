@@ -32,10 +32,14 @@ private:
 
     int selected_position;
     int hovered_position;
+    QVector<int> highlighted_positions;
 
     int positionAt(const QPoint& point) const;
     QPoint pixelOf(int position) const;
     void tryEmitMove(int from, int to);
+    void updateHighlights();
+    QVector<int> computeLegalTargets(int from) const;
+    QVector<int> computeChainTargets() const;
 
 signals:
     void moveRequested(int from, int to, int captureChoice);
