@@ -34,12 +34,12 @@ bool DotsAndBoxes::makeMove(const Move &main_move)  {
         p_id = 2;
 
     game_board->applyMove(main_move, p_id);
-    bool closed = game_board->checkAndCloseBoxes(move.getRow(), move.getColumn(), static_cast<int>(move.getDirection()), p_id);
-    if (closed) {
+    int closed_boxes = game_board->checkAndCloseBoxes(move.getRow(), move.getColumn(), static_cast<int>(move.getDirection()), p_id);
+    if (closed_boxes) {
         if (p_id == 1)
-            first_player_score++;
+            first_player_score += closed_boxes;
         else
-            second_player_score++;
+            second_player_score += closed_boxes;
     } else {
         if (current_player.getId() == first_player.getId())
             current_player = second_player;

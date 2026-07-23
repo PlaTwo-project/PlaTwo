@@ -16,7 +16,7 @@ public:
     void applyMove(const Move& main_move) override;
     void applyMove(const Move& main_move, int player_id);
     bool isLineTaken(int row, int column, int direction_type) const;
-    bool checkAndCloseBoxes(int row, int column, int direction_type, int player_id);
+    int checkAndCloseBoxes(int row, int column, int direction_type, int player_id);
     bool isFull() const;
 
     int getBoardSize() const;

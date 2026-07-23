@@ -45,22 +45,25 @@ bool DotsAndBoxesBoard::isLineTaken(int row, int column, int direction_type) con
     return vertical_lines[row][column] != 0;
 }
 
-bool DotsAndBoxesBoard::checkAndCloseBoxes(int row, int column, int direction_type, int player_id) {
-    bool boxClosed = false;
-
+int DotsAndBoxesBoard::checkAndCloseBoxes(int row, int column, int direction_type, int player_id) {
+    int boxClosed = 0;
     if (direction_type == horizontalDirection) {
         if (row > 0 && horizontal_lines[row - 1][column] && vertical_lines[row - 1][column] && vertical_lines[row - 1][column + 1])
-            boxClosed = closeBox(row - 1, column, player_id) || boxClosed;
+            if (closeBox(row - 1, column, player_id))
+                boxClosed++;
 
         if (row < board_size && horizontal_lines[row + 1][column] && vertical_lines[row][column] && vertical_lines[row][column + 1])
-            boxClosed = closeBox(row, column, player_id) || boxClosed;
+            if (closeBox(row, column, player_id))
+                boxClosed++;
     }
     else {
         if (column > 0 && vertical_lines[row][column - 1] && horizontal_lines[row][column - 1] && horizontal_lines[row + 1][column - 1])
-            boxClosed = closeBox(row, column - 1, player_id) || boxClosed;
+            if (closeBox(row, column - 1, player_id))
+                boxClosed++;
 
         if (column < board_size && vertical_lines[row][column + 1] && horizontal_lines[row][column] && horizontal_lines[row + 1][column])
-            boxClosed = closeBox(row, column, player_id) || boxClosed;
+            if (closeBox(row, column, player_id))
+                boxClosed++;
     }
 
     return boxClosed;

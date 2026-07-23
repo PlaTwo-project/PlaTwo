@@ -6,30 +6,25 @@ FanoronaBoard::FanoronaBoard()
     initialize();
 }
 
-void FanoronaBoard::initialize()
-{
+void FanoronaBoard::initialize() {
     occupants.fill(0, TOTAL_POSITIONS);
-
-    for (int col = 0; col < COLS; ++col)
-    {
-        occupants[positionOf(0, col)] = 1;
-        occupants[positionOf(1, col)] = 1;
-        occupants[positionOf(3, col)] = 2;
-        occupants[positionOf(4, col)] = 2;
+    for (int col = 0; col < COLS; ++col) {
+        occupants[positionOf(0, col)] = 2;
+        occupants[positionOf(1, col)] = 2;
+        occupants[positionOf(3, col)] = 1;
+        occupants[positionOf(4, col)] = 1;
     }
 
-    for (int col = 0; col < COLS; ++col)
-    {
+    for (int col = 0; col < COLS; ++col) {
         int centre_col = COLS / 2;
-        if (col == centre_col) {
+        if (col == centre_col)
             occupants[positionOf(2, col)] = 0;
-        }
-        else if (col < centre_col) {
-            occupants[positionOf(2, col)] = (col % 2 == 0) ? 1 : 2;
-        }
-        else {
+
+        else if (col < centre_col)
             occupants[positionOf(2, col)] = (col % 2 == 0) ? 2 : 1;
-        }
+
+        else
+            occupants[positionOf(2, col)] = (col % 2 == 0) ? 1 : 2;
     }
 }
 

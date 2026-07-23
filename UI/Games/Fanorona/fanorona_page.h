@@ -33,11 +33,8 @@ private:
     int selected_position;
     int hovered_position;
 
-    QPushButton* end_turn_button;
-
     int positionAt(const QPoint& point) const;
     QPoint pixelOf(int position) const;
-    void positionEndTurnButton();
     void tryEmitMove(int from, int to);
 
 signals:

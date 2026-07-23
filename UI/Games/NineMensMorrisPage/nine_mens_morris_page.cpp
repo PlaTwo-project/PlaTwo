@@ -6,8 +6,8 @@
 
 using namespace std;
 
-static const int POINT_RADIUS = 10;
-static const int CLICK_THRESHOLD = 16;
+static const int POINT_RADIUS = 17;
+static const int CLICK_THRESHOLD = 23;
 
 NineMensMorrisPage::NineMensMorrisPage(QWidget* parent)
     : BasePage(parent), awaiting_removal(false), placed_count_p1(0), placed_count_p2(0), selected_position(-1), hovered_position(-1) {
