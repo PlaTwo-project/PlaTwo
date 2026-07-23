@@ -17,7 +17,7 @@ public:
     ~HostPage();
 
     void setPage(GameName game_name);
-    void switchToWaitingStatus(const QString& Ip);
+    void switchToWaitingStatus(const QString& Ip, int port);
 
 signals:
     void createRoomRequested(int port, int boardSize, int timeLimitMinutes, int colorIndex);

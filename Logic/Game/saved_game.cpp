@@ -4,8 +4,8 @@ SavedGame::SavedGame(): game_name(static_cast<GameName>(0)), host_id(0), guest_i
 {
 }
 
-SavedGame::SavedGame( GameName game_name, int host_id, int guest_id,int board_size, int time_limit, int elapsed_time, const QString &state_data)
-    : game_name(game_name), host_id(host_id), guest_id(guest_id), board_size(board_size), time_limit(time_limit), elapsed_time(elapsed_time), state_data(state_data)
+SavedGame::SavedGame( GameName game_name, int host_id, int guest_id,int board_size, int time_limit, int elapsed_time, int host_elapsed_time, int guest_elapsed_time, const QString &state_data)
+    : game_name(game_name), host_id(host_id), guest_id(guest_id), board_size(board_size), time_limit(time_limit), elapsed_time(elapsed_time),host_elapsed_time(host_elapsed_time), guest_elapsed_time(guest_elapsed_time), state_data(state_data)
 {
 }
 
@@ -67,6 +67,22 @@ int SavedGame::getElapsedTime() const
 void SavedGame::setElapsedTime(int elapsed_time)
 {
     this->elapsed_time = elapsed_time;
+}
+
+int SavedGame::getHostElapsed() const {
+    return host_elapsed_time;
+}
+
+void SavedGame::setHostElapsed(int elapsed_time) {
+    host_elapsed_time = elapsed_time;
+}
+
+int SavedGame::getGuestElapsed() const {
+    return guest_elapsed_time;
+}
+
+void SavedGame::setGuestElapsed(int elapsed_time) {
+    guest_elapsed_time = elapsed_time;
 }
 
 QString SavedGame::getStateData() const

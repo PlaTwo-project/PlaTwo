@@ -35,6 +35,7 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     painter.setFont(QFont("Arial", 12, QFont::Bold));
     painter.drawText(margin_offset, 30, turn_status_text);
     painter.drawText(margin_offset, 50, QString("%1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
+    painter.drawText(margin_offset, 70, QString("%1's Time: %2  |  %3's Time: %4").arg(first_player_name).arg(first_player_time_str).arg(second_player_name).arg(second_player_time_str));
 
     QPen empty_pen(Qt::lightGray, 2, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
     QPen hover_pen(Qt::darkGray, 4, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);

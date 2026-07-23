@@ -111,9 +111,11 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 12, QFont::Bold));
     painter.drawText(margin_offset, 25, turn_status_text);
-    painter.drawText(margin_offset, 45, QString("Captured - %1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
+    painter.drawText(margin_offset, 43, QString("Captured - %1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
+    painter.drawText(margin_offset, 61, QString("%1's Time: %2  |  %3's Time: %4").arg(first_player_name).arg(first_player_time_str).arg(second_player_name).arg(second_player_time_str));
+
     if (chain_active)
-        painter.drawText(margin_offset, 65, "Capture chain in progress - continue capturing");
+        painter.drawText(margin_offset, 79, "Capture chain in progress - continue capturing");
 
     painter.setPen(QPen(Qt::darkGray, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     for (int position = 0; position < FanoronaBoard::TOTAL_POSITIONS; ++position)

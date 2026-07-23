@@ -34,6 +34,8 @@ void SavedGameStorageManager::loadSavedGames()
         record.setBoardSize(obj["board_size"].toInt());
         record.setTimeLimit(obj["time_limit"].toInt());
         record.setElapsedTime(obj["elapsed_time"].toInt());
+        record.setHostElapsed(obj["host_elapsed"].toInt());
+        record.setGuestElapsed(obj["guest_elapsed"].toInt());
         record.setStateData(obj["state_data"].toString());
 
         saved_games_list.append(record);
@@ -53,6 +55,9 @@ void SavedGameStorageManager::saveSavedGames() const
         obj["time_limit"] = record.getTimeLimit();
         obj["elapsed_time"] = record.getElapsedTime();
         obj["state_data"] = record.getStateData();
+        obj["host_elapsed"] = record.getHostElapsed();
+        obj["guest_elapsed"] = record.getGuestElapsed();
+
 
         array.append(obj);
     }
@@ -65,9 +70,9 @@ void SavedGameStorageManager::saveSavedGames() const
     }
 }
 
-void SavedGameStorageManager::saveOrUpdateGame(GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time, const QString &state_data)
+void SavedGameStorageManager::saveOrUpdateGame(GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time,int host_elapsed, int guest_elapsed, const QString &state_data)
 {
-    SavedGame newRecord(game_name, host_id, guest_id, board_size, time_limit, elapsed_time, state_data);
+    SavedGame newRecord(game_name, host_id, guest_id, board_size, time_limit, elapsed_time, host_elapsed, guest_elapsed, state_data);
 
     for (int i = 0; i < saved_games_list.size(); ++i)
         if (saved_games_list[i].getHostId() == host_id && saved_games_list[i].getGuestId() == guest_id && saved_games_list[i].getGameName() == game_name){

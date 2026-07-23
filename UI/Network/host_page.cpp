@@ -77,7 +77,8 @@ void HostPage::on_pushButton_cancelHost_clicked() {
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void HostPage::switchToWaitingStatus(const QString& Ip) {
+void HostPage::switchToWaitingStatus(const QString& Ip, int port) {
     ui->label_server_IP->setText("IP Address: " + Ip);
+    ui->label_server_port->setText(QString("Port Number: %1").arg(port));
     ui->stackedWidget->setCurrentIndex(1);
 }

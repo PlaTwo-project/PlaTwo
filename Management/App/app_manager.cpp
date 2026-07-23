@@ -43,6 +43,8 @@ void AppManager::setupConnections()
     connect(&game_manager, &GameManager::opponentPauseRequested, this, &AppManager::handleOpponentPauseRequest);
     connect(&game_manager, &GameManager::pauseResponded, this, &AppManager::handlePauseResponse);
     connect(&game_manager, &GameManager::gamePausedSuccessfully, this, &AppManager::handleGamePausedSuccessfully);
+
+    connect(&game_manager, &GameManager::timeUpdated, main_window, &MainWindow::updateGameTimers);
 }
 
 void AppManager::handleLogin(const QString &username, const QString &password)
@@ -240,7 +242,8 @@ void AppManager::handleShowHistory(const GameName game_name) {
 
 void AppManager::handleCreateRoom(const int port, const int board_size, const int time_limit, const GameName game_name, const int color_index) {
     User cur_user = SessionManager::getInstance().getCurrentUser();
-    main_window->showWatingHostPage(game_manager.createRoom(cur_user, port, game_name, board_size, time_limit, color_index));
+    QString IP = game_manager.createRoom(cur_user, port, game_name, board_size, time_limit, color_index);
+    main_window->showWatingHostPage(IP, port);
 }
 
 void AppManager::handleJoinRoom(const QString &IP, const int port, const GameName game_name, const int color_index) {

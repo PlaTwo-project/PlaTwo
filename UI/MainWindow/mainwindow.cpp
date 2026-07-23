@@ -188,9 +188,9 @@ void MainWindow::showHostPage(const GameName game_name)
     ui->stackedWidget->setCurrentWidget(host_page);
 }
 
-void MainWindow::showWatingHostPage(const QString& ip)
+void MainWindow::showWatingHostPage(const QString& ip, int port)
 {
-    host_page->switchToWaitingStatus(ip);
+    host_page->switchToWaitingStatus(ip, port);
 }
 
 void MainWindow::showGuestPage(const GameName game_name)
@@ -278,4 +278,9 @@ void MainWindow::clearChat() {
 
 void MainWindow::setDotsAndBoxesColors(const QColor& host_color, const QColor& guest_color) {
     dots_and_boxes_page->setPlayerColors(host_color, guest_color);
+}
+
+void MainWindow::updateGameTimers(int host_time, int guest_time) {
+    BasePage* active_page = qobject_cast<BasePage*>(game_stack->currentWidget());
+    active_page->updateTimers(host_time, guest_time);
 }

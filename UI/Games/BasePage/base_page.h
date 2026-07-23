@@ -4,12 +4,13 @@
 #include <QString>
 #include <QPushButton>
 #include <QResizeEvent>
+#include <QLabel>
 
 class BasePage : public QWidget {
     Q_OBJECT
 
 public:
-    explicit BasePage(QWidget* parent = nullptr) : QWidget(parent), board_size(0), cell_spacing(70), margin_offset(90),
+    explicit BasePage(QWidget* parent = nullptr) : QWidget(parent), board_size(0), cell_spacing(70), margin_offset(100),
         is_input_enabled(false), first_player_score(0), second_player_score(0), turn_status_text("") {
 
         resign_button = new QPushButton("Resign", this);
@@ -44,6 +45,12 @@ public:
     virtual void setPlayerNames(const QString& name1, const QString& name2) {
         first_player_name = name1;
         second_player_name = name2;
+        update();
+    }
+
+    virtual void updateTimers(int p1_sec, int p2_sec) {
+        first_player_time_str = QString("%1:%2").arg(p1_sec / 60, 2, 10, QChar('0')).arg(p1_sec % 60, 2, 10, QChar('0'));
+        second_player_time_str = QString("%1:%2").arg(p2_sec / 60, 2, 10, QChar('0')).arg(p2_sec % 60, 2, 10, QChar('0'));
         update();
     }
 
@@ -86,4 +93,7 @@ protected:
 
     QPushButton* resign_button;
     QPushButton* pause_button;
+
+    QString first_player_time_str = "00:00";
+    QString second_player_time_str = "00:00";
 };

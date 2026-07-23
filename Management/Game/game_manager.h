@@ -11,8 +11,6 @@
 #include "Logic/Game/BaseLogicClasses/Game.h"
 #include "Infrastructure/DataBase/history_storage_manager.h"
 #include "Logic/Game/game_end_reason.h"
-#include "Infrastructure/DataBase/saved_game_storage_manager.h"
-#include "Logic/Game/DotsAndBoxes/DotsAndBoxesColors/dots_and_boxes_colors.h"
 
 enum class Role {
     Host,
@@ -44,6 +42,8 @@ public:
     void respondToPause(bool accepted);
     void handleRemotePauseResponse(bool accepted);
     void executePauseAndSave();
+    void stopCurrentTurnTimer(const User& active_player);
+    void startNextTurnTimer();
 
     Role getRole() const;
     Game* getCurrentGame() const;
@@ -59,6 +59,7 @@ public:
     void updateGuestUser(const User& guest_user);
     void updateRoomConfig(const User& host_user, int board_size, int time_limit);
     void saveMatchRecord(GameStatus status);
+    void broadcastTime();
 
 signals:
     void gameStarted();
@@ -69,6 +70,7 @@ signals:
     void opponentPauseRequested();
     void pauseResponded(bool accepted);
     void gamePausedSuccessfully();
+    void timeUpdated(int host_remaining_sec, int guest_remaining_sec);
 
 private:
     Role role;
@@ -80,6 +82,10 @@ private:
     QElapsedTimer game_duration_timer;
     HistoryStorageManager history_db;
     int accumulated_time;
+    qint64 host_remaining_ms;
+    qint64 guest_remaining_ms;
+    QElapsedTimer turn_elapsed_timer;
+    QTimer* ui_update_timer;
 };
 
 #endif // GAMEMANAGER_H
