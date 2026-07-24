@@ -3,8 +3,8 @@
 #include "Logic/Security/password_hasher.h"
 #include "Management/App/session_manager.h"
 
-Authenticator::Authenticator(UserInterface& storage) : storage(storage)
-{}
+Authenticator::Authenticator(UserInterface& storage): storage(storage), session_storage(){
+}
 
 AuthResult Authenticator::login(const QString &username, const QString &password, User &logged_in_user)
 {
@@ -16,8 +16,18 @@ AuthResult Authenticator::login(const QString &username, const QString &password
     if (!PasswordHasher::verify(password, user.getHashedPassword()))
         return AuthResult::WRONG_PASSWORD;
 
+    if (session_storage.isUserOnline(user.getId()))
+        return AuthResult::ALREADY_LOGGED_IN;
+
+    session_storage.addSession(user.getId());
+
     logged_in_user = user;
     return AuthResult::SUCCESS;
+}
+
+void Authenticator::logout(int user_id)
+{
+    session_storage.removeSession(user_id);
 }
 
 AuthResult Authenticator::signup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password)

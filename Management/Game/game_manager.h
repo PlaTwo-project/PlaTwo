@@ -32,7 +32,7 @@ public:
     void startGame();
     bool handleLocalMove(int arg1, int arg2, int arg3);
     bool handleRemoteMove(const QByteArray& serialized_move);
-    void handleGuestConnection(const User& guest_user, int guest_color_index);
+    void handleGuestConnection(const User& guest_user, int guest_color_index, GameName guest_game_name);
     void handleRoomConfigReceived(const User& host_user, int board_size, int time_limit, int host_color_index, int guest_color_index);
     void handleTimeLimitReached();
     void handleLocalResign();
@@ -44,6 +44,7 @@ public:
     void executePauseAndSave();
     void stopCurrentTurnTimer(const User& active_player);
     void startNextTurnTimer();
+    void handleOpponentDisconnected();
 
     Role getRole() const;
     Game* getCurrentGame() const;
@@ -71,6 +72,7 @@ signals:
     void pauseResponded(bool accepted);
     void gamePausedSuccessfully();
     void timeUpdated(int host_remaining_sec, int guest_remaining_sec);
+    void opponentDisconnectedAutomatically();
 
 private:
     Role role;
@@ -86,6 +88,7 @@ private:
     qint64 guest_remaining_ms;
     QElapsedTimer turn_elapsed_timer;
     QTimer* ui_update_timer;
+    bool is_game_over;
 };
 
 #endif // GAMEMANAGER_H

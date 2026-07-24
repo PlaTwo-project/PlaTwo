@@ -83,8 +83,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(main_menu_page, &MainMenu::navigateToEditProfile, this, &MainWindow::showEditProfilePage);
 
-    connect(main_menu_page, &MainMenu::navigateToLogin, this, &MainWindow::showLoginPage);
-
     connect(edit_profile_page, &EditProfile::navigateToMainMenu, this, &MainWindow::showMainMenuPage);
 
     connect(game_menu_page, &GameMenu::navigateToMainMenu, this, &MainWindow::showMainMenuPage);
@@ -107,6 +105,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // Mediator signals
     connect(login_page, &Login::loginRequested, this, &MainWindow::loginRequested);
+    connect(main_menu_page, &MainMenu::navigateToLogin, this, &MainWindow::logoutRequested);
     connect(signup_page, &Signup::signupRequested, this, &MainWindow::signupRequested);
     connect(forgot_password_page, &ForgotPassword::forgotPasswordStep2Requested, this, &MainWindow::forgotPasswordStep2Requested);
     connect(forgot_password_page, &ForgotPassword::resetPasswordRequested, this, &MainWindow::resetPasswordRequested);
@@ -283,4 +282,10 @@ void MainWindow::setDotsAndBoxesColors(const QColor& host_color, const QColor& g
 void MainWindow::updateGameTimers(int host_time, int guest_time) {
     BasePage* active_page = qobject_cast<BasePage*>(game_stack->currentWidget());
     active_page->updateTimers(host_time, guest_time);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    emit appClosing();
+    event->accept();
 }

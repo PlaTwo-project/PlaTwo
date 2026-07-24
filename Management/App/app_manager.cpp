@@ -18,6 +18,8 @@ void AppManager::run()
 void AppManager::setupConnections()
 {
     connect(main_window, &MainWindow::loginRequested, this, &AppManager::handleLogin);
+    connect(main_window, &MainWindow::logoutRequested, this, &AppManager::handleLogout);
+    connect(main_window, &MainWindow::appClosing, this, &AppManager::handleLogout);
     connect(main_window, &MainWindow::signupRequested, this, &AppManager::handleSignup);
     connect(main_window, &MainWindow::forgotPasswordStep2Requested, this, &AppManager::handleForgotPasswordStep2);
     connect(main_window, &MainWindow::resetPasswordRequested, this, &AppManager::handleResetPassword);
@@ -43,6 +45,7 @@ void AppManager::setupConnections()
     connect(&game_manager, &GameManager::opponentPauseRequested, this, &AppManager::handleOpponentPauseRequest);
     connect(&game_manager, &GameManager::pauseResponded, this, &AppManager::handlePauseResponse);
     connect(&game_manager, &GameManager::gamePausedSuccessfully, this, &AppManager::handleGamePausedSuccessfully);
+    connect(&game_manager, &GameManager::opponentDisconnectedAutomatically, this, &AppManager::handleOpponentDisconnectedUI);
 
     connect(&game_manager, &GameManager::timeUpdated, main_window, &MainWindow::updateGameTimers);
 }
@@ -67,6 +70,10 @@ void AppManager::handleLogin(const QString &username, const QString &password)
         }
         break;
 
+    case AuthResult::ALREADY_LOGGED_IN:
+        QMessageBox::warning(main_window, "Error", "This account is already logged in on another session.");
+        break;
+
     case AuthResult::USER_NOT_FOUND:
         QMessageBox::warning(main_window, "Error", "User not found.");
         break;
@@ -79,6 +86,17 @@ void AppManager::handleLogin(const QString &username, const QString &password)
         QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
     }
 }
+
+void AppManager::handleLogout()
+{
+    if (SessionManager::getInstance().isLoggedIn()){
+        User cur_user = SessionManager::getInstance().getCurrentUser();
+        authenticator.logout(cur_user.getId());
+        SessionManager::getInstance().logout();
+        main_window->showLoginPage();
+    }
+}
+
 
 void AppManager::handleSignup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password)
 {
@@ -403,5 +421,10 @@ void AppManager::handlePauseResponse(bool accepted) {
 
 void AppManager::handleGamePausedSuccessfully() {
     QMessageBox::information(main_window, "Game Paused", "The match has been successfully paused and saved.");
+    main_window->showMainMenuPage();
+}
+
+void AppManager::handleOpponentDisconnectedUI() {
+    QMessageBox::information(main_window,"Connection Lost","Opponent disconnected! Your game has been saved and you can continue it later.");
     main_window->showMainMenuPage();
 }

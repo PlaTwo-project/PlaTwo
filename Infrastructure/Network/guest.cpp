@@ -19,12 +19,13 @@ void Guest::connectHost(const QString& IP, int port)
     connect(this, &Network::dataReceived, this, &Guest::handleIncomingData);
 }
 
-void Guest::sendGuestInfo(const User& guest_user, int guest_color_index) {
+void Guest::sendGuestInfo(const User& guest_user, int guest_color_index, GameName game_name) {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out << qint8(2) << guest_user.getId() << guest_user.getName() << guest_user.getUsername() << guest_color_index;
+    out << qint8(2) << guest_user.getId() << guest_user.getName() << guest_user.getUsername() << guest_color_index << static_cast<qint32>(game_name);
     sendData(block);
 }
+
 
 void Guest::handleIncomingData(const QByteArray &data) {
     QDataStream in(data);

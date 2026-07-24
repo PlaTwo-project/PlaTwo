@@ -41,6 +41,8 @@ QString GameManager::createRoom(const User& host_user, const int port, const Gam
     });
     connect(host, &Network::pauseRequested, this, &GameManager::opponentPauseRequested);
     connect(host, &Network::pauseResponded, this, &GameManager::handleRemotePauseResponse);
+    connect(host, &Network::disconnected, this, &GameManager::handleOpponentDisconnected);
+
 
     return local_ip;
 }
@@ -52,7 +54,9 @@ bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const
     room_state->setGuestColorIndex(guest_color_index);
     guest->connectHost(host_ip, port);
 
-    connect(guest, &Network::connected, this, [this, guest_user, guest_color_index]() { guest->sendGuestInfo(guest_user, guest_color_index);});
+    connect(guest, &Network::connected, this, [this, guest_user, guest_color_index, game_name]() {
+        guest->sendGuestInfo(guest_user, guest_color_index, game_name);
+    });
     connect(guest, &Guest::roomConfigReceived, this, &GameManager::handleRoomConfigReceived);
     connect(guest, &Guest::moveReceived, this, &GameManager::handleRemoteMove);
     connect(guest, &Guest::resignReceived, this, &GameManager::handleRemoteResign);
@@ -61,6 +65,8 @@ bool GameManager::joinRoom(const User& guest_user, const QString& host_ip, const
     });
     connect(guest, &Network::pauseRequested, this, &GameManager::opponentPauseRequested);
     connect(guest, &Network::pauseResponded, this, &GameManager::handleRemotePauseResponse);
+    connect(guest, &Network::disconnected, this, &GameManager::handleOpponentDisconnected);
+
 
     return true;
 }
@@ -91,6 +97,7 @@ void GameManager::startGame() {
     delete current_game;
     current_game = nullptr;
     accumulated_time = 0;
+    is_game_over = false;
 
     int host_accumulated_sec = 0;
     int guest_accumulated_sec = 0;
@@ -322,7 +329,13 @@ void GameManager::updateRoomConfig(const User& host_user, int board_size, int ti
     }
 }
 
-void GameManager::handleGuestConnection(const User& guest_user, int guest_color_index) {
+void GameManager::handleGuestConnection(const User& guest_user, int guest_color_index, GameName guest_game_name) {
+
+    if (guest_game_name != room_state->getGameName()) {
+        host->rejectGuest();
+        return;
+    }
+
     updateGuestUser(guest_user);
     int host_color_index = room_state->getHostColorIndex();
     int final_guest_color_index = guest_color_index;
@@ -369,6 +382,7 @@ void GameManager::handleTimeLimitReached() {
 
 void GameManager::saveMatchRecord(GameStatus status) {
 
+    is_game_over = true;
     GameName game_name = room_state->getGameName();
     int host_id = room_state->getHostUser().getId();
     int guest_id = room_state->getGuestUser().getId();
@@ -544,4 +558,38 @@ void GameManager::broadcastTime() {
         guest_sec = qMax(0LL, guest_remaining_ms - elapsed_ms) / 1000;
 
     emit timeUpdated(host_sec, guest_sec);
+}
+
+void GameManager::handleOpponentDisconnected() {
+    if (!current_game || is_game_over)
+        return;
+
+    ui_update_timer->stop();
+
+    if (time_limit_timer->isActive())
+        stopCurrentTurnTimer(current_game->getCurrentPlayer());
+
+    int current_elapsed = (game_duration_timer.elapsed() / 1000) + accumulated_time;
+
+    int host_elapsed_sec = 0;
+    int guest_elapsed_sec = 0;
+
+    int limit_minutes = room_state->getTimeLimit();
+    if (limit_minutes > 0) {
+        qint64 total_limit_ms = static_cast<qint64>(limit_minutes) * 60 * 1000;
+
+        host_elapsed_sec = static_cast<int>((total_limit_ms - host_remaining_ms) / 1000);
+        guest_elapsed_sec = static_cast<int>((total_limit_ms - guest_remaining_ms) / 1000);
+
+        if (host_elapsed_sec < 0)
+            host_elapsed_sec = 0;
+        if (guest_elapsed_sec < 0)
+            guest_elapsed_sec = 0;
+    }
+
+    SavedGameStorageManager storage;
+
+    storage.saveOrUpdateGame( room_state->getGameName(), room_state->getHostUser().getId(), room_state->getGuestUser().getId(), room_state->getBoardSize(), room_state->getTimeLimit(), current_elapsed, host_elapsed_sec, guest_elapsed_sec, current_game->serializeState() );
+
+    emit opponentDisconnectedAutomatically();
 }

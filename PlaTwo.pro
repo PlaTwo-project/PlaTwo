@@ -8,6 +8,7 @@ CONFIG += c++17
 SOURCES += \
     Infrastructure/DataBase/history_storage_manager.cpp \
     Infrastructure/DataBase/saved_game_storage_manager.cpp \
+    Infrastructure/DataBase/session_storage_manager.cpp \
     Infrastructure/Database/storage_manager.cpp \
     Infrastructure/Network/guest.cpp \
     Infrastructure/Network/host.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
 HEADERS += \
     Infrastructure/DataBase/history_storage_manager.h \
     Infrastructure/DataBase/saved_game_storage_manager.h \
+    Infrastructure/DataBase/session_storage_manager.h \
     Infrastructure/Database/storage_manager.h \
     Infrastructure/Network/guest.h \
     Infrastructure/Network/host.h \

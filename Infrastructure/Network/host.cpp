@@ -17,6 +17,7 @@ Host::~Host()
 
 void Host::startHosting(int port)
 {
+    hosting_port = port;
     server = new QTcpServer(this);
     connect(server, &QTcpServer::newConnection, this, &Host::connectNewClient);
 
@@ -67,12 +68,13 @@ void Host::handleIncomingData(const QByteArray &data) {
         int guest_id;
         QString guest_name, guest_username;
         int guest_color_index;
-        in >> guest_id >> guest_name >> guest_username >> guest_color_index;
+        qint32 game_name_int;
+        in >> guest_id >> guest_name >> guest_username >> guest_color_index >> game_name_int;
 
         User guest_user(guest_name);
         guest_user.setId(guest_id);
         guest_user.setUsername(guest_username);
-        emit guestJoined(guest_user, guest_color_index);
+        emit guestJoined(guest_user, guest_color_index, static_cast<GameName>(game_name_int));
     }
 
     if (packet_type == 3) {
@@ -99,4 +101,14 @@ void Host::handleIncomingData(const QByteArray &data) {
         in >> accepted;
         emit pauseResponded(accepted);
     }
+}
+
+void Host::rejectGuest() {
+    if (socket) {
+        socket->disconnectFromHost();
+        socket->deleteLater();
+        socket = nullptr;
+    }
+    if (server && !server->isListening())
+        server->listen(QHostAddress::Any, hosting_port);
 }

@@ -2,6 +2,7 @@
 #define AUTHENTICATOR_H
 
 #include "Logic/Interface/user_interface.h"
+#include "Infrastructure/DataBase/session_storage_manager.h"
 
 enum class AuthResult
 {
@@ -24,7 +25,9 @@ enum class AuthResult
     WRONG_OLD_PASSWORD,
     EMPTY_FIELD,
 
-    UNKNOWN_ERROR
+    UNKNOWN_ERROR,
+
+    ALREADY_LOGGED_IN
 };
 
 class Authenticator
@@ -33,6 +36,7 @@ public:
     explicit Authenticator(UserInterface& storage);
 
     AuthResult login(const QString &username, const QString &password, User &logged_in_user);
+    void logout(int user_id);
     AuthResult signup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password);
     AuthResult resetPassword(const QString &username, const QString &phone, const QString &new_password);
     AuthResult verifyUserPhone(const QString &username, const QString &phone);
@@ -41,6 +45,7 @@ public:
 
 private:
     UserInterface& storage;
+    SessionStorageManager session_storage;
 };
 
 #endif // AUTHENTICATOR_H

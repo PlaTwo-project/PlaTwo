@@ -66,6 +66,8 @@ public:
 
 signals:
     void loginRequested(const QString& username, const QString& password);
+    void logoutRequested();
+    void appClosing();
     void signupRequested(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
     void forgotPasswordStep2Requested(const QString& username, const QString& phone);
     void resetPasswordRequested(const QString& username, const QString& phone, const QString& newPassword);
@@ -80,6 +82,7 @@ signals:
     void resignRequested();
     void chatMessageSendRequested(const QString& text);
     void pauseRequested();
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     Ui::MainWindow *ui;

@@ -28,6 +28,7 @@ private:
 
 private slots:
     void handleLogin(const QString &username, const QString &password);
+    void handleLogout();
     void handleSignup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password);
     void handleForgotPasswordStep2(const QString &username, const QString &phone);
     void handleResetPassword(const QString &username, const QString &phone, const QString &new_password);
@@ -47,6 +48,7 @@ private slots:
     void handleOpponentPauseRequest();
     void handlePauseResponse(bool accepted);
     void handleGamePausedSuccessfully();
+    void handleOpponentDisconnectedUI();
 };
 
 #endif // APP_MANAGER_H
