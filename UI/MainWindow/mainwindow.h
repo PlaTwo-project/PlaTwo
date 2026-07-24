@@ -22,8 +22,9 @@ class FanoronaPage;
 class ChatWidget;
 class QStackedWidget;
 
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -37,73 +38,74 @@ public:
     void showLoginPage();
     void showSignupPage();
     void showForgotPasswordPage();
-    void showForgotPasswordPage2(const QString& username, const QString& phone);
+    void showForgotPasswordPage2(const QString &username, const QString &phone);
     void showMainMenuPage();
     void showEditProfilePage();
     void showGameMenuPage(const GameName game_name);
     void showHostPage(const GameName game_name);
-    void showWatingHostPage(const QString& ip, int port);
+    void showWatingHostPage(const QString &ip, int port);
     void showGuestPage(const GameName game_name);
-    void showHistoryPage(const QList<MatchRecord>& historyList, int currentUserId, GameName game_name);
+    void showHistoryPage(const QList<MatchRecord> &historyList, int currentUserId, GameName game_name);
     void showDotsAndBoxesPage(const int size);
     void showNineMensMorrisPage();
     void showFanoronaPage();
-    BasePage* getActivePage() const;
-    void renderActivePage(const class Game* game);
-    void setDotsAndBoxesColors(const QColor& host_color, const QColor& guest_color);
-    void appendOwnChatMessage(const QString& text);
-    void receiveChatMessage(const QString& sender_name, const QString& text);
+    BasePage *getActivePage() const;
+    void renderActivePage(const class Game *game);
+    void setDotsAndBoxesColors(const QColor &host_color, const QColor &guest_color);
+    void appendOwnChatMessage(const QString &text);
+    void receiveChatMessage(const QString &sender_name, const QString &text);
     void updateGameTimers(int host_time, int guest_time);
 
-    void loadUserDataInProfile(const QString& name, const QString& username, const QString& email, const QString& phone);
-    void updateScoresAndTurn(const int score1, const int score2, const QString& turn_text, const bool is_my_turn);
-    void setPlayerNames(const QString& name1, const QString& name2);
+    void loadUserDataInProfile(const QString &name, const QString &username, const QString &email, const QString &phone);
+    void updateScoresAndTurn(const int score1, const int score2, const QString &turn_text, const bool is_my_turn);
+    void setPlayerNames(const QString &name1, const QString &name2);
 
     void clearLoginFields();
     void clearSignupFields();
     void clearFPFields();
     void clearChat();
+    void closeEvent(QCloseEvent *event) override;
+    void transitionToWidget(QWidget *targetWidget);
 
 signals:
-    void loginRequested(const QString& username, const QString& password);
+    void loginRequested(const QString &username, const QString &password);
     void logoutRequested();
     void appClosing();
-    void signupRequested(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& password);
-    void forgotPasswordStep2Requested(const QString& username, const QString& phone);
-    void resetPasswordRequested(const QString& username, const QString& phone, const QString& newPassword);
-    void editProfileRequested(const QString& name, const QString& username, const QString& email, const QString& phone, const QString& new_password, const QString& old_password);\
+    void signupRequested(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password);
+    void forgotPasswordStep2Requested(const QString &username, const QString &phone);
+    void resetPasswordRequested(const QString &username, const QString &phone, const QString &newPassword);
+    void editProfileRequested(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &new_password, const QString &old_password);
     void showHistoryRequested(GameName game_name);
     void createRoomRequested(int port, int board_size, int time_limit, GameName game_name, int color_index);
-    void joinRoomRequested(const QString& IP, const int& port, GameName game_name, int color_index);
+    void joinRoomRequested(const QString &IP, const int &port, GameName game_name, int color_index);
     void cancelHostRequested();
     void dotsAndBoxesMoveRequested(const int row, const int col, const int direction);
     void nineMensMorrisMoveRequested(const int from, const int to, const int action_type);
     void fanoronaMoveRequested(const int from, const int to, const int capture_choice);
     void resignRequested();
-    void chatMessageSendRequested(const QString& text);
+    void chatMessageSendRequested(const QString &text);
     void pauseRequested();
-    void closeEvent(QCloseEvent *event) override;
 
 private:
     Ui::MainWindow *ui;
 
     GameName cur_game;
 
-    Login* login_page;
-    Signup* signup_page;
-    ForgotPassword* forgot_password_page;
-    MainMenu* main_menu_page;
-    EditProfile* edit_profile_page;
-    GameMenu* game_menu_page;
-    HostPage* host_page;
-    GuestPage* guest_page;
-    History* history_page;
-    DotsAndBoxesPage* dots_and_boxes_page;
-    NineMensMorrisPage* nine_mens_morris_page;
-    FanoronaPage* fanorona_page;
-    QStackedWidget* game_stack;
-    QWidget* game_room_page;
-    ChatWidget* chat_widget;
+    Login *login_page;
+    Signup *signup_page;
+    ForgotPassword *forgot_password_page;
+    MainMenu *main_menu_page;
+    EditProfile *edit_profile_page;
+    GameMenu *game_menu_page;
+    HostPage *host_page;
+    GuestPage *guest_page;
+    History *history_page;
+    DotsAndBoxesPage *dots_and_boxes_page;
+    NineMensMorrisPage *nine_mens_morris_page;
+    FanoronaPage *fanorona_page;
+    QStackedWidget *game_stack;
+    QWidget *game_room_page;
+    ChatWidget *chat_widget;
 };
 
 #endif // MAINWINDOW_H
