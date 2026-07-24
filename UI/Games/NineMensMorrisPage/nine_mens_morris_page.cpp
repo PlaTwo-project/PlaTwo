@@ -107,7 +107,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::black);
-    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    painter.setFont(QFont("LTe50403.ttf", 12));
 
     painter.drawText(margin_offset, 18, turn_status_text);
     painter.drawText(margin_offset, 35, QString("%1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));

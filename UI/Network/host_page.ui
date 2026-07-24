@@ -40,7 +40,7 @@ QMessageBox QPushButton:pressed {
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_host_setting">
       <layout class="QGridLayout" name="gridLayout">
@@ -426,8 +426,8 @@ color: rgb(0, 0, 0);</string>
         <widget class="QLabel" name="label_server_IP">
          <property name="font">
           <font>
-           <family>Roboto</family>
-           <pointsize>16</pointsize>
+           <family>Bauhaus LT Medium</family>
+           <pointsize>18</pointsize>
           </font>
          </property>
          <property name="text">
@@ -442,8 +442,8 @@ color: rgb(0, 0, 0);</string>
         <widget class="QLabel" name="label_2">
          <property name="font">
           <font>
-           <family>Roboto</family>
-           <pointsize>18</pointsize>
+           <family>Bauhaus LT Medium</family>
+           <pointsize>21</pointsize>
            <italic>false</italic>
            <bold>false</bold>
           </font>
@@ -545,8 +545,8 @@ QPushButton:pressed {
         <widget class="QLabel" name="label_server_port">
          <property name="font">
           <font>
-           <family>Segoe UI</family>
-           <pointsize>16</pointsize>
+           <family>Bauhaus LT Medium</family>
+           <pointsize>18</pointsize>
            <bold>false</bold>
           </font>
          </property>
@@ -577,6 +577,15 @@ QPushButton:pressed {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>comboBox__board_size</tabstop>
+  <tabstop>spinBox_port</tabstop>
+  <tabstop>checkBox_time_limit</tabstop>
+  <tabstop>spinBox_time_limit</tabstop>
+  <tabstop>pushButton_create</tabstop>
+  <tabstop>pushButton_back</tabstop>
+  <tabstop>pushButton_cancelHost</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

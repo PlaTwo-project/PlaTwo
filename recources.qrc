@@ -2,4 +2,9 @@
     <qresource prefix="/icons">
         <file>Resources/icon.ico</file>
     </qresource>
+    <qresource prefix="/fonts">
+        <file>Resources/Orbitron-VariableFont_wght.ttf</file>
+        <file>Resources/LTe50402.ttf</file>
+        <file>Resources/LTe50403.ttf</file>
+    </qresource>
 </RCC>

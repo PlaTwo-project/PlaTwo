@@ -306,6 +306,12 @@ QPushButton:pressed {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_ip</tabstop>
+  <tabstop>lineEdit_port</tabstop>
+  <tabstop>pushButton_join</tabstop>
+  <tabstop>pushButton_back</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

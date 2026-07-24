@@ -460,6 +460,17 @@ QPushButton:hover {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_red</tabstop>
+  <tabstop>pushButton_green</tabstop>
+  <tabstop>pushButton_blue</tabstop>
+  <tabstop>pushButton_yellow</tabstop>
+  <tabstop>pushButton_purple</tabstop>
+  <tabstop>pushButton_orange</tabstop>
+  <tabstop>pushButton_pink</tabstop>
+  <tabstop>pushButton_teal</tabstop>
+  <tabstop>pushButton_brown</tabstop>
+ </tabstops>
  <resources>
   <include location="../../../../recources.qrc"/>
  </resources>

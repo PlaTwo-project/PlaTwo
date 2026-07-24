@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1165</width>
-    <height>655</height>
+    <width>1202</width>
+    <height>613</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -353,6 +353,13 @@ QPushButton:pressed {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_username</tabstop>
+  <tabstop>lineEdit_password</tabstop>
+  <tabstop>pushButton_login</tabstop>
+  <tabstop>pushButton_signup</tabstop>
+  <tabstop>pushButton_forgotPassword</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

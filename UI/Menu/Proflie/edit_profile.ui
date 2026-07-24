@@ -465,6 +465,16 @@ QPushButton:pressed {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_name</tabstop>
+  <tabstop>lineEdit_username</tabstop>
+  <tabstop>lineEdit_phone</tabstop>
+  <tabstop>lineEdit_email</tabstop>
+  <tabstop>lineEdit_old_password</tabstop>
+  <tabstop>lineEdit_new_password</tabstop>
+  <tabstop>pushButton_save_changes</tabstop>
+  <tabstop>pushButton_back_to_menu</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
