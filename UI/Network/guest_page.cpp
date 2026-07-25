@@ -1,7 +1,7 @@
 #include "guest_page.h"
 #include "ui_guest_page.h"
 #include "UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.h"
-#include <QMessageBox>
+#include "UI/Exception/lobby_exception.h"
 #include <QGraphicsBlurEffect>
 
 GuestPage::GuestPage(QWidget *parent) : QWidget(parent) , ui(new Ui::GuestPage) {
@@ -32,31 +32,37 @@ GuestPage::~GuestPage() {
 }
 
 void GuestPage::on_pushButton_join_clicked() {
-    QString ip = ui->lineEdit_ip->text().trimmed();
-    QString text_port = ui->lineEdit_port->text().trimmed();
-    if (ip.isEmpty() || text_port.isEmpty()) {
-        QMessageBox::warning(this, "Guest Page", "Please fill out all fields.");
-        return;
+    try
+    {
+        QString ip = ui->lineEdit_ip->text().trimmed();
+        QString text_port = ui->lineEdit_port->text().trimmed();
+        if (ip.isEmpty() || text_port.isEmpty()) {
+            throw LobbyException("Please fill out all fields.");
+        }
+
+        int port = text_port.toInt();
+        int colorIndex = -1;
+        if (current_game_name == GameName::DotsAndBoxes) {
+            QGraphicsBlurEffect* blur_effect = new QGraphicsBlurEffect(this);
+            blur_effect->setBlurRadius(15);
+            this->setGraphicsEffect(blur_effect);
+            ColorSelectionDialog color_dialog(this);
+            int result = color_dialog.exec();
+            this->setGraphicsEffect(nullptr);
+
+            if (result != QDialog::Accepted)
+                return;
+
+            colorIndex = color_dialog.selectedColorIndex();
+        }
+
+        emit joinRequested(ip, port, colorIndex);
     }
-
-    int port = text_port.toInt();
-    int colorIndex = -1;
-    if (current_game_name == GameName::DotsAndBoxes) {
-        QGraphicsBlurEffect* blur_effect = new QGraphicsBlurEffect(this);
-        blur_effect->setBlurRadius(15);
-        this->setGraphicsEffect(blur_effect);
-        ColorSelectionDialog color_dialog(this);
-        int result = color_dialog.exec();
-        this->setGraphicsEffect(nullptr);
-
-        if (result != QDialog::Accepted)
-            return;
-
-        colorIndex = color_dialog.selectedColorIndex();
+    catch (const BaseException& e){
+        e.showDialog(this);
     }
-
-    emit joinRequested(ip, port, colorIndex);
 }
+
 
 void GuestPage::on_pushButton_back_clicked() {
     emit navigateToGameMenu();

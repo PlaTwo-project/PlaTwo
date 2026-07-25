@@ -1,7 +1,7 @@
 #include "forgot_password.h"
 #include "ui_forgot_password.h"
-#include <QMessageBox>
 #include "UI/MainWindow/mainwindow.h"
+#include "UI/Exception/forget_password_exception.h"
 
 ForgotPassword::ForgotPassword(QWidget *parent)
     : QWidget(parent),
@@ -51,16 +51,23 @@ void ForgotPassword::clearFields()
 
 void ForgotPassword::on_pushButton_next_2_clicked()
 {
-    QString phone = ui->lineEdit_phonenumber_2->text().trimmed();
-    QString username = ui->lineEdit_username_2->text().trimmed();
+    try
+    {
+        QString phone = ui->lineEdit_phonenumber_2->text().trimmed();
+        QString username = ui->lineEdit_username_2->text().trimmed();
 
-    if (phone.isEmpty() || username.isEmpty()) {
-        QMessageBox::warning(this, "Restore Password", "Please fill out all fields.");
-        return;
+        if (phone.isEmpty() || username.isEmpty()) {
+            throw ForgotPasswordException("Please fill out all fields.");
+        }
+
+        emit forgotPasswordStep2Requested(username, phone);
     }
-
-    emit forgotPasswordStep2Requested(username, phone);
+    catch (const BaseException& e)
+    {
+        e.showDialog(this);
+    }
 }
+
 
 void ForgotPassword::on_pushButton_back_2_clicked()
 {
@@ -70,21 +77,26 @@ void ForgotPassword::on_pushButton_back_2_clicked()
 
 void ForgotPassword::on_pushButton_reset_clicked()
 {
-    QString pass = ui->lineEdit_password->text().trimmed();
-    QString confirm = ui->lineEdit_new_password->text().trimmed();
+    try
+    {
+        QString pass = ui->lineEdit_password->text().trimmed();
+        QString confirm = ui->lineEdit_new_password->text().trimmed();
 
-    if (pass.isEmpty() || confirm.isEmpty()) {
-        QMessageBox::warning(this, "Restore Password", "Please fill out all fields.");
-        return;
+        if (pass.isEmpty() || confirm.isEmpty()) {
+            throw ForgotPasswordException("Please fill out all fields.");
+        }
+
+        if (pass != confirm) {
+            throw ForgotPasswordException("Passwords do not match.");
+        }
+
+        emit resetPasswordRequested(user_name, phone_number, pass);
     }
-
-    if (pass != confirm) {
-        QMessageBox::warning(this, "Restore Password", "Passwords do not match.");
-        return;
+    catch (const BaseException& e){
+        e.showDialog(this);
     }
-
-    emit resetPasswordRequested(user_name, phone_number, pass);
 }
+
 
 void ForgotPassword::on_pushButton_cancel_clicked()
 {

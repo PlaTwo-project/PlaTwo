@@ -2,6 +2,11 @@
 #include "session_manager.h"
 #include "Logic/Game/Record/match_record.h"
 #include <QMessageBox>
+#include "UI/Exception/login_exception.h"
+#include "UI/Exception/signup_exception.h"
+#include "UI/Exception/forget_password_exception.h"
+#include "UI/Exception/edit_profile_exception.h"
+#include "UI/Exception/lobby_exception.h"
 
 AppManager::AppManager(QObject *parent)
     : QObject{parent}, authenticator(userStorage), history_storage(), game_manager()
@@ -52,40 +57,44 @@ void AppManager::setupConnections()
 
 void AppManager::handleLogin(const QString &username, const QString &password)
 {
-    User logged_user;
-    AuthResult result = authenticator.login(username, password, logged_user);
-    int res;
-
-    switch (result)
+    try
     {
-    case AuthResult::SUCCESS:
-        SessionManager::getInstance().login(logged_user);
-        res = QMessageBox::information(main_window, "Login", "Login successfully.");
-        if (res == QMessageBox::Ok)
+        User logged_user;
+        AuthResult result = authenticator.login(username, password, logged_user);
+
+        switch (result)
         {
+        case AuthResult::SUCCESS:
+        {
+            SessionManager::getInstance().login(logged_user);
+            QMessageBox::information(main_window, "Login", "Login successfully.");
+
             User user = SessionManager::getInstance().getCurrentUser();
             main_window->loadUserDataInProfile(user.getName(), user.getUsername(), user.getEmail(), user.getPhoneNumber());
             main_window->showMainMenuPage();
             main_window->clearLoginFields();
+            break;
         }
-        break;
 
-    case AuthResult::ALREADY_LOGGED_IN:
-        QMessageBox::warning(main_window, "Error", "This account is already logged in on another session.");
-        break;
+        case AuthResult::ALREADY_LOGGED_IN:
+            throw LoginException("This account is already logged in on another session.");
 
-    case AuthResult::USER_NOT_FOUND:
-        QMessageBox::warning(main_window, "Error", "User not found.");
-        break;
+        case AuthResult::USER_NOT_FOUND:
+            throw LoginException("User not found.");
 
-    case AuthResult::WRONG_PASSWORD:
-        QMessageBox::warning(main_window, "Error", "Wrong password.");
-        break;
+        case AuthResult::WRONG_PASSWORD:
+            throw LoginException("Wrong password.");
 
-    default:
-        QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
+        default:
+            throw LoginException("An unknown error occurred.");
+        }
+    }
+    catch (const BaseException& e)
+    {
+        e.showDialog(main_window);
     }
 }
+
 
 void AppManager::handleLogout()
 {
@@ -100,154 +109,166 @@ void AppManager::handleLogout()
 
 void AppManager::handleSignup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password)
 {
-    AuthResult result = authenticator.signup(name, username, email, phone, password);
-    int res;
-
-    switch (result)
+    try
     {
-    case AuthResult::SUCCESS:
-        res = QMessageBox::information(main_window, "Signup", "Account created successfully.");
-        if (res == QMessageBox::Ok)
+        AuthResult result = authenticator.signup(name, username, email, phone, password);
+
+        switch (result)
         {
-            main_window->showLoginPage();
-            main_window->clearSignupFields();
+        case AuthResult::SUCCESS:
+        {
+            int res = QMessageBox::information(main_window, "Signup", "Account created successfully.");
+            if (res == QMessageBox::Ok)
+            {
+                main_window->showLoginPage();
+                main_window->clearSignupFields();
+            }
+            break;
         }
-        break;
 
-    case AuthResult::USERNAME_TAKEN:
-        QMessageBox::warning(main_window, "Error", "Username already taken.");
-        break;
+        case AuthResult::USERNAME_TAKEN:
+            throw SignupException("Username already taken.");
 
-    case AuthResult::EMAIL_TAKEN:
-        QMessageBox::warning(main_window, "Error", "Email already used.");
-        break;
+        case AuthResult::EMAIL_TAKEN:
+            throw SignupException("Email already used.");
 
-    case AuthResult::PHONE_TAKEN:
-        QMessageBox::warning(main_window, "Error", "Phone number already used.");
-        break;
+        case AuthResult::PHONE_TAKEN:
+            throw SignupException("Phone number already used.");
 
-    case AuthResult::INVALID_EMAIL:
-        QMessageBox::warning(main_window, "Error", "Invalid email.");
-        break;
+        case AuthResult::INVALID_EMAIL:
+            throw SignupException("Invalid email.");
 
-    case AuthResult::INVALID_PHONE:
-        QMessageBox::warning(main_window, "Error", "Invalid phone number.");
-        break;
+        case AuthResult::INVALID_PHONE:
+            throw SignupException("Invalid phone number.");
 
-    case AuthResult::WEAK_PASSWORD:
-        QMessageBox::warning(main_window, "Error", "Weak password.");
-        break;
+        case AuthResult::WEAK_PASSWORD:
+            throw SignupException("Weak password.");
 
-    default:
-        QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
+        default:
+            throw SignupException("An unknown error occurred.");
+        }
+    }
+    catch (const BaseException& e){
+        e.showDialog(main_window);
+    }
+}
+
+
+void AppManager::handleResetPassword(const QString &username, const QString &phone, const QString &new_password)
+{
+    try
+    {
+        AuthResult result = authenticator.resetPassword(username, phone, new_password);
+
+        switch (result)
+        {
+        case AuthResult::SUCCESS:
+        {
+            int res = QMessageBox::information(main_window, "Success Message", "Password changed successfully.");
+            if (res == QMessageBox::Ok)
+            {
+                main_window->showLoginPage();
+                main_window->clearFPFields();
+            }
+            break;
+        }
+
+        case AuthResult::USER_NOT_FOUND:
+            throw ForgotPasswordException("User not found.");
+
+        case AuthResult::USER_PHONE_MISMATCH:
+            throw ForgotPasswordException("Username and phone do not match.");
+
+        case AuthResult::WEAK_PASSWORD:
+            throw ForgotPasswordException("Weak password.");
+
+        default:
+            throw ForgotPasswordException("An unknown error occurred.");
+        }
+    }
+    catch (const BaseException& e)
+    {
+        e.showDialog(main_window);
     }
 }
 
 void AppManager::handleForgotPasswordStep2(const QString &username, const QString &phone)
 {
-    AuthResult result = authenticator.verifyUserPhone(username, phone);
-
-    switch (result)
+    try
     {
-    case AuthResult::SUCCESS:
-        main_window->showForgotPasswordPage2(username, phone);
-        main_window->clearFPFields();
-        break;
+        AuthResult result = authenticator.verifyUserPhone(username, phone);
 
-    case AuthResult::USER_NOT_FOUND:
-        QMessageBox::warning(main_window, "Error", "User not found.");
-        break;
-
-    case AuthResult::USER_PHONE_MISMATCH:
-        QMessageBox::warning(main_window, "Error", "Username and phone do not match.");
-        break;
-
-    default:
-        QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
-    }
-}
-
-void AppManager::handleResetPassword(const QString &username, const QString &phone, const QString &new_password)
-{
-    AuthResult result = authenticator.resetPassword(username, phone, new_password);
-    int res;
-
-    switch (result)
-    {
-    case AuthResult::SUCCESS:
-        res = QMessageBox::information(main_window, "Success Message", "Password changed successfully.");
-        if (res == QMessageBox::Ok)
+        switch (result)
         {
-            main_window->showLoginPage();
+        case AuthResult::SUCCESS:
+            main_window->showForgotPasswordPage2(username, phone);
             main_window->clearFPFields();
+            break;
+
+        case AuthResult::USER_NOT_FOUND:
+            throw ForgotPasswordException("User not found.");
+
+        case AuthResult::USER_PHONE_MISMATCH:
+            throw ForgotPasswordException("Username and phone do not match.");
+
+        default:
+            throw ForgotPasswordException("An unknown error occurred.");
         }
-        break;
-
-    case AuthResult::USER_NOT_FOUND:
-        QMessageBox::warning(main_window, "Error", "User not found.");
-        break;
-
-    case AuthResult::USER_PHONE_MISMATCH:
-        QMessageBox::warning(main_window, "Error", "Username and phone do not match.");
-        break;
-
-    case AuthResult::WEAK_PASSWORD:
-        QMessageBox::warning(main_window, "Error", "Weak password.");
-        break;
-
-    default:
-        QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
+    }
+    catch (const BaseException& e)
+    {
+        e.showDialog(main_window);
     }
 }
 
 void AppManager::handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password)
 {
-    User cur_user = SessionManager::getInstance().getCurrentUser();
-    AuthResult result = authenticator.updateUser(cur_user.getId(), name, username, email, phone, old_password, new_password);
-    int res;
-
-    switch (result)
+    try
     {
-    case AuthResult::SUCCESS:
-        res = QMessageBox::information(main_window, "Success", "Profile updated successfully.");
-        if (res == QMessageBox::Ok)
-            main_window->showMainMenuPage();
-        break;
+        User cur_user = SessionManager::getInstance().getCurrentUser();
+        AuthResult result = authenticator.updateUser(cur_user.getId(), name, username, email, phone, old_password, new_password);
 
-    case AuthResult::USERNAME_TAKEN:
-        QMessageBox::warning(main_window, "Error", "Username is already taken.");
-        break;
+        switch (result)
+        {
+        case AuthResult::SUCCESS:
+        {
+            int res = QMessageBox::information(main_window, "Success", "Profile updated successfully.");
+            if (res == QMessageBox::Ok)
+                main_window->showMainMenuPage();
+            break;
+        }
 
-    case AuthResult::EMAIL_TAKEN:
-        QMessageBox::warning(main_window, "Error", "Email is already registered.");
-        break;
+        case AuthResult::USERNAME_TAKEN:
+            throw EditProfileException("Username is already taken.");
 
-    case AuthResult::PHONE_TAKEN:
-        QMessageBox::warning(main_window, "Error", "Phone number is already registered.");
-        break;
+        case AuthResult::EMAIL_TAKEN:
+            throw EditProfileException("Email is already registered.");
 
-    case AuthResult::INVALID_EMAIL:
-        QMessageBox::warning(main_window, "Error", "Invalid email format.");
-        break;
+        case AuthResult::PHONE_TAKEN:
+            throw EditProfileException("Phone number is already registered.");
 
-    case AuthResult::INVALID_PHONE:
-        QMessageBox::warning(main_window, "Error", "Invalid phone number format.");
-        break;
+        case AuthResult::INVALID_EMAIL:
+            throw EditProfileException("Invalid email format.");
 
-    case AuthResult::WRONG_PASSWORD:
-        QMessageBox::warning(main_window, "Error", "Current password is incorrect.");
-        break;
+        case AuthResult::INVALID_PHONE:
+            throw EditProfileException("Invalid phone number format.");
 
-    case AuthResult::WEAK_PASSWORD:
-        QMessageBox::warning(main_window, "Error", "New password is too weak.");
-        break;
+        case AuthResult::WRONG_PASSWORD:
+            throw EditProfileException("Current password is incorrect.");
 
-    case AuthResult::EMPTY_FIELD:
-        QMessageBox::warning(main_window, "Error", "Please fill out the required fields.");
-        return;
+        case AuthResult::WEAK_PASSWORD:
+            throw EditProfileException("New password is too weak.");
 
-    default:
-        QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
+        case AuthResult::EMPTY_FIELD:
+            throw EditProfileException("Please fill out the required fields.");
+
+        default:
+            throw EditProfileException("An unknown error occurred.");
+        }
+    }
+    catch (const BaseException& e)
+    {
+        e.showDialog(main_window);
     }
 }
 
@@ -265,21 +286,29 @@ void AppManager::handleCreateRoom(const int port, const int board_size, const in
 }
 
 void AppManager::handleJoinRoom(const QString &IP, const int port, const GameName game_name, const int color_index) {
-    User cur_user = SessionManager::getInstance().getCurrentUser();
-    AuthResult result = authenticator.verifyIP(IP);
-    switch (result) {
-    case AuthResult::SUCCESS:
-        game_manager.joinRoom(cur_user, IP, port, game_name, color_index);
-        break;
+    try
+    {
+        User cur_user = SessionManager::getInstance().getCurrentUser();
+        AuthResult result = authenticator.verifyIP(IP);
 
-    case AuthResult::INVALID_IP:
-        QMessageBox::warning(main_window, "Error", "Invalid IP");
-        break;
+        switch (result) {
+        case AuthResult::SUCCESS:
+            game_manager.joinRoom(cur_user, IP, port, game_name, color_index);
+            break;
 
-    default:
-        QMessageBox::warning(main_window, "Error", "An unknown error occurred.");
+        case AuthResult::INVALID_IP:
+            throw LobbyException("Invalid IP");
+
+        default:
+            throw LobbyException("An unknown error occurred.");
+        }
+    }
+    catch (const BaseException& e)
+    {
+        e.showDialog(main_window);
     }
 }
+
 
 void AppManager::handleCancelHost()
 {

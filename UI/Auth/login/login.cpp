@@ -1,6 +1,6 @@
 #include "login.h"
 #include "ui_login.h"
-#include <QMessageBox>
+#include "UI/Exception/login_exception.h"
 
 Login::Login(QWidget *parent)
     : QWidget(parent),
@@ -25,16 +25,21 @@ void Login::clearFields()
 
 void Login::on_pushButton_login_clicked()
 {
-    QString username = ui->lineEdit_username->text().trimmed();
-    QString password = ui->lineEdit_password->text().trimmed();
+    try{
+        QString username = ui->lineEdit_username->text().trimmed();
+        QString password = ui->lineEdit_password->text().trimmed();
 
-    if (username.isEmpty() || password.isEmpty()) {
-        QMessageBox::warning(this, "Login", "Please fill out all fields.");
-        return;
+        if (username.isEmpty() || password.isEmpty()) {
+            throw LoginException("Please fill out all fields.");
+        }
+
+        emit loginRequested(username, password);
     }
-
-    emit loginRequested(username, password);
+    catch (const BaseException& e){
+        e.showDialog(this);
+    }
 }
+
 
 void Login::on_pushButton_signup_clicked()
 {

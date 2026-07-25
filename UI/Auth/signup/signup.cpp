@@ -1,6 +1,6 @@
 #include "signup.h"
 #include "ui_signup.h"
-#include <QMessageBox>
+#include "UI/Exception/signup_exception.h"
 
 Signup::Signup(QWidget *parent)
     : QWidget(parent),
@@ -37,20 +37,24 @@ void Signup::clearFields()
 
 void Signup::on_pushButton_submit_clicked()
 {
-    QString name = ui->lineEdit_name->text().trimmed();
-    QString username = ui->lineEdit_username->text().trimmed();
-    QString phone = ui->lineEdit_phonenumber->text().trimmed();
-    QString email = ui->lineEdit_email->text().trimmed();
-    QString password = ui->lineEdit_password->text().trimmed();
+    try{
+        QString name = ui->lineEdit_name->text().trimmed();
+        QString username = ui->lineEdit_username->text().trimmed();
+        QString phone = ui->lineEdit_phonenumber->text().trimmed();
+        QString email = ui->lineEdit_email->text().trimmed();
+        QString password = ui->lineEdit_password->text().trimmed();
 
-    if (name.isEmpty() || username.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty())
-    {
-        QMessageBox::warning(this, "Sign Up", "Please fill out all fields.");
-        return;
+        if (name.isEmpty() || username.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()){
+            throw SignupException("Please fill out all fields.");
+        }
+
+        emit signupRequested(name, username, email, phone, password);
     }
-
-    emit signupRequested(name, username, email, phone, password);
+    catch (const BaseException& e){
+        e.showDialog(this);
+    }
 }
+
 
 void Signup::on_pushButton_login_clicked()
 {

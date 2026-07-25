@@ -1,6 +1,6 @@
 #include "edit_profile.h"
 #include "ui_edit_profile.h"
-#include <QMessageBox>
+#include "UI/Exception/edit_profile_exception.h"
 
 EditProfile::EditProfile(QWidget *parent)
     : QWidget(parent), ui(new Ui::EditProfile)
@@ -32,21 +32,25 @@ void EditProfile::setInitialValues(const QString &name, const QString &username,
 
 void EditProfile::on_pushButton_save_changes_clicked()
 {
-    QString name = ui->lineEdit_name->text().trimmed();
-    QString username = ui->lineEdit_username->text().trimmed();
-    QString email = ui->lineEdit_email->text().trimmed().trimmed();
-    QString phone = ui->lineEdit_phone->text().trimmed().trimmed();
-    QString old_password = ui->lineEdit_old_password->text().trimmed();
-    QString new_password = ui->lineEdit_new_password->text().trimmed();
+    try{
+        QString name = ui->lineEdit_name->text().trimmed();
+        QString username = ui->lineEdit_username->text().trimmed();
+        QString email = ui->lineEdit_email->text().trimmed();
+        QString phone = ui->lineEdit_phone->text().trimmed();
+        QString old_password = ui->lineEdit_old_password->text().trimmed();
+        QString new_password = ui->lineEdit_new_password->text().trimmed();
 
-    if (name.isEmpty() || username.isEmpty() || email.isEmpty())
-    {
-        QMessageBox::warning(this, "Warning", "Please fill out the required fields.");
-        return;
+        if (name.isEmpty() || username.isEmpty() || email.isEmpty()){
+            throw EditProfileException("Please fill out the required fields.");
+        }
+
+        emit editProfileRequested(name, username, email, phone, old_password, new_password);
     }
-
-    emit editProfileRequested(name, username, email, phone, old_password, new_password);
+    catch (const BaseException& e){
+        e.showDialog(this);
+    }
 }
+
 
 void EditProfile::on_pushButton_back_to_menu_clicked()
 {

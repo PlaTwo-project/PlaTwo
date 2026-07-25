@@ -35,6 +35,7 @@ SOURCES += \
     UI/Auth/ForgotPassword/forgot_password.cpp \
     UI/Auth/login/login.cpp \
     UI/Auth/signup/signup.cpp \
+    UI/Exception/base_exception.cpp \
     UI/Chat/chat_widget.cpp \
     UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.cpp \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.cpp \
@@ -90,7 +91,13 @@ HEADERS += \
     UI/Auth/ForgotPassword/forgot_password.h \
     UI/Auth/login/login.h \
     UI/Auth/signup/signup.h \
+    UI/Exception/base_exception.h \
     UI/Chat/chat_widget.h \
+    UI/Exception/edit_profile_exception.h \
+    UI/Exception/forget_password_exception.h \
+    UI/Exception/lobby_exception.h \
+    UI/Exception/login_exception.h \
+    UI/Exception/signup_exception.h \
     UI/Games/BasePage/base_page.h \
     UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.h \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.h \
