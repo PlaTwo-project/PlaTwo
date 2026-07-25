@@ -41,7 +41,7 @@ QVector<QPair<int, int>> NineMensMorrisBoard::buildCoordinates() {
 }
 
 void NineMensMorrisBoard::initialize() {
-    position_owners.assign(TOTAL_POSITIONS, 0);
+    position_owners = QVector<int>(TOTAL_POSITIONS, 0);
 }
 
 void NineMensMorrisBoard::clear() {

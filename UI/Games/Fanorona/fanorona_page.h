@@ -2,7 +2,7 @@
 #define FANORONA_PAGE_H
 
 #include "UI/Games/BasePage/base_page.h"
-#include "Logic/Game/Fanorona/FanoronaBoard/fanorona_board.h"
+#include "Logic/Game/Fanorona/Fanoronaboard/fanorona_board.h"
 #include <QVector>
 
 class QPushButton;

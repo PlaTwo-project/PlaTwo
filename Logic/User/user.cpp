@@ -1,4 +1,4 @@
-#include "User.h"
+#include "user.h"
 
 User::User() : name(""), username(""), phone_number(""), email(""), hashed_password("") , id(0)
 {}

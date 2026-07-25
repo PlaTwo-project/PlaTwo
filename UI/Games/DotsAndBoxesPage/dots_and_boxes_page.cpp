@@ -25,9 +25,9 @@ DotsAndBoxesPage::DotsAndBoxesPage(QWidget *parent)
 
 void DotsAndBoxesPage::setupBoard(int size) {
     BasePage::setupBoard(size);
-    horizontal_lines.assign(board_size + 1, QVector<int>(board_size, 0));
-    vertical_lines.assign(board_size, QVector<int>(board_size + 1, 0));
-    captured_boxes.assign(board_size, QVector<int>(board_size, 0));
+    horizontal_lines = QVector<QVector<int>>(board_size + 1, QVector<int>(board_size, 0));
+    vertical_lines = QVector<QVector<int>>(board_size, QVector<int>(board_size + 1, 0));
+    captured_boxes = QVector<QVector<int>>(board_size, QVector<int>(board_size, 0));
     displayed_horizontal_lines = horizontal_lines;
     displayed_vertical_lines = vertical_lines;
     displayed_captured_boxes = captured_boxes;

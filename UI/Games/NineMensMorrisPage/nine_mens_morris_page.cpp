@@ -18,7 +18,7 @@ NineMensMorrisPage::NineMensMorrisPage(QWidget* parent)
     selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0),
     anim_move_from(-1), anim_move_to(-1), anim_removed_position(-1), anim_moving_player_id(0) {
     setMouseTracking(true);
-    position_owners.assign(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
+    position_owners = QVector<int>(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
 
     move_animation = new QVariantAnimation(this);
     move_animation->setDuration(ANIMATION_DURATION_MS);
@@ -36,7 +36,7 @@ NineMensMorrisPage::NineMensMorrisPage(QWidget* parent)
 
 void NineMensMorrisPage::setupBoard(const int size) {
     BasePage::setupBoard(size);
-    position_owners.assign(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
+    position_owners = QVector<int>(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
     snapshot_board.setPositionOwners(position_owners);
     selected_position = -1;
     highlighted_positions.clear();

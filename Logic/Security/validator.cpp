@@ -1,4 +1,4 @@
-#include "Validator.h"
+#include "validator.h"
 #include <regex>
 
 bool Validator::validateEmail(const string& email) {

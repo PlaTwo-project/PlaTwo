@@ -2,7 +2,7 @@
 #define FANORONA_H
 
 #include "Logic/Game/BaseLogicClasses/Game.h"
-#include "Logic/Game/Fanorona/FanoronaBoard/fanorona_board.h"
+#include "Logic/Game/Fanorona/Fanoronaboard/fanorona_board.h"
 
 class Fanorona : public Game
 {

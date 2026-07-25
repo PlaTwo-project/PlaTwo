@@ -9,7 +9,7 @@ SOURCES += \
     Infrastructure/DataBase/history_storage_manager.cpp \
     Infrastructure/DataBase/saved_game_storage_manager.cpp \
     Infrastructure/DataBase/session_storage_manager.cpp \
-    Infrastructure/Database/storage_manager.cpp \
+    Infrastructure/DataBase/storage_manager.cpp \
     Infrastructure/Network/guest.cpp \
     Infrastructure/Network/host.cpp \
     Infrastructure/Network/network.cpp \
@@ -33,8 +33,8 @@ SOURCES += \
     Management/Auth/authenticator.cpp \
     Management/Game/game_manager.cpp \
     UI/Auth/ForgotPassword/forgot_password.cpp \
-    UI/Auth/Login/login.cpp \
-    UI/Auth/SignUp/signup.cpp \
+    UI/Auth/login/login.cpp \
+    UI/Auth/signup/signup.cpp \
     UI/Chat/chat_widget.cpp \
     UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.cpp \
     UI/Games/DotsAndBoxesPage/dots_and_boxes_page.cpp \
@@ -53,7 +53,7 @@ HEADERS += \
     Infrastructure/DataBase/history_storage_manager.h \
     Infrastructure/DataBase/saved_game_storage_manager.h \
     Infrastructure/DataBase/session_storage_manager.h \
-    Infrastructure/Database/storage_manager.h \
+    Infrastructure/DataBase/storage_manager.h \
     Infrastructure/Network/guest.h \
     Infrastructure/Network/host.h \
     Infrastructure/Network/network.h \
@@ -106,8 +106,8 @@ HEADERS += \
 
 FORMS += \
     UI/Auth/ForgotPassword/forgot_password.ui \
-    UI/Auth/Login/login.ui \
-    UI/Auth/SignUp/signup.ui \
+    UI/Auth/login/login.ui \
+    UI/Auth/signup/signup.ui \
     UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.ui \
     UI/MainWindow/mainwindow.ui \
     UI/Menu/game_menu.ui \
