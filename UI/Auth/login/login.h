@@ -2,6 +2,7 @@
 #define LOGIN_H
 
 #include <QWidget>
+#include <QShowEvent>
 
 namespace Ui {
 class Login;
@@ -28,6 +29,8 @@ private slots:
 
 private:
     Ui::Login *ui;
+
+    void showEvent(QShowEvent *event) override;
 };
 
 #endif // LOGIN_H

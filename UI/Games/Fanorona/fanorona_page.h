@@ -6,6 +6,7 @@
 #include <QVector>
 
 class QPushButton;
+class QVariantAnimation;
 
 class FanoronaPage : public BasePage
 {
@@ -33,6 +34,21 @@ private:
     int selected_position;
     int hovered_position;
     QVector<int> highlighted_positions;
+
+    // <animations>
+    QVector<int> displayed_occupants;
+    QVector<int> pending_occupants;
+    QVariantAnimation* move_animation;
+    bool is_animating;
+    qreal anim_progress;
+    int anim_move_from;
+    int anim_move_to;
+    int anim_moving_player_id;
+    QVector<int> anim_captured_positions;
+
+    void startMoveAnimation(const QVector<int>& new_occupants);
+    void finishAnimation();
+    // </animations>
 
     int positionAt(const QPoint& point) const;
     QPoint pixelOf(int position) const;

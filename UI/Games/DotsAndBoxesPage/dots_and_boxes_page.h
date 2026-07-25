@@ -7,6 +7,8 @@
 
 using namespace std;
 
+class QVariantAnimation;
+
 class DotsAndBoxesPage : public BasePage
 {
     Q_OBJECT
@@ -30,6 +32,10 @@ private:
     QVector<QVector<int>> vertical_lines;
     QVector<QVector<int>> captured_boxes;
 
+    QVector<QVector<int>> displayed_horizontal_lines;
+    QVector<QVector<int>> displayed_vertical_lines;
+    QVector<QVector<int>> displayed_captured_boxes;
+
     QColor host_player_color = QColor(100, 149, 237);
     QColor guest_player_color = QColor(255, 99, 71);
 
@@ -37,6 +43,18 @@ private:
     int hovered_h_col = -1;
     int hovered_v_row = -1;
     int hovered_v_col = -1;
+
+    // <animations>
+    QVariantAnimation* animation;
+    bool is_animating;
+    qreal anim_progress;
+    int anim_type;
+    int anim_r;
+    int anim_c;
+
+    void startAnimation(const QVector<QVector<int>> &new_h, const QVector<QVector<int>> &new_v, const QVector<QVector<int>> &new_b);
+    void finishAnimation();
+    // </animations>
 };
 
 #endif // DOTS_AND_BOXES_PAGE_H

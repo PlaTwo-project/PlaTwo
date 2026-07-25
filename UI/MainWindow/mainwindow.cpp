@@ -195,6 +195,7 @@ void MainWindow::showWatingHostPage(const QString &ip, int port)
 void MainWindow::showGuestPage(const GameName game_name)
 {
     guest_page->setTitle(game_name);
+    guest_page->clearFields();
     transitionToWidget(guest_page);
 }
 

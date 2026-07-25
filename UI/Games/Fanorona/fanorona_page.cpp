@@ -3,18 +3,46 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QMessageBox>
+#include <QVariantAnimation>
+#include <QEasingCurve>
 #include <cmath>
 
 static const int PIECE_RADIUS = 16;
 static const int CLICK_THRESHOLD = 30;
+static const int MOVE_ANIMATION_DURATION_MS = 450;
 
-FanoronaPage::FanoronaPage(QWidget* parent) : BasePage(parent), chain_active(false), chain_position(-1), current_player_id(0), selected_position(-1), hovered_position(-1) {
+FanoronaPage::FanoronaPage(QWidget* parent)
+    : BasePage(parent), chain_active(false), chain_position(-1), current_player_id(0),
+    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0),
+    anim_move_from(-1), anim_move_to(-1), anim_moving_player_id(0) {
     setMouseTracking(true);
+
+    move_animation = new QVariantAnimation(this);
+    move_animation->setDuration(MOVE_ANIMATION_DURATION_MS);
+    move_animation->setStartValue(0.0);
+    move_animation->setEndValue(1.0);
+    move_animation->setEasingCurve(QEasingCurve::InOutQuad);
+
+    connect(move_animation, &QVariantAnimation::valueChanged, this, [this](const QVariant& value) {
+        anim_progress = value.toReal();
+        update();
+    });
+
+    connect(move_animation, &QVariantAnimation::finished, this, &FanoronaPage::finishAnimation);
 }
 
 void FanoronaPage::setupBoard(const int size) {
     BasePage::setupBoard(size);
     snapshot_board.clear();
+
+    displayed_occupants = snapshot_board.getOccupants();
+    pending_occupants = displayed_occupants;
+    move_animation->stop();
+    is_animating = false;
+    anim_move_from = -1;
+    anim_move_to = -1;
+    anim_captured_positions.clear();
+
     selected_position = -1;
     chain_active = false;
     chain_position = -1;
@@ -50,12 +78,81 @@ void FanoronaPage::updateFromGame(const Game* game) {
     if (!board)
         return;
 
-    snapshot_board.setOccupants(board->getOccupants());
+    if (is_animating) {
+        move_animation->stop();
+        displayed_occupants = pending_occupants;
+        is_animating = false;
+    }
+
+    QVector<int> new_occupants = board->getOccupants();
+    snapshot_board.setOccupants(new_occupants);
+
     chain_active = fanorona_game->isChainActive();
     chain_position = fanorona_game->getChainPosition();
     current_player_id = fanorona_game->currentPlayerId();
     selected_position = -1;
 
+    startMoveAnimation(new_occupants);
+
+    updateHighlights();
+    update();
+}
+
+void FanoronaPage::startMoveAnimation(const QVector<int>& new_occupants) {
+    if (displayed_occupants.size() != new_occupants.size()) {
+        displayed_occupants = new_occupants;
+        return;
+    }
+
+    int to = -1;
+    int moved_player = 0;
+    for (int position = 0; position < new_occupants.size(); ++position) {
+        if (displayed_occupants[position] == 0 && new_occupants[position] != 0) {
+            to = position;
+            moved_player = new_occupants[position];
+            break;
+        }
+    }
+
+    if (to == -1) {
+        displayed_occupants = new_occupants;
+        return;
+    }
+
+    int from = -1;
+    QVector<int> captured;
+    for (int position = 0; position < new_occupants.size(); ++position) {
+        if (displayed_occupants[position] != 0 && new_occupants[position] == 0) {
+            if (displayed_occupants[position] == moved_player)
+                from = position;
+            else
+                captured.append(position);
+        }
+    }
+
+    if (from == -1) {
+        displayed_occupants = new_occupants;
+        return;
+    }
+
+    pending_occupants = new_occupants;
+    anim_move_from = from;
+    anim_move_to = to;
+    anim_moving_player_id = moved_player;
+    anim_captured_positions = captured;
+    anim_progress = 0.0;
+    is_animating = true;
+
+    move_animation->stop();
+    move_animation->start();
+}
+
+void FanoronaPage::finishAnimation() {
+    displayed_occupants = pending_occupants;
+    is_animating = false;
+    anim_move_from = -1;
+    anim_move_to = -1;
+    anim_captured_positions.clear();
     updateHighlights();
     update();
 }
@@ -109,7 +206,7 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::black);
-    painter.setFont(QFont("LTe50403.ttf", 12));
+    painter.setFont(QFont("Bauhaus LT Demi", 12));
     painter.drawText(margin_offset, 25, turn_status_text);
     painter.drawText(margin_offset, 43, QString("Captured - %1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
     painter.drawText(margin_offset, 61, QString("%1's Time: %2  |  %3's Time: %4").arg(first_player_name).arg(first_player_time_str).arg(second_player_name).arg(second_player_time_str));
@@ -141,7 +238,27 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
             painter.drawEllipse(p, PIECE_RADIUS + 3, PIECE_RADIUS + 3);
         }
 
-        int occupant = snapshot_board.getOccupant(position);
+        if (is_animating && (position == anim_move_from || position == anim_move_to)) {
+            painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.setBrush(Qt::white);
+            painter.drawEllipse(p, 4, 4);
+            continue;
+        }
+
+        if (is_animating && anim_captured_positions.contains(position)) {
+            qreal fade = 1.0 - anim_progress;
+            int radius = static_cast<int>(PIECE_RADIUS * (0.5 + 0.5 * fade));
+
+            QColor color = (displayed_occupants[position] == 1) ? QColor(255, 99, 71) : QColor(100, 149, 237);
+            color.setAlphaF(fade);
+
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(color);
+            painter.drawEllipse(p, radius, radius);
+            continue;
+        }
+
+        int occupant = displayed_occupants[position];
         if (occupant == 0) {
             painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.setBrush(Qt::white);
@@ -155,6 +272,16 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
 
             painter.drawEllipse(p, PIECE_RADIUS, PIECE_RADIUS);
         }
+    }
+
+    if (is_animating) {
+        QPointF from_point = pixelOf(anim_move_from);
+        QPointF to_point = pixelOf(anim_move_to);
+        QPointF current_point = from_point + (to_point - from_point) * anim_progress;
+
+        painter.setPen(Qt::black);
+        painter.setBrush(anim_moving_player_id == 1 ? QColor(255, 99, 71) : QColor(100, 149, 237));
+        painter.drawEllipse(current_point, PIECE_RADIUS, PIECE_RADIUS);
     }
 }
 
@@ -183,7 +310,7 @@ void FanoronaPage::tryEmitMove(int from, int to) {
 
 void FanoronaPage::mousePressEvent(QMouseEvent* event) {
 
-    if (!is_input_enabled)
+    if (!is_input_enabled || is_animating)
         return;
 
     int clicked = positionAt(event->position().toPoint());

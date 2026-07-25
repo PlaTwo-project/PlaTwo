@@ -6,7 +6,7 @@
 
 GuestPage::GuestPage(QWidget *parent) : QWidget(parent) , ui(new Ui::GuestPage) {
     ui->setupUi(this);
-    ui->lineEdit_ip->setPlaceholderText("e.g. 127.0.0.1");
+    ui->lineEdit_ip->setPlaceholderText("e.g., 127.0.0.1");
     ui->lineEdit_port->setPlaceholderText("Port must be free");
 }
 
@@ -59,6 +59,5 @@ void GuestPage::on_pushButton_join_clicked() {
 }
 
 void GuestPage::on_pushButton_back_clicked() {
-    clearFields();
     emit navigateToGameMenu();
 }

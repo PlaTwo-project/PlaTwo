@@ -45,3 +45,8 @@ void Login::on_pushButton_forgotPassword_clicked()
 {
     emit navigateToForgotPassword(ui->lineEdit_username->text());
 }
+
+void Login::showEvent(QShowEvent *event) { // set focus on username-field
+    QWidget::showEvent(event);
+    ui->lineEdit_username->setFocus();
+}
