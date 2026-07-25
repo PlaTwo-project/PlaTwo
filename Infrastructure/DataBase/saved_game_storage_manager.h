@@ -6,7 +6,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QFile>
-#include "Logic/Game/game_name.h"
+#include "Logic/Constants/game_name.h"
 #include "Logic/Game/saved_game.h"
 
 class SavedGameStorageManager

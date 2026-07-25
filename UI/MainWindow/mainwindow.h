@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QColor>
-#include "Logic/Game/game_name.h"
+#include "Logic/Constants/game_name.h"
 
 class MatchRecord;
 class Login;

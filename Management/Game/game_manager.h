@@ -10,7 +10,7 @@
 #include "Infrastructure/Network/host.h"
 #include "Logic/Game/BaseLogicClasses/Game.h"
 #include "Infrastructure/DataBase/history_storage_manager.h"
-#include "Logic/Game/game_end_reason.h"
+#include "Logic/Constants/game_end_reason.h"
 
 enum class Role {
     Host,

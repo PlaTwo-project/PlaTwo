@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QDateTime>
-#include "Logic/Game/game_name.h"
+#include "Logic/Constants/game_name.h"
 
 class MatchRecord
 {

@@ -1,4 +1,5 @@
 #include "guest.h"
+#include "Logic/Constants/packet_type.h"
 
 Guest::Guest(QObject *parent): Network(parent) {
 }
@@ -22,7 +23,7 @@ void Guest::connectHost(const QString& IP, int port)
 void Guest::sendGuestInfo(const User& guest_user, int guest_color_index, GameName game_name) {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out << qint8(2) << guest_user.getId() << guest_user.getName() << guest_user.getUsername() << guest_color_index << static_cast<qint32>(game_name);
+    out << static_cast<qint8>(PacketType::guest_join) << guest_user.getId() << guest_user.getName() << guest_user.getUsername() << guest_color_index << static_cast<qint32>(game_name);
     sendData(block);
 }
 
@@ -32,7 +33,7 @@ void Guest::handleIncomingData(const QByteArray &data) {
     qint8 packet_type;
     in >> packet_type;
 
-    if (packet_type == 1) {
+    if (packet_type == static_cast<qint8>(PacketType::creat_room)) {
         int host_id;
         QString host_name, host_username;
         int board_size, time_limit;
@@ -45,26 +46,26 @@ void Guest::handleIncomingData(const QByteArray &data) {
         emit roomConfigReceived(host_user, board_size, time_limit, host_color_index, guest_color_index);
     }
 
-    if (packet_type == 3) {
+    if (packet_type == static_cast<qint8>(PacketType::move)) {
         QByteArray move_data;
         in >> move_data;
         emit moveReceived(move_data);
     }
 
-    if (packet_type == 4)
+    if (packet_type == static_cast<qint8>(PacketType::resign))
         emit resignReceived();
 
-    if (packet_type == 5) {
+    if (packet_type == static_cast<qint8>(PacketType::chat)) {
         QString chat_message;
         in >> chat_message;
         emit chatMessageReceived(chat_message);
     }
 
-    if (packet_type == 6) {
+    if (packet_type == static_cast<qint8>(PacketType::PauseRequest)) {
         emit pauseRequested();
     }
 
-    if (packet_type == 7) {
+    if (packet_type == static_cast<qint8>(PacketType::PauseResponse)) {
         bool accepted;
         in >> accepted;
         emit pauseResponded(accepted);

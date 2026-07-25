@@ -2,7 +2,7 @@
 #define HOST_PAGE_H
 
 #include <QWidget>
-#include "Logic/Game/game_name.h"
+#include "Logic/Constants/game_name.h"
 
 namespace Ui {
 class HostPage;

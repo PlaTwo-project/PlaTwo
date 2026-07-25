@@ -57,6 +57,10 @@ HEADERS += \
     Infrastructure/Network/guest.h \
     Infrastructure/Network/host.h \
     Infrastructure/Network/network.h \
+    Logic/Constants/const_numbers.h \
+    Logic/Constants/game_end_reason.h \
+    Logic/Constants/game_name.h \
+    Logic/Constants/packet_type.h \
     Logic/Game/BaseLogicClasses/Board.h \
     Logic/Game/BaseLogicClasses/Game.h \
     Logic/Game/BaseLogicClasses/Move.h \
@@ -71,8 +75,6 @@ HEADERS += \
     Logic/Game/NineMensMorris/NineMensMorrisLogic/nine_mens_morris.h \
     Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.h \
     Logic/Game/Record/match_record.h \
-    Logic/Game/game_end_reason.h \
-    Logic/Game/game_name.h \
     Logic/Game/room_state.h \
     Logic/Game/saved_game.h \
     Logic/Interface/history_interface.h \

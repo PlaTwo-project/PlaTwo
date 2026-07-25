@@ -5,7 +5,7 @@
 #include "network.h"
 #include <QTcpServer>
 #include "Logic/User/user.h"
-#include "Logic/Game/game_name.h"
+#include "Logic/Constants/game_name.h"
 
 class Host : public Network
 {

@@ -1,6 +1,7 @@
 #include <QNetworkInterface>
 #include <QHostAddress>
 #include "host.h"
+#include "Logic/Constants/packet_type.h"
 
 Host::Host(QObject *parent) : Network(parent), server(nullptr)
 {
@@ -55,7 +56,7 @@ QString Host::getLocalIP() const {
 void Host::sendRoomConfig(const User& host_user, int board_size, int time_limit, int host_color_index, int guest_color_index) {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out << qint8(1) << host_user.getId() << host_user.getName() << host_user.getUsername() << board_size << time_limit << host_color_index << guest_color_index;
+    out << static_cast<qint8>(PacketType::creat_room) << host_user.getId() << host_user.getName() << host_user.getUsername() << board_size << time_limit << host_color_index << guest_color_index;
     sendData(block);
 }
 
@@ -63,8 +64,7 @@ void Host::handleIncomingData(const QByteArray &data) {
     QDataStream in(data);
     qint8 packet_type;
     in >> packet_type;
-
-    if (packet_type == 2) {
+    if (packet_type == static_cast<qint8>(PacketType::guest_join)) {
         int guest_id;
         QString guest_name, guest_username;
         int guest_color_index;
@@ -77,26 +77,26 @@ void Host::handleIncomingData(const QByteArray &data) {
         emit guestJoined(guest_user, guest_color_index, static_cast<GameName>(game_name_int));
     }
 
-    if (packet_type == 3) {
+    if (packet_type == static_cast<qint8>(PacketType::move)) {
         QByteArray move_data;
         in >> move_data;
         emit moveReceived(move_data);
     }
 
-    if (packet_type == 4)
+    if (packet_type == static_cast<qint8>(PacketType::resign))
         emit resignReceived();
 
-    if (packet_type == 5) {
+    if (packet_type == static_cast<qint8>(PacketType::chat)) {
         QString chat_message;
         in >> chat_message;
         emit chatMessageReceived(chat_message);
     }
 
-    if (packet_type == 6) {
+    if (packet_type == static_cast<qint8>(PacketType::PauseRequest)) {
         emit pauseRequested();
     }
 
-    if (packet_type == 7) {
+    if (packet_type == static_cast<qint8>(PacketType::PauseResponse)) {
         bool accepted;
         in >> accepted;
         emit pauseResponded(accepted);

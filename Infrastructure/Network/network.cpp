@@ -1,12 +1,12 @@
 #include "network.h"
 #include <QDataStream>
+#include "Logic/Constants/packet_type.h"
 
 Network::Network(QObject *parent) : QObject(parent), socket(nullptr) {}
 
 void Network::sendData(const QByteArray &data)
 {
-    if (socket && socket->isOpen())
-    {
+    if (socket && socket->isOpen()){
         socket->write(data);
         socket->flush();
     }
@@ -15,14 +15,13 @@ void Network::sendData(const QByteArray &data)
 void Network::sendChatMessage(const QString &message) {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out << qint8(5) << message;
+    out << static_cast<qint8>(PacketType::chat) << message;
     sendData(block);
 }
 
 Network::~Network()
 {
-    if (socket)
-    {
+    if (socket){
         socket->close();
         socket->deleteLater();
         socket = nullptr;
@@ -52,13 +51,13 @@ void Network::disconnectSocket()
 void Network::sendPauseRequest() {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out << qint8(6);
+    out << static_cast<qint8>(PacketType::PauseRequest);
     sendData(block);
 }
 
 void Network::sendPauseResponse(bool accepted) {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out << qint8(7) << accepted;
+    out << static_cast<qint8>(PacketType::PauseResponse) << accepted;
     sendData(block);
 }

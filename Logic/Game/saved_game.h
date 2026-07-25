@@ -1,6 +1,6 @@
 #ifndef SAVED_GAME_H
 #define SAVED_GAME_H
-#include "Logic/Game/game_name.h"
+#include "Logic/Constants/game_name.h"
 #include <QString>
 
 class SavedGame

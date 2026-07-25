@@ -2,7 +2,7 @@
 #define ROOM_STATE_H
 
 #include "Logic/User/user.h"
-#include "Logic/Game/game_name.h"
+#include "Logic/Constants/game_name.h"
 
 class RoomState
 {
