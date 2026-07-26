@@ -123,6 +123,13 @@ QPushButton:disabled {
        </property>
        <item alignment="Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTop">
         <widget class="QPushButton" name="pushButton_signup">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+           <bold>true</bold>
+           <underline>true</underline>
+          </font>
+         </property>
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
@@ -132,7 +139,7 @@ QPushButton:disabled {
     color: #6D3F1D;
     border: none;
     text-decoration: underline;
-    font-size: 10pt;
+    font-size: 11pt;
     font-weight: bold;
     padding: 2px 4px;
 }
@@ -162,7 +169,7 @@ QPushButton:pressed {
     color: #6D3F1D;
     border: none;
     text-decoration: underline;
-    font-size: 10pt;
+    font-size: 11pt;
     font-weight: bold;
     padding: 2px 4px;
 }

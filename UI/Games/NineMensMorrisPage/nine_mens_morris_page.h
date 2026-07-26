@@ -54,7 +54,7 @@ private:
     void mouseMoveEvent(QMouseEvent* event) override;
 
 signals:
-    void moveRequested(int from, int to, int type); // (position, -1, 0) = PLACE, (from, to, 1) = MOVE, (position, -1, 2) = REMOVE
+void moveRequested(int from, int to, int type);
 };
 
 #endif // NINE_MENS_MORRIS_PAGE_H

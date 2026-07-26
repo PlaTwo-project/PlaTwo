@@ -46,7 +46,68 @@ QMessageBox QPushButton:pressed {
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>800</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="3" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::Minimum</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>80</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="2">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>800</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="1">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="1">
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="leftMargin">
       <number>0</number>
@@ -185,11 +246,14 @@ QLineEdit:focus {
      </item>
      <item row="1" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout">
-       <item alignment="Qt::AlignmentFlag::AlignRight">
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <item>
         <widget class="QPushButton" name="pushButton_back">
          <property name="minimumSize">
           <size>
-           <width>150</width>
+           <width>175</width>
            <height>0</height>
           </size>
          </property>
@@ -225,11 +289,11 @@ QPushButton:pressed {
          </property>
         </widget>
        </item>
-       <item alignment="Qt::AlignmentFlag::AlignLeft">
+       <item>
         <widget class="QPushButton" name="pushButton_join">
          <property name="minimumSize">
           <size>
-           <width>150</width>
+           <width>170</width>
            <height>0</height>
           </size>
          </property>
@@ -269,110 +333,59 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+   <item row="0" column="0" colspan="3">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="topMargin">
+      <number>0</number>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignTop">
-    <widget class="QLabel" name="label_game">
-     <property name="font">
-      <font>
-       <family>Orbitron SemiBold</family>
-       <pointsize>60</pointsize>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLabel {
-    color: #2F1B0C;
-    background: transparent;
-}</string>
-     </property>
-     <property name="text">
-      <string>teryak</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Policy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="1">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Policy::Minimum</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>80</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="1" alignment="Qt::AlignmentFlag::AlignTop">
-    <widget class="QLabel" name="label">
-     <property name="font">
-      <font>
-       <family>Orbitron</family>
-       <pointsize>90</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLabel {
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <family>Orbitron</family>
+         <pointsize>90</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
     color: #5B3A1E;
     background: transparent;
     letter-spacing: 2px;
 }</string>
-     </property>
-     <property name="text">
-      <string>PlaTwo</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+       </property>
+       <property name="text">
+        <string>PlaTwo</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_game">
+       <property name="font">
+        <font>
+         <family>Orbitron SemiBold</family>
+         <pointsize>60</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    color: #2F1B0C;
+    background: transparent;
+}</string>
+       </property>
+       <property name="text">
+        <string>teryak</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

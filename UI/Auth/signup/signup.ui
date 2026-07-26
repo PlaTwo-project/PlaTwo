@@ -432,12 +432,12 @@ QLineEdit:focus {
        <property name="minimumSize">
         <size>
          <width>300</width>
-         <height>35</height>
+         <height>40</height>
         </size>
        </property>
        <property name="font">
         <font>
-         <pointsize>11</pointsize>
+         <pointsize>12</pointsize>
          <bold>true</bold>
         </font>
        </property>
@@ -448,7 +448,7 @@ QLineEdit:focus {
     border: 2px solid #7A431B;
     border-radius: 10px;
     padding: 10px 18px;
-    font-size: 11pt;
+    font-size: 12pt;
     font-weight: bold;
 }
 
@@ -498,7 +498,7 @@ QPushButton:disabled {
        </property>
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
+         <pointsize>11</pointsize>
          <bold>true</bold>
          <underline>true</underline>
         </font>
@@ -509,7 +509,7 @@ QPushButton:disabled {
     color: #6D3F1D;
     border: none;
     text-decoration: underline;
-    font-size: 10pt;
+    font-size: 11pt;
     font-weight: bold;
     padding: 2px 4px;
 }

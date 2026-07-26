@@ -295,7 +295,7 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
 void FanoronaPage::tryEmitMove(int from, int to) {
     bool can_approach = snapshot_board.canApproachCapture(from, to);
     bool can_withdrawal = snapshot_board.canWithdrawalCapture(from, to);
-    int capture_choice = -1;
+    int capture_choice = static_cast<int>(FanoronaCaptureType::NONE);
 
     if (can_approach && can_withdrawal){
         QMessageBox box(this);
@@ -306,9 +306,9 @@ void FanoronaPage::tryEmitMove(int from, int to) {
         box.exec();
 
         if (box.clickedButton() == approach_button)
-            capture_choice = 0;
+            capture_choice = static_cast<int>(FanoronaCaptureType::APPROACH);
         else if (box.clickedButton() == withdrawal_button)
-            capture_choice = 1;
+            capture_choice = static_cast<int>(FanoronaCaptureType::WITHDRAWAL);
         else
             return;
     }

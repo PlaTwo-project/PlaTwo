@@ -80,7 +80,7 @@ QMessageBox QPushButton:pressed {
             <widget class="QPushButton" name="pushButton_back">
              <property name="minimumSize">
               <size>
-               <width>140</width>
+               <width>160</width>
                <height>0</height>
               </size>
              </property>
@@ -121,7 +121,7 @@ QPushButton:pressed {
             <widget class="QPushButton" name="pushButton_create">
              <property name="minimumSize">
               <size>
-               <width>140</width>
+               <width>160</width>
                <height>0</height>
               </size>
              </property>
@@ -388,6 +388,7 @@ QSpinBox::up-button,
 QSpinBox::down-button {
     width: 20px;
     border: none;
+	color: black;
     background-color: rgba(183, 122, 61, 70);
 }
 

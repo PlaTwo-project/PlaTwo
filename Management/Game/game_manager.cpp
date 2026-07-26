@@ -174,12 +174,7 @@ bool GameManager::handleLocalMove(int arg1, int arg2, int arg3) {
         if (arg1 == -1 && arg2 == -1 && arg3 == -1)
             proposed_move = new FanoronaMove(-1, -1, mover_id, FanoronaCaptureType::NONE, true);
         else {
-            FanoronaCaptureType requested_capture = FanoronaCaptureType::NONE;
-            if (arg3 == 0)
-                requested_capture = FanoronaCaptureType::APPROACH;
-            else if (arg3 == 1)
-                requested_capture = FanoronaCaptureType::WITHDRAWAL;
-
+            FanoronaCaptureType requested_capture = static_cast<FanoronaCaptureType>(arg3);
             proposed_move = new FanoronaMove(arg1, arg2, mover_id, requested_capture, false);
         }
     }

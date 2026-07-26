@@ -4,6 +4,7 @@
 #include <QVariantAnimation>
 #include <QEasingCurve>
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.h"
+#include "Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.h"
 
 DotsAndBoxesPage::DotsAndBoxesPage(QWidget *parent) : BasePage(parent), is_animating(false), anim_progress(1.0), anim_type(0), anim_r(-1), anim_c(-1) {
     setMouseTracking(true);
@@ -233,7 +234,7 @@ void DotsAndBoxesPage::mousePressEvent(QMouseEvent *event) {
             int mid_x = margin_offset + c * cell_spacing + cell_spacing / 2;
             int mid_y = margin_offset + r * cell_spacing;
             if (abs(click_x - mid_x) < 30 && abs(click_y - mid_y) < 15) {
-                emit moveRequested(r, c, 0);
+                emit moveRequested(r, c, static_cast<int>(lineDirection::HORIZONTAL));
                 return;
             }
         }
@@ -244,7 +245,7 @@ void DotsAndBoxesPage::mousePressEvent(QMouseEvent *event) {
             int mid_x = margin_offset + c * cell_spacing;
             int mid_y = margin_offset + r * cell_spacing + cell_spacing / 2;
             if (abs(click_x - mid_x) < 15 && abs(click_y - mid_y) < 30) {
-                emit moveRequested(r, c, 1);
+                emit moveRequested(r, c, static_cast<int>(lineDirection::VERTICAL));
                 return;
             }
         }

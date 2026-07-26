@@ -1,5 +1,6 @@
 #include "nine_mens_morris_page.h"
 #include "Logic/Game/NineMensMorris/NineMensMorrisLogic/nine_mens_morris.h"
+#include "Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.h"
 #include <QPainter>
 #include <QPoint>
 #include <QMouseEvent>
@@ -319,7 +320,7 @@ void NineMensMorrisPage::mousePressEvent(QMouseEvent* event) {
         return;
 
     if (awaiting_removal) {
-        emit moveRequested(clicked, -1, 2); // remove
+        emit moveRequested(clicked, -1, static_cast<int>(MoveType::REMOVE));
         return;
     }
 
@@ -331,7 +332,7 @@ void NineMensMorrisPage::mousePressEvent(QMouseEvent* event) {
             update();
         }
         else if (owner == PlayerSlot::NONE)
-            emit moveRequested(clicked, -1, 0); // place
+            emit moveRequested(clicked, -1, static_cast<int>(MoveType::PLACE));
 
         return;
     }
@@ -352,7 +353,7 @@ void NineMensMorrisPage::mousePressEvent(QMouseEvent* event) {
     }
 
     if (owner == PlayerSlot::NONE) {
-        emit moveRequested(selected_position, clicked, 1); // move
+        emit moveRequested(selected_position, clicked, static_cast<int>(MoveType::MOVE));
         selected_position = -1;
         updateHighlights();
     }
