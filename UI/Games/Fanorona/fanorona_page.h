@@ -29,24 +29,24 @@ private:
     FanoronaBoard snapshot_board;
     bool chain_active;
     int chain_position;
-    int current_player_id;
+    PlayerSlot current_player_id;
 
     int selected_position;
     int hovered_position;
     QVector<int> highlighted_positions;
 
     // <animations>
-    QVector<int> displayed_occupants;
-    QVector<int> pending_occupants;
+    QVector<PlayerSlot> displayed_occupants;
+    QVector<PlayerSlot> pending_occupants;
     QVariantAnimation* move_animation;
     bool is_animating;
     qreal anim_progress;
     int anim_move_from;
     int anim_move_to;
-    int anim_moving_player_id;
-    QVector<int> anim_captured_positions;
+    PlayerSlot anim_moving_player_id;
+    QVector<PlayerSlot> anim_captured_positions;
 
-    void startMoveAnimation(const QVector<int>& new_occupants);
+    void startMoveAnimation(const QVector<PlayerSlot>& new_occupants);
     void finishAnimation();
     // </animations>
 

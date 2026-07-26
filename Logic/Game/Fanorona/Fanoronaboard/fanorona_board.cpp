@@ -6,28 +6,28 @@ FanoronaBoard::FanoronaBoard() {
 }
 
 void FanoronaBoard::initialize() {
-    occupants.fill(0, TOTAL_POSITIONS);
+    occupants.fill(PlayerSlot::NONE, TOTAL_POSITIONS);
     for (int col = 0; col < COLS; ++col) {
-        occupants[positionOf(0, col)] = 2;
-        occupants[positionOf(1, col)] = 2;
-        occupants[positionOf(3, col)] = 1;
-        occupants[positionOf(4, col)] = 1;
+        occupants[positionOf(0, col)] = PlayerSlot::GUEST;
+        occupants[positionOf(1, col)] = PlayerSlot::GUEST;
+        occupants[positionOf(3, col)] = PlayerSlot::HOST;
+        occupants[positionOf(4, col)] = PlayerSlot::HOST;
     }
 
     for (int col = 0; col < COLS; ++col) {
         int centre_col = COLS / 2;
         if (col == centre_col)
-            occupants[positionOf(2, col)] = 0;
+            occupants[positionOf(2, col)] = PlayerSlot::NONE;
         else if (col < centre_col) {
             if (col % 2 == 0)
-                occupants[positionOf(2, col)] = 2;
+                occupants[positionOf(2, col)] = PlayerSlot::GUEST;
             else
-                occupants[positionOf(2, col)] = 1;
+                occupants[positionOf(2, col)] = PlayerSlot::HOST;
         } else {
             if (col % 2 == 0)
-                occupants[positionOf(2, col)] = 1;
+                occupants[positionOf(2, col)] = PlayerSlot::HOST;
             else
-                occupants[positionOf(2, col)] = 2;
+                occupants[positionOf(2, col)] = PlayerSlot::GUEST;
         }
     }
 }
@@ -43,35 +43,22 @@ void FanoronaBoard::applyMove(const Move& main_move) {
 
     int from = move->getFrom();
     int to = move->getTo();
-    if (!isValidPosition(from) || !isValidPosition(to))
-        return;
-
     QVector<int> captured;
     if (move->getCaptureType() != FanoronaCaptureType::NONE)
         captured = getCaptureTargets(from, to, move->getCaptureType());
 
     occupants[to] = occupants[from];
-    occupants[from] = 0;
+    occupants[from] = PlayerSlot::NONE;
 
     for (int position : captured)
-        occupants[position] = 0;
-}
-
-bool FanoronaBoard::isValidPosition(int position) {
-    return position >= 0 && position < TOTAL_POSITIONS;
+        occupants[position] = PlayerSlot::NONE;
 }
 
 bool FanoronaBoard::isEmpty(int position) const {
-    if (!isValidPosition(position))
-        return false;
-
-    return occupants[position] == 0;
+    return occupants[position] == PlayerSlot::NONE;
 }
 
-int FanoronaBoard::getOccupant(int position) const {
-    if (!isValidPosition(position))
-        return 0;
-
+PlayerSlot FanoronaBoard::getOccupant(int position) const {
     return occupants[position];
 }
 
@@ -88,16 +75,10 @@ int FanoronaBoard::positionOf(int row, int col) {
 }
 
 bool FanoronaBoard::isStrongPoint(int position) {
-    if (!isValidPosition(position))
-        return false;
-
     return (rowOf(position) + colOf(position)) % 2 == 0;
 }
 
 bool FanoronaBoard::isAdjacent(int from, int to) const {
-    if (!isValidPosition(from) || !isValidPosition(to) || from == to)
-        return false;
-
     int dr = rowOf(to) - rowOf(from);
     int dc = colOf(to) - colOf(from);
     if (dr < -1 || dr > 1 || dc < -1 || dc > 1)
@@ -112,9 +93,6 @@ bool FanoronaBoard::isAdjacent(int from, int to) const {
 
 QVector<int> FanoronaBoard::getNeighbours(int position) const {
     QVector<int> neighbours;
-    if (!isValidPosition(position))
-        return neighbours;
-
     int r = rowOf(position);
     int c = colOf(position);
     bool strong = isStrongPoint(position);
@@ -147,18 +125,15 @@ QVector<int> FanoronaBoard::getCaptureTargets(int from, int to, FanoronaCaptureT
     if (type == FanoronaCaptureType::NONE)
         return result;
 
-    if (!isValidPosition(from) || !isValidPosition(to) || !isAdjacent(from, to))
+    PlayerSlot mover = occupants[from];
+    if (mover == PlayerSlot::NONE)
         return result;
 
-    int mover = occupants[from];
-    if (mover == 0)
-        return result;
-
-    int opponent;
-    if (mover == 1)
-        opponent = 2;
+    PlayerSlot opponent;
+    if (mover == PlayerSlot::HOST)
+        opponent = PlayerSlot::GUEST;
     else
-        opponent = 1;
+        opponent = PlayerSlot::HOST;
 
     int dr = rowOf(to) - rowOf(from);
     int dc = colOf(to) - colOf(from);
@@ -197,16 +172,16 @@ bool FanoronaBoard::canWithdrawalCapture(int from, int to) const {
     return !getCaptureTargets(from, to, FanoronaCaptureType::WITHDRAWAL).isEmpty();
 }
 
-int FanoronaBoard::getPieceCount(int player_id) const {
+int FanoronaBoard::getPieceCount(PlayerSlot player_id) const {
     int count = 0;
-    for (int occupant : occupants)
+    for (PlayerSlot occupant : occupants)
         if (occupant == player_id)
             ++count;
 
     return count;
 }
 
-bool FanoronaBoard::hasAnyCaptureAvailable(int player_id) const {
+bool FanoronaBoard::hasAnyCaptureAvailable(PlayerSlot player_id) const {
     for (int position = 0; position < TOTAL_POSITIONS; ++position) {
         if (occupants[position] != player_id)
             continue;
@@ -223,7 +198,7 @@ bool FanoronaBoard::hasAnyCaptureAvailable(int player_id) const {
     return false;
 }
 
-bool FanoronaBoard::hasAnyLegalMove(int player_id) const {
+bool FanoronaBoard::hasAnyLegalMove(PlayerSlot player_id) const {
     for (int position = 0; position < TOTAL_POSITIONS; ++position) {
         if (occupants[position] != player_id)
             continue;
@@ -236,11 +211,11 @@ bool FanoronaBoard::hasAnyLegalMove(int player_id) const {
     return false;
 }
 
-const QVector<int>& FanoronaBoard::getOccupants() const {
+const QVector<PlayerSlot>& FanoronaBoard::getOccupants() const {
     return occupants;
 }
 
-void FanoronaBoard::setOccupants(const QVector<int>& new_occupants) {
+void FanoronaBoard::setOccupants(const QVector<PlayerSlot>& new_occupants) {
     if (new_occupants.size() == TOTAL_POSITIONS)
         occupants = new_occupants;
 }

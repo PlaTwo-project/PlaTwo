@@ -8,21 +8,21 @@
 class FanoronaMove : public Move
 {
 public:
-    FanoronaMove(int from, int to, int player_id, FanoronaCaptureType capture_type, bool is_end_turn = false);
+    FanoronaMove(int from, int to, PlayerSlot player_id, FanoronaCaptureType capture_type, bool is_end_turn = false);
     ~FanoronaMove() override = default;
 
     QByteArray serializeMove() const override;
 
     int getFrom() const;
     int getTo() const;
-    int getPlayerId() const;
+    PlayerSlot getPlayerId() const;
     FanoronaCaptureType getCaptureType() const;
     bool isEndTurn() const;
 
 private:
     int from_position;
     int to_position;
-    int player_id;
+    PlayerSlot player_id;
     FanoronaCaptureType capture_type;
     bool end_turn;
 };

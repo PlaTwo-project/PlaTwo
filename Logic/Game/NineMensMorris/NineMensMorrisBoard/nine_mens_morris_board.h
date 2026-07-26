@@ -5,6 +5,7 @@
 #include <QPair>
 #include "Logic/Game/BaseLogicClasses/Board.h"
 #include "Logic/Game/NineMensMorris/NineMensMorrisMove/nine_mens_morris_move.h"
+#include "Logic/Constants/player_slot.h"
 
 //        Game Map Hint
 //
@@ -34,15 +35,15 @@ public:
 
     bool isEmpty(int position) const;
     bool isProximate(int from, int to) const;
-    bool isMill(int position, int player_id) const;
-    bool areAllPiecesInMills(int player_id) const;
-    bool isPieceRemovable(int position, int owner_id) const;
-    bool hasAnyMove(int player_id, bool is_flying) const;
+    bool isMill(int position, PlayerSlot player_id) const;
+    bool areAllPiecesInMills(PlayerSlot player_id) const;
+    bool isPieceRemovable(int position, PlayerSlot owner_id) const;
+    bool hasAnyMove(PlayerSlot player_id, bool is_flying) const;
 
-    int getPositionOwner(int position) const;
-    void setPositionOwners(const QVector<int>& owners);
-    int getPieceCount(int player_id) const;
-    const QVector<int>& getPositionOwners() const;
+    PlayerSlot getPositionOwner(int position) const;
+    void setPositionOwners(const QVector<PlayerSlot>& owners);
+    int getPieceCount(PlayerSlot player_id) const;
+    const QVector<PlayerSlot>& getPositionOwners() const;
     static const QVector<QVector<int>>& getProximityList();
     static const QVector<QVector<int>>& getMillLinesList();
     static QPair<int, int> getCoordinates(int position);
@@ -50,7 +51,7 @@ public:
     static const int TOTAL_POSITIONS = 24;
 
 private:
-    QVector<int> position_owners; // 0 = empty, 1 = player one, 2 = player two
+    QVector<PlayerSlot> position_owners;
 
     static QVector<QVector<int>> buildProximityList();
     static QVector<QVector<int>> buildMillLinesList();

@@ -19,29 +19,29 @@ public:
     void updateFromGame(const class Game* main_game) override;
 
 private:
-    QVector<int> position_owners;
+    QVector<PlayerSlot> position_owners;
     NineMensMorrisBoard snapshot_board;
     bool awaiting_removal;
     int placed_count_p1;
     int placed_count_p2;
-    int current_player_id;
+    PlayerSlot current_player_id;
 
     int selected_position;
     int hovered_position;
-    QVector<int> highlighted_positions;
+    QVector<PlayerSlot> highlighted_positions;
 
     // <animations>
-    QVector<int> displayed_owners;
-    QVector<int> pending_owners;
+    QVector<PlayerSlot> displayed_owners;
+    QVector<PlayerSlot> pending_owners;
     QVariantAnimation* move_animation;
     bool is_animating;
     qreal anim_progress;
     int anim_move_from;
     int anim_move_to;
     int anim_removed_position;
-    int anim_moving_player_id;
+    PlayerSlot anim_moving_player_id;
 
-    void startAnimation(const QVector<int>& new_owners);
+    void startAnimation(const QVector<PlayerSlot>& new_owners);
     void finishAnimation();
     // </animations>
 

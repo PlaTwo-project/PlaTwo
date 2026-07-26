@@ -27,8 +27,7 @@ public:
     virtual int getSecondPlayerScore() const = 0;
     virtual Board *getBoard() const = 0;
 
-    User getCurrentPlayer() const
-    {
+    User getCurrentPlayer() const {
         return current_player;
     }
 

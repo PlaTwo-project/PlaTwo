@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1202</width>
-    <height>613</height>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -265,7 +265,7 @@ QPushButton:pressed {
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
-         <verstretch>30</verstretch>
+         <verstretch>50</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">

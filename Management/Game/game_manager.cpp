@@ -148,11 +148,11 @@ bool GameManager::handleLocalMove(int arg1, int arg2, int arg3) {
     if (room_state->getGameName() == GameName::DotsAndBoxes)
         proposed_move = new DotsAndBoxesMove(arg1, arg2, static_cast<lineDirection>(arg3));
     else if (room_state->getGameName() == GameName::NineMensMorris) {
-        int mover_id;
+        PlayerSlot mover_id;
         if (current_game->getCurrentPlayer().getId() == room_state->getHostUser().getId())
-            mover_id = 1;
+            mover_id = PlayerSlot::HOST;
         else
-            mover_id = 2;
+            mover_id = PlayerSlot::GUEST;
 
         auto move_type = static_cast<MoveType>(arg3);
         int from, to;
@@ -166,11 +166,11 @@ bool GameManager::handleLocalMove(int arg1, int arg2, int arg3) {
 
         proposed_move = new NineMensMorrisMove(move_type, mover_id, from, to);
     } else if (room_state->getGameName() == GameName::Fanorona) {
-        int mover_id;
+        PlayerSlot mover_id;
         if (current_game->getCurrentPlayer().getId() == room_state->getHostUser().getId())
-            mover_id = 1;
+            mover_id = PlayerSlot::HOST;
         else
-            mover_id = 2;
+            mover_id = PlayerSlot::GUEST;
         if (arg1 == -1 && arg2 == -1 && arg3 == -1)
             proposed_move = new FanoronaMove(-1, -1, mover_id, FanoronaCaptureType::NONE, true);
         else {
@@ -237,14 +237,14 @@ bool GameManager::handleRemoteMove(const QByteArray &serialized_move) {
         if (parts.size() < 4)
             return false;
 
-        remote_move = new NineMensMorrisMove(static_cast<MoveType>(parts[0].toInt()), parts[1].toInt(), parts[2].toInt(), parts[3].toInt());
+        remote_move = new NineMensMorrisMove(static_cast<MoveType>(parts[0].toInt()), static_cast<PlayerSlot>(parts[1].toInt()), parts[2].toInt(), parts[3].toInt());
     } else if (room_state->getGameName() == GameName::Fanorona) {
         QString move_string = QString::fromUtf8(serialized_move);
         QStringList parts = move_string.split(',');
         if (parts.size() < 5)
             return false;
 
-        remote_move = new FanoronaMove(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), static_cast<FanoronaCaptureType>(parts[3].toInt()), parts[4].toInt() != 0);
+        remote_move = new FanoronaMove(parts[0].toInt(), parts[1].toInt(), static_cast<PlayerSlot>(parts[2].toInt()), static_cast<FanoronaCaptureType>(parts[3].toInt()), parts[4].toInt() != 0);
     }
 
     if (!remote_move)

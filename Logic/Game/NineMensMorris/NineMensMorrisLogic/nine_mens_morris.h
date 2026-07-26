@@ -20,10 +20,10 @@ public:
     int getFirstPlayerScore() const override;
     int getSecondPlayerScore() const override;
     Board* getBoard() const override;
-    int getPlacedCount(int player_id) const;
+    int getPlacedCount(PlayerSlot player_id) const;
     bool getAwaitingRemoval() const;
-    bool isFlying(int player_id) const;
-    int getCurrentPlayerId() const;
+    bool isFlying(PlayerSlot player_id) const;
+    PlayerSlot getCurrentPlayerId() const;
 
     static const int PIECES_PER_PLAYER = 9;
     static const int FLYING_THRESHOLD = 3;
@@ -37,7 +37,7 @@ private:
     int placed_count[2];
     bool awaiting_removal;
 
-    int getOpponentId(int player_id) const;
+    PlayerSlot getOpponentId(PlayerSlot player_id) const;
     void switchTurn();
 
 };

@@ -13,10 +13,10 @@ static const int POINT_RADIUS = 16;
 static const int CLICK_THRESHOLD = 34;
 static const int ANIMATION_DURATION_MS = 450;
 
-NineMensMorrisPage::NineMensMorrisPage(QWidget* parent) : BasePage(parent), awaiting_removal(false), placed_count_p1(0), placed_count_p2(0), current_player_id(0),
-    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0), anim_move_from(-1), anim_move_to(-1), anim_removed_position(-1), anim_moving_player_id(0) {
+NineMensMorrisPage::NineMensMorrisPage(QWidget* parent) : BasePage(parent), awaiting_removal(false), placed_count_p1(0), placed_count_p2(0), current_player_id(PlayerSlot::NONE),
+    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0), anim_move_from(-1), anim_move_to(-1), anim_removed_position(-1), anim_moving_player_id(PlayerSlot::NONE) {
     setMouseTracking(true);
-    position_owners = QVector<int>(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
+    position_owners = QVector<PlayerSlot>(NineMensMorrisBoard::TOTAL_POSITIONS, PlayerSlot::NONE);
 
     move_animation = new QVariantAnimation(this);
     move_animation->setDuration(ANIMATION_DURATION_MS);
@@ -34,7 +34,7 @@ NineMensMorrisPage::NineMensMorrisPage(QWidget* parent) : BasePage(parent), awai
 
 void NineMensMorrisPage::setupBoard(const int size) {
     BasePage::setupBoard(size);
-    position_owners = QVector<int>(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
+    position_owners = QVector<PlayerSlot>(NineMensMorrisBoard::TOTAL_POSITIONS, PlayerSlot::NONE);
     snapshot_board.setPositionOwners(position_owners);
     selected_position = -1;
     highlighted_positions.clear();
@@ -77,12 +77,12 @@ void NineMensMorrisPage::updateFromGame(const Game* main_game) {
             is_animating = false;
         }
 
-        QVector<int> new_owners = game_board->getPositionOwners();
+        QVector<PlayerSlot> new_owners = game_board->getPositionOwners();
         position_owners = new_owners;
         snapshot_board.setPositionOwners(position_owners);
         awaiting_removal = game->getAwaitingRemoval();
-        placed_count_p1 = game->getPlacedCount(1);
-        placed_count_p2 = game->getPlacedCount(2);
+        placed_count_p1 = game->getPlacedCount(PlayerSlot::HOST);
+        placed_count_p2 = game->getPlacedCount(PlayerSlot::GUEST);
         current_player_id = game->getCurrentPlayerId();
         selected_position = -1;
 
@@ -92,7 +92,7 @@ void NineMensMorrisPage::updateFromGame(const Game* main_game) {
     }
 }
 
-void NineMensMorrisPage::startAnimation(const QVector<int>& new_owners) {
+void NineMensMorrisPage::startAnimation(const QVector<PlayerSlot>& new_owners) {
     if (displayed_owners.size() != new_owners.size()) {
         displayed_owners = new_owners;
         return;
@@ -100,13 +100,13 @@ void NineMensMorrisPage::startAnimation(const QVector<int>& new_owners) {
 
     int from = -1;
     int to = -1;
-    int moved_player = 0;
+    PlayerSlot moved_player = PlayerSlot::NONE;
 
     for (int i = 0; i < new_owners.size(); ++i) {
-        if (displayed_owners[i] != 0 && new_owners[i] == 0) {
+        if (displayed_owners[i] != PlayerSlot::NONE && new_owners[i] == PlayerSlot::NONE) {
             if (from == -1)
                 from = i;
-        } else if (displayed_owners[i] == 0 && new_owners[i] != 0) {
+        } else if (displayed_owners[i] == PlayerSlot::NONE && new_owners[i] != PlayerSlot::NONE) {
             to = i;
             moved_player = new_owners[i];
         }
@@ -156,22 +156,22 @@ void NineMensMorrisPage::updateHighlights() {
         return;
 
     if (awaiting_removal) {
-        int opponent_id;
-        if (current_player_id == 1)
-            opponent_id = 2;
+        PlayerSlot opponent_id;
+        if (current_player_id == PlayerSlot::HOST)
+            opponent_id = PlayerSlot::GUEST;
         else
-            opponent_id = 1;
+            opponent_id = PlayerSlot::HOST;
 
         for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
             if (snapshot_board.isPieceRemovable(position, opponent_id))
-                highlighted_positions.append(position);
+                highlighted_positions.append(static_cast<PlayerSlot>(position));
         }
 
         return;
     }
 
     int my_placed_count;
-    if (current_player_id == 1)
+    if (current_player_id == PlayerSlot::HOST)
         my_placed_count = placed_count_p1;
     else
         my_placed_count = placed_count_p2;
@@ -181,7 +181,7 @@ void NineMensMorrisPage::updateHighlights() {
         if (placing_phase) {
             for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
                 if (snapshot_board.isEmpty(position))
-                    highlighted_positions.append(position);
+                    highlighted_positions.append(static_cast<PlayerSlot>(position));
             }
         }
         return;
@@ -193,7 +193,7 @@ void NineMensMorrisPage::updateHighlights() {
             continue;
 
         if (is_flying || snapshot_board.isProximate(selected_position, position))
-            highlighted_positions.append(position);
+            highlighted_positions.append(static_cast<PlayerSlot>(position));
     }
 }
 
@@ -226,7 +226,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     // points and pieces
     for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
         QPoint p = positionToCoordinates(position);
-        if (highlighted_positions.contains(position)) {
+        if (highlighted_positions.contains(static_cast<PlayerSlot>(position))) {
             QColor highlight_color;
             if (awaiting_removal)
                 highlight_color = QColor(231, 76, 60);
@@ -248,7 +248,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
             painter.drawEllipse(p, POINT_RADIUS + 4, POINT_RADIUS + 4);
         }
 
-        int owner = displayed_owners.value(position, 0);
+        PlayerSlot owner = displayed_owners.value(position, PlayerSlot::NONE);
         if (is_animating && (position == anim_move_from || position == anim_move_to)) {
             painter.setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.setBrush(Qt::white);
@@ -259,7 +259,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
         if (is_animating && position == anim_removed_position) {
             qreal fade = 1.0 - anim_progress;
             QColor c;
-            if (owner == 1)
+            if (owner == PlayerSlot::HOST)
                 c = QColor(100, 149, 237);
             else
                 c = QColor(255, 99, 71);
@@ -272,13 +272,13 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
             continue;
         }
 
-        if (owner == 0) {
+        if (owner == PlayerSlot::NONE) {
             painter.setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.setBrush(Qt::white);
             painter.drawEllipse(p, 5, 5);
         } else {
             painter.setPen(Qt::black);
-            if (owner == 1)
+            if (owner == PlayerSlot::HOST)
                 painter.setBrush(QColor(100, 149, 237));
             else
                 painter.setBrush(QColor(255, 99, 71));
@@ -300,7 +300,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
 
         painter.setPen(Qt::black);
 
-        if (anim_moving_player_id == 1)
+        if (anim_moving_player_id == PlayerSlot::HOST)
             painter.setBrush(QColor(100, 149, 237));
         else
             painter.setBrush(QColor(255, 99, 71));
@@ -324,13 +324,13 @@ void NineMensMorrisPage::mousePressEvent(QMouseEvent* event) {
     }
 
     if (selected_position == -1) {
-        int owner = position_owners.value(clicked, 0);
+        PlayerSlot owner = position_owners.value(clicked, PlayerSlot::NONE);
         if (owner == current_player_id) {
             selected_position = clicked;
             updateHighlights();
             update();
         }
-        else if (owner == 0)
+        else if (owner == PlayerSlot::NONE)
             emit moveRequested(clicked, -1, 0); // place
 
         return;
@@ -343,7 +343,7 @@ void NineMensMorrisPage::mousePressEvent(QMouseEvent* event) {
         return;
     }
 
-    int owner = position_owners.value(clicked, 0);
+    PlayerSlot owner = position_owners.value(clicked, PlayerSlot::NONE);
     if (owner == current_player_id) {
         selected_position = clicked;
         updateHighlights();
@@ -351,7 +351,7 @@ void NineMensMorrisPage::mousePressEvent(QMouseEvent* event) {
         return;
     }
 
-    if (owner == 0) {
+    if (owner == PlayerSlot::NONE) {
         emit moveRequested(selected_position, clicked, 1); // move
         selected_position = -1;
         updateHighlights();

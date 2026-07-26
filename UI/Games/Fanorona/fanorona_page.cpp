@@ -10,8 +10,8 @@ static const int PIECE_RADIUS = 16;
 static const int CLICK_THRESHOLD = 30;
 static const int MOVE_ANIMATION_DURATION_MS = 450;
 
-FanoronaPage::FanoronaPage(QWidget* parent) : BasePage(parent), chain_active(false), chain_position(-1), current_player_id(0),
-    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0), anim_move_from(-1), anim_move_to(-1), anim_moving_player_id(0) {
+FanoronaPage::FanoronaPage(QWidget* parent) : BasePage(parent), chain_active(false), chain_position(-1), current_player_id(PlayerSlot::NONE),
+    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0), anim_move_from(-1), anim_move_to(-1), anim_moving_player_id(PlayerSlot::NONE) {
     setMouseTracking(true);
 
     move_animation = new QVariantAnimation(this);
@@ -81,7 +81,7 @@ void FanoronaPage::updateFromGame(const Game* game) {
         is_animating = false;
     }
 
-    QVector<int> new_occupants = board->getOccupants();
+    QVector<PlayerSlot> new_occupants = board->getOccupants();
     snapshot_board.setOccupants(new_occupants);
 
     chain_active = fanorona_game->isChainActive();
@@ -95,16 +95,16 @@ void FanoronaPage::updateFromGame(const Game* game) {
     update();
 }
 
-void FanoronaPage::startMoveAnimation(const QVector<int>& new_occupants) {
+void FanoronaPage::startMoveAnimation(const QVector<PlayerSlot>& new_occupants) {
     if (displayed_occupants.size() != new_occupants.size()) {
         displayed_occupants = new_occupants;
         return;
     }
 
     int to = -1;
-    int moved_player = 0;
+    PlayerSlot moved_player = PlayerSlot::NONE;
     for (int position = 0; position < new_occupants.size(); ++position) {
-        if (displayed_occupants[position] == 0 && new_occupants[position] != 0) {
+        if (displayed_occupants[position] == PlayerSlot::NONE && new_occupants[position] != PlayerSlot::NONE) {
             to = position;
             moved_player = new_occupants[position];
             break;
@@ -117,13 +117,13 @@ void FanoronaPage::startMoveAnimation(const QVector<int>& new_occupants) {
     }
 
     int from = -1;
-    QVector<int> captured;
+    QVector<PlayerSlot> captured;
     for (int position = 0; position < new_occupants.size(); ++position) {
-        if (displayed_occupants[position] != 0 && new_occupants[position] == 0) {
+        if (displayed_occupants[position] != PlayerSlot::NONE && new_occupants[position] == PlayerSlot::NONE) {
             if (displayed_occupants[position] == moved_player)
                 from = position;
             else
-                captured.append(position);
+                captured.append(static_cast<PlayerSlot>(position));
         }
     }
 
@@ -243,12 +243,12 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
             continue;
         }
 
-        if (is_animating && anim_captured_positions.contains(position)) {
+        if (is_animating && anim_captured_positions.contains(static_cast<PlayerSlot>(position))) {
             qreal fade = 1.0 - anim_progress;
             int radius = static_cast<int>(PIECE_RADIUS * (0.5 + 0.5 * fade));
 
             QColor color;
-            if (displayed_occupants[position] == 1)
+            if (displayed_occupants[position] == PlayerSlot::HOST)
                 color = QColor(255, 99, 71);
             else
                 color = QColor(100, 149, 237);
@@ -260,14 +260,14 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
             continue;
         }
 
-        int occupant = displayed_occupants[position];
-        if (occupant == 0) {
+        PlayerSlot occupant = displayed_occupants[position];
+        if (occupant == PlayerSlot::NONE) {
             painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.setBrush(Qt::white);
             painter.drawEllipse(p, 4, 4);
         } else {
             painter.setPen(Qt::black);
-            if (occupant == 1)
+            if (occupant == PlayerSlot::HOST)
                 painter.setBrush(QColor(255, 99, 71));
             else
                 painter.setBrush(QColor(100, 149, 237));
@@ -283,7 +283,7 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
 
         painter.setPen(Qt::black);
 
-        if (anim_moving_player_id == 1)
+        if (anim_moving_player_id == PlayerSlot::HOST)
             painter.setBrush(QColor(255, 99, 71));
         else
             painter.setBrush(QColor(100, 149, 237));
@@ -357,7 +357,7 @@ void FanoronaPage::mousePressEvent(QMouseEvent* event) {
         return;
     }
 
-    if (snapshot_board.getOccupant(clicked) == 0) {
+    if (snapshot_board.getOccupant(clicked) == PlayerSlot::NONE) {
         tryEmitMove(selected_position, clicked);
         selected_position = -1;
         updateHighlights();

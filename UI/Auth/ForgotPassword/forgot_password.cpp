@@ -54,7 +54,6 @@ void ForgotPassword::on_pushButton_next_2_clicked() {
     }
 }
 
-
 void ForgotPassword::on_pushButton_back_2_clicked() {
     clearFields();
     emit navigateToLogin();

@@ -20,10 +20,10 @@ bool NineMensMorris::makeMove(const Move &main_move) {
         return false;
 
     const NineMensMorrisMove &move = static_cast<const NineMensMorrisMove &>(main_move);
-    int mover = move.getPlayerId();
+    PlayerSlot mover = move.getPlayerId();
     game_board->applyMove(main_move);
     if (move.getMoveType() == MoveType::REMOVE) {
-        if (mover == 1)
+        if (mover == PlayerSlot::HOST)
             first_player_score++;
         else
             second_player_score++;
@@ -32,7 +32,7 @@ bool NineMensMorris::makeMove(const Move &main_move) {
         switchTurn();
         return true;
     } else if (move.getMoveType() == MoveType::PLACE)
-        placed_count[mover - 1]++;
+        placed_count[static_cast<int>(mover) - 1]++;
 
     if (game_board->isMill(move.getToPosition(), mover))
         awaiting_removal = true;
@@ -46,17 +46,17 @@ GameStatus NineMensMorris::checkWin() {
     if (awaiting_removal)
         return GameStatus::ONGOING;
 
-    if (placed_count[0] == PIECES_PER_PLAYER && game_board->getPieceCount(1) < 3)
+    if (placed_count[0] == PIECES_PER_PLAYER && game_board->getPieceCount(PlayerSlot::HOST) < 3)
         return GameStatus::GUEST_WIN;
 
-    if (placed_count[1] == PIECES_PER_PLAYER && game_board->getPieceCount(2) < 3)
+    if (placed_count[1] == PIECES_PER_PLAYER && game_board->getPieceCount(PlayerSlot::GUEST) < 3)
         return GameStatus::HOST_WIN;
 
-    int mover = getCurrentPlayerId();
-    bool mover_placing = placed_count[mover - 1] < PIECES_PER_PLAYER;
+    PlayerSlot mover = getCurrentPlayerId();
+    bool mover_placing = placed_count[static_cast<int>(mover) - 1] < PIECES_PER_PLAYER;
     if (!mover_placing) {
         if (!game_board->hasAnyMove(mover, isFlying(mover))) {
-            if (mover == 1)
+            if (mover == PlayerSlot::HOST)
                 return GameStatus::GUEST_WIN;
             else
                 return GameStatus::HOST_WIN;
@@ -87,8 +87,8 @@ QString NineMensMorris::serializeState() const {
 
     QJsonArray boardArray;
     NineMensMorrisBoard* nmm_board = static_cast<NineMensMorrisBoard*>(game_board);
-    for (int owner : nmm_board->getPositionOwners())
-        boardArray.append(owner);
+    for (PlayerSlot owner : nmm_board->getPositionOwners())
+        boardArray.append(static_cast<int>(owner));
 
     stateObj["board_state"] = boardArray;
 
@@ -114,9 +114,9 @@ void NineMensMorris::loadState(const QString &state_data) {
     awaiting_removal = stateObj["awaiting_removal"].toBool();
 
     QJsonArray boardArray = stateObj["board_state"].toArray();
-    QVector<int> owners;
+    QVector<PlayerSlot> owners;
     for (const QJsonValue& val : boardArray)
-        owners.append(val.toInt());
+        owners.append(static_cast<PlayerSlot>(val.toInt()));
 
     NineMensMorrisBoard* nmm_board = static_cast<NineMensMorrisBoard*>(game_board);
     nmm_board->setPositionOwners(owners);
@@ -124,7 +124,7 @@ void NineMensMorris::loadState(const QString &state_data) {
 
 bool NineMensMorris::isValidMove(const Move &main_move) {
     const NineMensMorrisMove &move = static_cast<const NineMensMorrisMove &>(main_move);
-    int mover = move.getPlayerId();
+    PlayerSlot mover = move.getPlayerId();
     if (mover != getCurrentPlayerId())
         return false;
 
@@ -136,7 +136,7 @@ bool NineMensMorris::isValidMove(const Move &main_move) {
     } else if (move.getMoveType() == MoveType::REMOVE)
         return false;
 
-    bool placing_phase = placed_count[mover - 1] < PIECES_PER_PLAYER;
+    bool placing_phase = placed_count[static_cast<int>(mover) - 1] < PIECES_PER_PLAYER;
     if (placing_phase) {
         if (move.getMoveType() != MoveType::PLACE)
             return false;
@@ -172,30 +172,30 @@ bool NineMensMorris::getAwaitingRemoval() const {
     return awaiting_removal;
 }
 
-int NineMensMorris::getPlacedCount(int player_id) const {
-    return placed_count[player_id - 1];
+int NineMensMorris::getPlacedCount(PlayerSlot player_id) const {
+    return placed_count[static_cast<int>(player_id) - 1];
 }
 
-bool NineMensMorris::isFlying(int player_id) const {
+bool NineMensMorris::isFlying(PlayerSlot player_id) const {
     return game_board->getPieceCount(player_id) == FLYING_THRESHOLD;
 }
 
-int NineMensMorris::getCurrentPlayerId() const {
+PlayerSlot NineMensMorris::getCurrentPlayerId() const {
     if (current_player.getId() == first_player.getId())
-        return 1;
+        return PlayerSlot::HOST;
     else
-        return 2;
+        return PlayerSlot::GUEST;
 }
 
-int NineMensMorris::getOpponentId(int player_id) const {
-    if (player_id == 1)
-        return 2;
+PlayerSlot NineMensMorris::getOpponentId(PlayerSlot player_id) const {
+    if (player_id == PlayerSlot::HOST)
+        return PlayerSlot::GUEST;
     else
-        return 1;
+        return PlayerSlot::HOST;
 }
 
 void NineMensMorris::switchTurn() {
-    if (getCurrentPlayerId() == 1)
+    if (getCurrentPlayerId() == PlayerSlot::HOST)
         current_player = second_player;
     else
         current_player = first_player;

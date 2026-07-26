@@ -85,7 +85,7 @@ QMessageBox QPushButton:pressed {
          <property name="minimumSize">
           <size>
            <width>200</width>
-           <height>28</height>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -149,7 +149,7 @@ QLineEdit:focus {
          <property name="minimumSize">
           <size>
            <width>200</width>
-           <height>28</height>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">

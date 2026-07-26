@@ -24,9 +24,9 @@ DotsAndBoxesPage::DotsAndBoxesPage(QWidget *parent) : BasePage(parent), is_anima
 
 void DotsAndBoxesPage::setupBoard(int size) {
     BasePage::setupBoard(size);
-    horizontal_lines = QVector<QVector<int>>(board_size + 1, QVector<int>(board_size, 0));
-    vertical_lines = QVector<QVector<int>>(board_size, QVector<int>(board_size + 1, 0));
-    captured_boxes = QVector<QVector<int>>(board_size, QVector<int>(board_size, 0));
+    horizontal_lines = QVector<QVector<PlayerSlot>>(board_size + 1, QVector<PlayerSlot>(board_size, PlayerSlot::NONE));
+    vertical_lines = QVector<QVector<PlayerSlot>>(board_size, QVector<PlayerSlot>(board_size + 1, PlayerSlot::NONE));
+    captured_boxes = QVector<QVector<PlayerSlot>>(board_size, QVector<PlayerSlot>(board_size, PlayerSlot::NONE));
     displayed_horizontal_lines = horizontal_lines;
     displayed_vertical_lines = vertical_lines;
     displayed_captured_boxes = captured_boxes;
@@ -38,14 +38,14 @@ void DotsAndBoxesPage::setupBoard(int size) {
     update();
 }
 
-void DotsAndBoxesPage::updateBoard(const QVector<QVector<int>> &new_h, const QVector<QVector<int>> &new_v, const QVector<QVector<int>> &new_b) {
+void DotsAndBoxesPage::updateBoard(const QVector<QVector<PlayerSlot>> &new_h, const QVector<QVector<PlayerSlot>> &new_v, const QVector<QVector<PlayerSlot>> &new_b) {
     horizontal_lines = new_h;
     vertical_lines = new_v;
     captured_boxes = new_b;
     startAnimation(new_h, new_v, new_b);
 }
 
-void DotsAndBoxesPage::startAnimation(const QVector<QVector<int>> &new_h, const QVector<QVector<int>> &new_v, const QVector<QVector<int>> &new_b) {
+void DotsAndBoxesPage::startAnimation(const QVector<QVector<PlayerSlot>> &new_h, const QVector<QVector<PlayerSlot>> &new_v, const QVector<QVector<PlayerSlot>> &new_b) {
     if (is_animating) {
         animation->stop();
         displayed_horizontal_lines = horizontal_lines;
@@ -59,7 +59,7 @@ void DotsAndBoxesPage::startAnimation(const QVector<QVector<int>> &new_h, const 
     anim_c = -1;
     for (int r = 0; r <= board_size; ++r) {
         for (int c = 0; c < board_size; ++c) {
-            if (displayed_horizontal_lines[r][c] == 0 && new_h[r][c] != 0) {
+            if (displayed_horizontal_lines[r][c] == PlayerSlot::NONE && new_h[r][c] != PlayerSlot::NONE) {
                 anim_type = 1;
                 anim_r = r;
                 anim_c = c;
@@ -73,7 +73,7 @@ void DotsAndBoxesPage::startAnimation(const QVector<QVector<int>> &new_h, const 
     if (anim_type == 0) {
         for (int r = 0; r < board_size; ++r) {
             for (int c = 0; c <= board_size; ++c) {
-                if (displayed_vertical_lines[r][c] == 0 && new_v[r][c] != 0) {
+                if (displayed_vertical_lines[r][c] == PlayerSlot::NONE && new_v[r][c] != PlayerSlot::NONE) {
                     anim_type = 2;
                     anim_r = r;
                     anim_c = c;
@@ -125,23 +125,23 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     QPen hover_pen(Qt::darkGray, 4, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
     for (int r = 0; r < board_size; ++r) {
         for (int c = 0; c < board_size; ++c) {
-            if (captured_boxes[r][c] != 0) {
+            if (captured_boxes[r][c] != PlayerSlot::NONE) {
                 QRect rect(margin_offset + c * cell_spacing, margin_offset + r * cell_spacing, cell_spacing, cell_spacing);
                 QColor owner_color;
-                if (captured_boxes[r][c] == 1)
+                if (captured_boxes[r][c] == PlayerSlot::HOST)
                     owner_color = host_player_color;
                 else
                     owner_color = guest_player_color;
 
                 QColor fill_color = owner_color;
                 qreal alpha = 100;
-                if (is_animating && displayed_captured_boxes[r][c] == 0)
+                if (is_animating && displayed_captured_boxes[r][c] == PlayerSlot::NONE)
                     alpha = 100 * anim_progress;
 
                 fill_color.setAlpha(static_cast<int>(alpha));
                 painter.fillRect(rect, fill_color);
                 painter.setPen(owner_color);
-                if (captured_boxes[r][c] == 1)
+                if (captured_boxes[r][c] == PlayerSlot::HOST)
                     painter.drawText(rect, Qt::AlignCenter, first_player_name[0]);
                 else
                     painter.drawText(rect, Qt::AlignCenter, second_player_name[0]);
@@ -155,7 +155,7 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
             int y1 = margin_offset + r * cell_spacing;
             if (is_animating && anim_type == 1 && r == anim_r && c == anim_c) {
                 QColor owner_color;
-                if (horizontal_lines[r][c] == 1)
+                if (horizontal_lines[r][c] == PlayerSlot::HOST)
                     owner_color = host_player_color;
                 else
                     owner_color = guest_player_color;
@@ -163,9 +163,9 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 int current_length = static_cast<int>(cell_spacing * anim_progress);
                 painter.drawLine(x1, y1, x1 + current_length, y1);
-            } else if (horizontal_lines[r][c] != 0) {
+            } else if (horizontal_lines[r][c] != PlayerSlot::NONE) {
                 QColor owner_color;
-                if (horizontal_lines[r][c] == 1)
+                if (horizontal_lines[r][c] == PlayerSlot::HOST)
                     owner_color = host_player_color;
                 else
                     owner_color = guest_player_color;
@@ -188,7 +188,7 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
             int y1 = margin_offset + r * cell_spacing;
             if (is_animating && anim_type == 2 && r == anim_r && c == anim_c) {
                 QColor owner_color;
-                if (vertical_lines[r][c] == 1)
+                if (vertical_lines[r][c] == PlayerSlot::HOST)
                     owner_color = host_player_color;
                 else
                     owner_color = guest_player_color;
@@ -196,9 +196,9 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 int current_length = static_cast<int>(cell_spacing * anim_progress);
                 painter.drawLine(x1, y1, x1, y1 + current_length);
-            } else if (vertical_lines[r][c] != 0) {
+            } else if (vertical_lines[r][c] != PlayerSlot::NONE) {
                 QColor owner_color;
-                if (vertical_lines[r][c] == 1)
+                if (vertical_lines[r][c] == PlayerSlot::HOST)
                     owner_color = host_player_color;
                 else
                     owner_color = guest_player_color;

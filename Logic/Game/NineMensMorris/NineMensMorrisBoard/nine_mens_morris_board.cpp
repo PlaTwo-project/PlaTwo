@@ -41,7 +41,7 @@ QVector<QPair<int, int>> NineMensMorrisBoard::buildCoordinates() {
 }
 
 void NineMensMorrisBoard::initialize() {
-    position_owners = QVector<int>(TOTAL_POSITIONS, 0);
+    position_owners = QVector<PlayerSlot>(TOTAL_POSITIONS, PlayerSlot::NONE);
 }
 
 void NineMensMorrisBoard::clear() {
@@ -57,24 +57,24 @@ void NineMensMorrisBoard::applyMove(const Move& main_move) {
 
     case MoveType::MOVE:
         position_owners[move.getToPosition()] = position_owners[move.getFromPosition()];
-        position_owners[move.getFromPosition()] = 0;
+        position_owners[move.getFromPosition()] = PlayerSlot::NONE;
         break;
 
     case MoveType::REMOVE:
-        position_owners[move.getToPosition()] = 0;
+        position_owners[move.getToPosition()] = PlayerSlot::NONE;
         break;
     }
 }
 
 bool NineMensMorrisBoard::isEmpty(int position) const {
-    return position_owners[position] == 0;
+    return position_owners[position] == PlayerSlot::NONE;
 }
 
 bool NineMensMorrisBoard::isProximate(int from, int to) const {
     return getProximityList()[from].contains(to);
 }
 
-bool NineMensMorrisBoard::isMill(int position, int player_id) const {
+bool NineMensMorrisBoard::isMill(int position, PlayerSlot player_id) const {
     for (const auto& line : getMillLinesList()) {
         if (!line.contains(position))
             continue;
@@ -93,7 +93,7 @@ bool NineMensMorrisBoard::isMill(int position, int player_id) const {
     return false;
 }
 
-bool NineMensMorrisBoard::areAllPiecesInMills(int player_id) const {
+bool NineMensMorrisBoard::areAllPiecesInMills(PlayerSlot player_id) const {
     for (int p = 0; p < TOTAL_POSITIONS; p++) {
         if (position_owners[p] != player_id)
             continue;
@@ -105,7 +105,7 @@ bool NineMensMorrisBoard::areAllPiecesInMills(int player_id) const {
     return true;
 }
 
-bool NineMensMorrisBoard::isPieceRemovable(int position, int owner_id) const {
+bool NineMensMorrisBoard::isPieceRemovable(int position, PlayerSlot owner_id) const {
     if (position_owners[position] != owner_id)
         return false;
 
@@ -115,7 +115,7 @@ bool NineMensMorrisBoard::isPieceRemovable(int position, int owner_id) const {
     return areAllPiecesInMills(owner_id);
 }
 
-bool NineMensMorrisBoard::hasAnyMove(int player_id, bool is_flying) const {
+bool NineMensMorrisBoard::hasAnyMove(PlayerSlot player_id, bool is_flying) const {
     if (is_flying)
         return true;
 
@@ -134,17 +134,17 @@ bool NineMensMorrisBoard::hasAnyMove(int player_id, bool is_flying) const {
     return false;
 }
 
-int NineMensMorrisBoard::getPositionOwner(int position) const {
+PlayerSlot NineMensMorrisBoard::getPositionOwner(int position) const {
     return position_owners[position];
 }
 
-void NineMensMorrisBoard::setPositionOwners(const QVector<int>& owners) {
+void NineMensMorrisBoard::setPositionOwners(const QVector<PlayerSlot>& owners) {
     position_owners = owners;
 }
 
-int NineMensMorrisBoard::getPieceCount(int player_id) const {
+int NineMensMorrisBoard::getPieceCount(PlayerSlot player_id) const {
     int count = 0;
-    for (int owner : position_owners) {
+    for (PlayerSlot owner : position_owners) {
         if (owner == player_id)
             count ++;
     }
@@ -152,7 +152,7 @@ int NineMensMorrisBoard::getPieceCount(int player_id) const {
     return count;
 }
 
-const QVector<int>& NineMensMorrisBoard::getPositionOwners() const {
+const QVector<PlayerSlot>& NineMensMorrisBoard::getPositionOwners() const {
     return position_owners;
 }
 

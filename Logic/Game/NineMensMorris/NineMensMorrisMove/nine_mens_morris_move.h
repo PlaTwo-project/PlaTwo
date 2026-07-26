@@ -2,6 +2,7 @@
 #define NINE_MENS_MORRIS_MOVE_H
 
 #include "Logic/Game/BaseLogicClasses/Move.h"
+#include "Logic/Constants/player_slot.h"
 
 enum class MoveType {
     PLACE,
@@ -12,19 +13,19 @@ enum class MoveType {
 class NineMensMorrisMove : public Move
 {
 public:
-    NineMensMorrisMove(MoveType move_type, int player_id, int from_position, int to_position);
+    NineMensMorrisMove(MoveType move_type, PlayerSlot player_id, int from_position, int to_position);
     ~NineMensMorrisMove() override = default;
 
     QByteArray serializeMove() const override;
 
     MoveType getMoveType() const;
-    int getPlayerId() const;
+    PlayerSlot getPlayerId() const;
     int getFromPosition() const;
     int getToPosition() const;
 
 private:
     MoveType move_type;
-    int player_id;
+    PlayerSlot player_id;
     int from_position;
     int to_position;
 };

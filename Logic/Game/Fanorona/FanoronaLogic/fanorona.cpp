@@ -16,26 +16,26 @@ Fanorona::~Fanorona() {
     delete game_board;
 }
 
-int Fanorona::idOf(const User &user) const {
+PlayerSlot Fanorona::idOf(const User &user) const {
     if (user.getId() == first_player.getId())
-        return 1;
+        return PlayerSlot::HOST;
     else
-        return 2;
+        return PlayerSlot::GUEST;
 }
 
-int Fanorona::currentPlayerId() const {
+PlayerSlot Fanorona::currentPlayerId() const {
     return idOf(current_player);
 }
 
-int Fanorona::opponentId(int player_id) const {
-    if (player_id == 1)
-        return 2;
+PlayerSlot Fanorona::opponentId(PlayerSlot player_id) const {
+    if (player_id == PlayerSlot::HOST)
+        return PlayerSlot::GUEST;
     else
-        return 1;
+        return PlayerSlot::HOST;
 }
 
 void Fanorona::switchTurn() {
-    if (currentPlayerId() == 1)
+    if (currentPlayerId() == PlayerSlot::HOST)
         current_player = second_player;
     else
         current_player = first_player;
@@ -104,10 +104,7 @@ bool Fanorona::hasContinuation(int position, int incoming_dr, int incoming_dc, c
 
 bool Fanorona::isValidMove(const Move &main_move) {
     const auto &move = static_cast<const FanoronaMove &>(main_move);
-    int mover = move.getPlayerId();
-    if (mover != 1 && mover != 2)
-        return false;
-
+    PlayerSlot mover = move.getPlayerId();
     if (mover != currentPlayerId())
         return false;
 
@@ -116,8 +113,6 @@ bool Fanorona::isValidMove(const Move &main_move) {
 
     int from = move.getFrom();
     int to = move.getTo();
-    if (!FanoronaBoard::isValidPosition(from) || !FanoronaBoard::isValidPosition(to))
-        return false;
 
     if (game_board->getOccupant(from) != mover)
         return false;
@@ -170,7 +165,7 @@ bool Fanorona::makeMove(const Move &main_move) {
         return false;
 
     const auto &move = static_cast<const FanoronaMove &>(main_move);
-    int mover = move.getPlayerId();
+    PlayerSlot mover = move.getPlayerId();
     if (move.isEndTurn()) {
         resetChainState();
         switchTurn();
@@ -191,7 +186,7 @@ bool Fanorona::makeMove(const Move &main_move) {
     FanoronaMove effective_move(from, to, mover, chosen, false);
     game_board->applyMove(effective_move);
     if (!captured.isEmpty()) {
-        if (mover == 1)
+        if (mover == PlayerSlot::HOST)
             first_player_score += captured.size();
         else
             second_player_score += captured.size();
@@ -227,17 +222,17 @@ GameStatus Fanorona::checkWin()  {
     if (chain_active)
         return GameStatus::ONGOING;
 
-    int p1_count = game_board->getPieceCount(1);
-    int p2_count = game_board->getPieceCount(2);
+    int p1_count = game_board->getPieceCount(PlayerSlot::HOST);
+    int p2_count = game_board->getPieceCount(PlayerSlot::GUEST);
     if (p1_count == 0)
         return GameStatus::GUEST_WIN;
 
     if (p2_count == 0)
         return GameStatus::HOST_WIN;
 
-    int mover = currentPlayerId();
+    PlayerSlot mover = currentPlayerId();
     if (!game_board->hasAnyLegalMove(mover)) {
-        if (mover == 1)
+        if (mover == PlayerSlot::HOST)
             return GameStatus::GUEST_WIN;
         else
             return GameStatus::HOST_WIN;
@@ -272,9 +267,9 @@ QString Fanorona::serializeState() const {
 
     FanoronaBoard* fanorona_board = static_cast<FanoronaBoard*>(game_board);
     QJsonArray serialized_occupants;
-    QVector<int> board_occupants = fanorona_board->getOccupants();
-    for (int occupant_value : board_occupants)
-        serialized_occupants.append(occupant_value);
+    QVector<PlayerSlot> board_occupants = fanorona_board->getOccupants();
+    for (PlayerSlot occupant_value : board_occupants)
+        serialized_occupants.append(static_cast<int>(occupant_value));
 
     state_object["occupants"] = serialized_occupants;
 
@@ -306,9 +301,9 @@ void Fanorona::loadState(const QString &state_data) {
         chain_visited.append(visited_position_value.toInt());
 
     QJsonArray serialized_occupants = state_object["occupants"].toArray();
-    QVector<int> board_occupants;
+    QVector<PlayerSlot> board_occupants;
     for (const QJsonValue& occupant_value : serialized_occupants)
-        board_occupants.append(occupant_value.toInt());
+        board_occupants.append(static_cast<PlayerSlot>(occupant_value.toInt()));
 
     FanoronaBoard* fanorona_board = static_cast<FanoronaBoard*>(game_board);
     if (board_occupants.size() == FanoronaBoard::TOTAL_POSITIONS)

@@ -3,7 +3,7 @@
 
 #include "Logic/Game/BaseLogicClasses/Board.h"
 #include "Logic/Game/BaseLogicClasses/Move.h"
-
+#include "Logic/Constants/player_slot.h"
 #include <QVector>
 
 enum class FanoronaCaptureType
@@ -27,9 +27,8 @@ public:
     void clear() override;
     void applyMove(const Move& main_move) override;
 
-    static bool isValidPosition(int position);
     bool isEmpty(int position) const;
-    int getOccupant(int position) const;
+    PlayerSlot getOccupant(int position) const;
 
     static int rowOf(int position);
     static int colOf(int position);
@@ -43,15 +42,15 @@ public:
     bool canApproachCapture(int from, int to) const;
     bool canWithdrawalCapture(int from, int to) const;
 
-    int getPieceCount(int player_id) const;
-    bool hasAnyCaptureAvailable(int player_id) const;
-    bool hasAnyLegalMove(int player_id) const;
+    int getPieceCount(PlayerSlot player_id) const;
+    bool hasAnyCaptureAvailable(PlayerSlot player_id) const;
+    bool hasAnyLegalMove(PlayerSlot player_id) const;
 
-    const QVector<int>& getOccupants() const;
-    void setOccupants(const QVector<int>& new_occupants);
+    const QVector<PlayerSlot>& getOccupants() const;
+    void setOccupants(const QVector<PlayerSlot>& new_occupants);
 
 private:
-    QVector<int> occupants;
+    QVector<PlayerSlot> occupants;
 };
 
 #endif // FANORONA_BOARD_H

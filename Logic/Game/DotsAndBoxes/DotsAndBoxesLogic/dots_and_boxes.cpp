@@ -1,5 +1,6 @@
 #include "dots_and_boxes.h"
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesMove/dots_and_boxes_move.h"
+#include "Logic/Constants/player_slot.h"
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -24,16 +25,16 @@ bool DotsAndBoxes::makeMove(const Move &main_move)  {
         return false;
 
     const DotsAndBoxesMove &move = static_cast<const DotsAndBoxesMove &>(main_move);
-    int p_id;
+    PlayerSlot p_id;
     if (current_player.getId() == first_player.getId())
-        p_id = 1;
+        p_id = PlayerSlot::HOST;
     else
-        p_id = 2;
+        p_id = PlayerSlot::GUEST;
 
     game_board->applyMove(main_move, p_id);
     int closed_boxes = game_board->checkAndCloseBoxes(move.getRow(), move.getColumn(), static_cast<int>(move.getDirection()), p_id);
     if (closed_boxes) {
-        if (p_id == 1)
+        if (p_id == PlayerSlot::HOST)
             first_player_score += closed_boxes;
         else
             second_player_score += closed_boxes;
@@ -74,12 +75,12 @@ QString DotsAndBoxes::serializeState() const {
     state_obj["second_player_score"] = second_player_score;
 
     DotsAndBoxesBoard* db_board = static_cast<DotsAndBoxesBoard*>(game_board);
-    auto serializeIntMatrix = [](const QVector<QVector<int>>& int_matrix) {
+    auto serializeIntMatrix = [](const QVector<QVector<PlayerSlot>>& int_matrix) {
         QJsonArray serialized_matrix;
         for (const auto& matrix_row : int_matrix) {
             QJsonArray serialized_row;
-            for (int cell_value : matrix_row)
-                serialized_row.append(cell_value);
+            for (PlayerSlot cell_value : matrix_row)
+                serialized_row.append(static_cast<int>(cell_value));
 
             serialized_matrix.append(serialized_row);
         }
@@ -108,20 +109,20 @@ void DotsAndBoxes::loadState(const QString &state_data) {
     first_player_score = state_obj["first_player_score"].toInt();
     second_player_score = state_obj["second_player_score"].toInt();
     auto parseIntMatrix = [](const QJsonArray& serialized_matrix) {
-        QVector<QVector<int>> int_matrix;
+        QVector<QVector<PlayerSlot>> int_matrix;
         for (const QJsonValue& row_json_value : serialized_matrix) {
-            QVector<int> matrix_row;
+            QVector<PlayerSlot> matrix_row;
             for (const QJsonValue& cell_value : row_json_value.toArray())
-                matrix_row.append(cell_value.toInt());
+                matrix_row.append(static_cast<PlayerSlot>(cell_value.toInt()));
 
             int_matrix.append(matrix_row);
         }
         return int_matrix;
     };
 
-    QVector<QVector<int>> horizontal_lines = parseIntMatrix(state_obj["horizontal_lines"].toArray());
-    QVector<QVector<int>> vertical_lines = parseIntMatrix(state_obj["vertical_lines"].toArray());
-    QVector<QVector<int>> captured_boxes = parseIntMatrix(state_obj["captured_boxes"].toArray());
+    QVector<QVector<PlayerSlot>> horizontal_lines = parseIntMatrix(state_obj["horizontal_lines"].toArray());
+    QVector<QVector<PlayerSlot>> vertical_lines = parseIntMatrix(state_obj["vertical_lines"].toArray());
+    QVector<QVector<PlayerSlot>> captured_boxes = parseIntMatrix(state_obj["captured_boxes"].toArray());
     DotsAndBoxesBoard* db_board = static_cast<DotsAndBoxesBoard*>(game_board);
     db_board->restoreState(horizontal_lines, vertical_lines, captured_boxes);
 }

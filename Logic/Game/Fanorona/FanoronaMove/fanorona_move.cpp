@@ -1,6 +1,6 @@
 #include "fanorona_move.h"
 
-FanoronaMove::FanoronaMove(int from, int to, int player_id, FanoronaCaptureType capture_type, bool is_end_turn)
+FanoronaMove::FanoronaMove(int from, int to, PlayerSlot player_id, FanoronaCaptureType capture_type, bool is_end_turn)
     : from_position(from), to_position(to), player_id(player_id), capture_type(capture_type), end_turn(is_end_turn) {}
 
 QByteArray FanoronaMove::serializeMove() const {
@@ -10,7 +10,7 @@ QByteArray FanoronaMove::serializeMove() const {
     else
         turn = 0;
 
-    return QString("%1,%2,%3,%4,%5").arg(from_position).arg(to_position).arg(player_id).arg(static_cast<int>(capture_type)).arg(turn).toUtf8();
+    return QString("%1,%2,%3,%4,%5").arg(from_position).arg(to_position).arg(static_cast<int>(player_id)).arg(static_cast<int>(capture_type)).arg(turn).toUtf8();
 }
 
 int FanoronaMove::getFrom() const {
@@ -21,7 +21,7 @@ int FanoronaMove::getTo() const {
     return to_position;
 }
 
-int FanoronaMove::getPlayerId() const {
+PlayerSlot FanoronaMove::getPlayerId() const {
     return player_id;
 }
 

@@ -3,6 +3,7 @@
 
 #include "Logic/Game/BaseLogicClasses/Game.h"
 #include "Logic/Game/Fanorona/Fanoronaboard/fanorona_board.h"
+#include "Logic/Constants/player_slot.h"
 
 class Fanorona : public Game
 {
@@ -23,7 +24,7 @@ public:
     bool isChainActive() const;
     int getChainPosition() const;
     bool mustCapture() const;
-    int currentPlayerId() const;
+    PlayerSlot currentPlayerId() const;
 
 protected:
     bool isValidMove(const Move& main_move) override;
@@ -41,8 +42,8 @@ private:
     int chain_last_dr;
     int chain_last_dc;
 
-    int idOf(const User& user) const;
-    int opponentId(int player_id) const;
+    PlayerSlot idOf(const User& user) const;
+    PlayerSlot opponentId(PlayerSlot player_id) const;
     void switchTurn();
     void resetChainState();
 
