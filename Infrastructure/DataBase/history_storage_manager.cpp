@@ -4,14 +4,12 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-HistoryStorageManager::HistoryStorageManager()
-{
+HistoryStorageManager::HistoryStorageManager() {
     file_path = "history.json";
     loadHistory();
 }
 
-int HistoryStorageManager::generateNextRecordId() const
-{
+int HistoryStorageManager::generateNextRecordId() const {
     int max_id = 0;
     for (const MatchRecord &record : history_list)
         if (record.getRecordId() > max_id)
@@ -19,8 +17,7 @@ int HistoryStorageManager::generateNextRecordId() const
     return max_id + 1;
 }
 
-void HistoryStorageManager::loadHistory()
-{
+void HistoryStorageManager::loadHistory() {
     QFile file(file_path);
     if (!file.open(QIODevice::ReadOnly))
         return;
@@ -30,11 +27,8 @@ void HistoryStorageManager::loadHistory()
 
     QJsonArray json_array = doc.array();
     history_list.clear();
-
-    for (const QJsonValue &value : json_array)
-    {
+    for (const QJsonValue &value : json_array) {
         QJsonObject obj = value.toObject();
-
         MatchRecord record;
         record.setRecordId(obj["id"].toInt());
         record.setGameType(static_cast<GameName>(obj["game_type"].toInt()));
@@ -54,15 +48,13 @@ void HistoryStorageManager::loadHistory()
     }
 }
 
-void HistoryStorageManager::saveHistory()
-{
+void HistoryStorageManager::saveHistory() {
     QFile file(file_path);
     if (!file.open(QIODevice::WriteOnly))
         return;
 
     QJsonArray json_array;
-    for (const MatchRecord &record : history_list)
-    {
+    for (const MatchRecord &record : history_list) {
         QJsonObject obj;
         obj["id"] = record.getRecordId();
         obj["game_type"] = static_cast<int>(record.getGameType());
@@ -84,19 +76,16 @@ void HistoryStorageManager::saveHistory()
     file.close();
 }
 
-bool HistoryStorageManager::addMatchRecord(MatchRecord &new_record)
-{
+bool HistoryStorageManager::addMatchRecord(MatchRecord &new_record) {
     int new_id = generateNextRecordId();
     new_record.setRecordId(new_id);
     history_list.append(new_record);
-
     saveHistory();
 
     return true;
 }
 
-QList<MatchRecord> HistoryStorageManager::getHistoryForUser(const int user_ID, const GameName game_type) const
-{
+QList<MatchRecord> HistoryStorageManager::getHistoryForUser(const int user_ID, const GameName game_type) const {
     QList<MatchRecord> filtered_list;
     for (const MatchRecord &record : history_list)
         if (record.getGameType() == game_type && (record.getHostId() == user_ID || record.getGuestId() == user_ID))

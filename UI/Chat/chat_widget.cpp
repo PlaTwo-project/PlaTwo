@@ -122,8 +122,7 @@ void ChatWidget::appendMessage(const QString& sender_name, const QString& text, 
     if (is_own_message) {
         item->setTextAlignment(Qt::AlignRight);
         item->setForeground(QColor("#1a73e8"));
-    }
-    else {
+    } else {
         item->setTextAlignment(Qt::AlignLeft);
         item->setForeground(QColor("#DBDBDB"));
     }

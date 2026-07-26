@@ -6,6 +6,7 @@
 
 GuestPage::GuestPage(QWidget *parent) : QWidget(parent) , ui(new Ui::GuestPage) {
     ui->setupUi(this);
+
     ui->lineEdit_ip->setPlaceholderText("e.g., 127.0.0.1");
     ui->lineEdit_port->setPlaceholderText("Port must be free");
 }
@@ -14,10 +15,8 @@ void GuestPage::setTitle(GameName game_name) {
     current_game_name = game_name;
     if (game_name == GameName::DotsAndBoxes)
         ui->label_game->setText("Boxes And Dots");
-
     else if (game_name == GameName::NineMensMorris)
         ui->label_game->setText("Nine Men's Morris");
-
     else if (game_name == GameName::Fanorona)
         ui->label_game->setText("Fanorona");
 }
@@ -32,13 +31,11 @@ GuestPage::~GuestPage() {
 }
 
 void GuestPage::on_pushButton_join_clicked() {
-    try
-    {
+    try {
         QString ip = ui->lineEdit_ip->text().trimmed();
         QString text_port = ui->lineEdit_port->text().trimmed();
-        if (ip.isEmpty() || text_port.isEmpty()) {
+        if (ip.isEmpty() || text_port.isEmpty())
             throw LobbyException("Please fill out all fields.");
-        }
 
         int port = text_port.toInt();
         int colorIndex = -1;
@@ -58,11 +55,10 @@ void GuestPage::on_pushButton_join_clicked() {
 
         emit joinRequested(ip, port, colorIndex);
     }
-    catch (const BaseException& e){
+    catch (const BaseException& e) {
         e.showDialog(this);
     }
 }
-
 
 void GuestPage::on_pushButton_back_clicked() {
     emit navigateToGameMenu();

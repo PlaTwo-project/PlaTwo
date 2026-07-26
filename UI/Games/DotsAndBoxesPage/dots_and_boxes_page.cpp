@@ -5,8 +5,7 @@
 #include <QEasingCurve>
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesLogic/dots_and_boxes.h"
 
-DotsAndBoxesPage::DotsAndBoxesPage(QWidget *parent)
-    : BasePage(parent), is_animating(false), anim_progress(1.0), anim_type(0), anim_r(-1), anim_c(-1) {
+DotsAndBoxesPage::DotsAndBoxesPage(QWidget *parent) : BasePage(parent), is_animating(false), anim_progress(1.0), anim_type(0), anim_r(-1), anim_c(-1) {
     setMouseTracking(true);
 
     animation = new QVariantAnimation(this);
@@ -34,6 +33,7 @@ void DotsAndBoxesPage::setupBoard(int size) {
 
     if (animation)
         animation->stop();
+
     is_animating = false;
     update();
 }
@@ -127,7 +127,12 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
         for (int c = 0; c < board_size; ++c) {
             if (captured_boxes[r][c] != 0) {
                 QRect rect(margin_offset + c * cell_spacing, margin_offset + r * cell_spacing, cell_spacing, cell_spacing);
-                QColor owner_color = (captured_boxes[r][c] == 1) ? host_player_color : guest_player_color;
+                QColor owner_color;
+                if (captured_boxes[r][c] == 1)
+                    owner_color = host_player_color;
+                else
+                    owner_color = guest_player_color;
+
                 QColor fill_color = owner_color;
                 qreal alpha = 100;
                 if (is_animating && displayed_captured_boxes[r][c] == 0)
@@ -136,7 +141,10 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
                 fill_color.setAlpha(static_cast<int>(alpha));
                 painter.fillRect(rect, fill_color);
                 painter.setPen(owner_color);
-                painter.drawText(rect, Qt::AlignCenter, captured_boxes[r][c] == 1 ? first_player_name[0] : second_player_name[0]);
+                if (captured_boxes[r][c] == 1)
+                    painter.drawText(rect, Qt::AlignCenter, first_player_name[0]);
+                else
+                    painter.drawText(rect, Qt::AlignCenter, second_player_name[0]);
             }
         }
     }
@@ -146,12 +154,22 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
             int x1 = margin_offset + c * cell_spacing;
             int y1 = margin_offset + r * cell_spacing;
             if (is_animating && anim_type == 1 && r == anim_r && c == anim_c) {
-                QColor owner_color = (horizontal_lines[r][c] == 1) ? host_player_color : guest_player_color;
+                QColor owner_color;
+                if (horizontal_lines[r][c] == 1)
+                    owner_color = host_player_color;
+                else
+                    owner_color = guest_player_color;
+
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 int current_length = static_cast<int>(cell_spacing * anim_progress);
                 painter.drawLine(x1, y1, x1 + current_length, y1);
             } else if (horizontal_lines[r][c] != 0) {
-                QColor owner_color = (horizontal_lines[r][c] == 1) ? host_player_color : guest_player_color;
+                QColor owner_color;
+                if (horizontal_lines[r][c] == 1)
+                    owner_color = host_player_color;
+                else
+                    owner_color = guest_player_color;
+
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 painter.drawLine(x1, y1, x1 + cell_spacing, y1);
             } else if (!is_animating && r == hovered_h_row && c == hovered_h_col) {
@@ -169,12 +187,22 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
             int x1 = margin_offset + c * cell_spacing;
             int y1 = margin_offset + r * cell_spacing;
             if (is_animating && anim_type == 2 && r == anim_r && c == anim_c) {
-                QColor owner_color = (vertical_lines[r][c] == 1) ? host_player_color : guest_player_color;
+                QColor owner_color;
+                if (vertical_lines[r][c] == 1)
+                    owner_color = host_player_color;
+                else
+                    owner_color = guest_player_color;
+
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 int current_length = static_cast<int>(cell_spacing * anim_progress);
                 painter.drawLine(x1, y1, x1, y1 + current_length);
             } else if (vertical_lines[r][c] != 0) {
-                QColor owner_color = (vertical_lines[r][c] == 1) ? host_player_color : guest_player_color;
+                QColor owner_color;
+                if (vertical_lines[r][c] == 1)
+                    owner_color = host_player_color;
+                else
+                    owner_color = guest_player_color;
+
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 painter.drawLine(x1, y1, x1, y1 + cell_spacing);
             } else if (!is_animating && r == hovered_v_row && c == hovered_v_col) {

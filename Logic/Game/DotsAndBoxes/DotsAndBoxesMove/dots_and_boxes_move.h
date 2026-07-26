@@ -13,7 +13,7 @@ class DotsAndBoxesMove : public Move
 {
 public:
     DotsAndBoxesMove(int row, int column, lineDirection direction);
-    ~DotsAndBoxesMove() override;
+    ~DotsAndBoxesMove() override = default;
 
     QByteArray serializeMove() const override;
 

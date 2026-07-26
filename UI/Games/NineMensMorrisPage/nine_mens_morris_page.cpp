@@ -13,10 +13,8 @@ static const int POINT_RADIUS = 16;
 static const int CLICK_THRESHOLD = 34;
 static const int ANIMATION_DURATION_MS = 450;
 
-NineMensMorrisPage::NineMensMorrisPage(QWidget* parent)
-    : BasePage(parent), awaiting_removal(false), placed_count_p1(0), placed_count_p2(0), current_player_id(0),
-    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0),
-    anim_move_from(-1), anim_move_to(-1), anim_removed_position(-1), anim_moving_player_id(0) {
+NineMensMorrisPage::NineMensMorrisPage(QWidget* parent) : BasePage(parent), awaiting_removal(false), placed_count_p1(0), placed_count_p2(0), current_player_id(0),
+    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0), anim_move_from(-1), anim_move_to(-1), anim_removed_position(-1), anim_moving_player_id(0) {
     setMouseTracking(true);
     position_owners = QVector<int>(NineMensMorrisBoard::TOTAL_POSITIONS, 0);
 
@@ -43,7 +41,9 @@ void NineMensMorrisPage::setupBoard(const int size) {
 
     displayed_owners = position_owners;
     pending_owners = position_owners;
-    if (move_animation) move_animation->stop();
+    if (move_animation)
+        move_animation->stop();
+
     is_animating = false;
     anim_move_from = -1;
     anim_move_to = -1;
@@ -118,7 +118,6 @@ void NineMensMorrisPage::startAnimation(const QVector<int>& new_owners) {
     }
 
     pending_owners = new_owners;
-
     if (from != -1 && to != -1) { // move
         anim_move_from = from;
         anim_move_to = to;
@@ -163,9 +162,10 @@ void NineMensMorrisPage::updateHighlights() {
         else
             opponent_id = 1;
 
-        for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position)
+        for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
             if (snapshot_board.isPieceRemovable(position, opponent_id))
                 highlighted_positions.append(position);
+        }
 
         return;
     }
@@ -178,11 +178,12 @@ void NineMensMorrisPage::updateHighlights() {
 
     bool placing_phase = my_placed_count < NineMensMorris::PIECES_PER_PLAYER;
     if (selected_position == -1) {
-        if (placing_phase)
-            for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position)
+        if (placing_phase) {
+            for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
                 if (snapshot_board.isEmpty(position))
                     highlighted_positions.append(position);
-
+            }
+        }
         return;
     }
 
@@ -226,7 +227,12 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
         QPoint p = positionToCoordinates(position);
         if (highlighted_positions.contains(position)) {
-            QColor highlight_color = awaiting_removal ? QColor(231, 76, 60) : QColor(46, 204, 113);
+            QColor highlight_color;
+            if (awaiting_removal)
+                highlight_color = QColor(231, 76, 60);
+            else
+                highlight_color = QColor(46, 204, 113);
+
             painter.setPen(QPen(highlight_color, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.setBrush(QColor(highlight_color.red(), highlight_color.green(), highlight_color.blue(), 70));
             painter.drawEllipse(p, POINT_RADIUS + 6, POINT_RADIUS + 6);
@@ -252,7 +258,12 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
 
         if (is_animating && position == anim_removed_position) {
             qreal fade = 1.0 - anim_progress;
-            QColor c = (owner == 1) ? QColor(100, 149, 237) : QColor(255, 99, 71);
+            QColor c;
+            if (owner == 1)
+                c = QColor(100, 149, 237);
+            else
+                c = QColor(255, 99, 71);
+
             c.setAlphaF(fade);
             painter.setPen(Qt::NoPen);
             painter.setBrush(c);
@@ -288,7 +299,12 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
         }
 
         painter.setPen(Qt::black);
-        painter.setBrush(anim_moving_player_id == 1 ? QColor(100, 149, 237) : QColor(255, 99, 71));
+
+        if (anim_moving_player_id == 1)
+            painter.setBrush(QColor(100, 149, 237));
+        else
+            painter.setBrush(QColor(255, 99, 71));
+
         painter.drawEllipse(current_point, POINT_RADIUS, POINT_RADIUS);
         painter.setOpacity(1.0);
     }

@@ -9,19 +9,16 @@
 #include "UI/Exception/lobby_exception.h"
 
 AppManager::AppManager(QObject *parent)
-    : QObject{parent}, authenticator(userStorage), history_storage(), game_manager()
-{
+    : QObject{parent}, authenticator(userStorage), history_storage(), game_manager() {
     main_window = new MainWindow();
     setupConnections();
 }
 
-void AppManager::run()
-{
+void AppManager::run() {
     main_window->show();
 }
 
-void AppManager::setupConnections()
-{
+void AppManager::setupConnections() {
     connect(main_window, &MainWindow::loginRequested, this, &AppManager::handleLogin);
     connect(main_window, &MainWindow::logoutRequested, this, &AppManager::handleLogout);
     connect(main_window, &MainWindow::appClosing, this, &AppManager::handleLogout);
@@ -55,20 +52,15 @@ void AppManager::setupConnections()
     connect(&game_manager, &GameManager::timeUpdated, main_window, &MainWindow::updateGameTimers);
 }
 
-void AppManager::handleLogin(const QString &username, const QString &password)
-{
-    try
-    {
+void AppManager::handleLogin(const QString &username, const QString &password) {
+    try {
         User logged_user;
         AuthResult result = authenticator.login(username, password, logged_user);
-
-        switch (result)
-        {
+        switch (result) {
         case AuthResult::SUCCESS:
         {
             SessionManager::getInstance().login(logged_user);
             QMessageBox::information(main_window, "Login", "Login successfully.");
-
             User user = SessionManager::getInstance().getCurrentUser();
             main_window->loadUserDataInProfile(user.getName(), user.getUsername(), user.getEmail(), user.getPhoneNumber());
             main_window->showMainMenuPage();
@@ -89,15 +81,12 @@ void AppManager::handleLogin(const QString &username, const QString &password)
             throw LoginException("An unknown error occurred.");
         }
     }
-    catch (const BaseException& e)
-    {
+    catch (const BaseException& e) {
         e.showDialog(main_window);
     }
 }
 
-
-void AppManager::handleLogout()
-{
+void AppManager::handleLogout() {
     if (SessionManager::getInstance().isLoggedIn()){
         User cur_user = SessionManager::getInstance().getCurrentUser();
         authenticator.logout(cur_user.getId());
@@ -107,19 +96,14 @@ void AppManager::handleLogout()
 }
 
 
-void AppManager::handleSignup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password)
-{
-    try
-    {
+void AppManager::handleSignup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password) {
+    try {
         AuthResult result = authenticator.signup(name, username, email, phone, password);
-
-        switch (result)
-        {
+        switch (result) {
         case AuthResult::SUCCESS:
         {
             int res = QMessageBox::information(main_window, "Signup", "Account created successfully.");
-            if (res == QMessageBox::Ok)
-            {
+            if (res == QMessageBox::Ok) {
                 main_window->showLoginPage();
                 main_window->clearSignupFields();
             }
@@ -148,25 +132,19 @@ void AppManager::handleSignup(const QString &name, const QString &username, cons
             throw SignupException("An unknown error occurred.");
         }
     }
-    catch (const BaseException& e){
+    catch (const BaseException& e) {
         e.showDialog(main_window);
     }
 }
 
-
-void AppManager::handleResetPassword(const QString &username, const QString &phone, const QString &new_password)
-{
-    try
-    {
+void AppManager::handleResetPassword(const QString &username, const QString &phone, const QString &new_password) {
+    try {
         AuthResult result = authenticator.resetPassword(username, phone, new_password);
-
-        switch (result)
-        {
+        switch (result) {
         case AuthResult::SUCCESS:
         {
             int res = QMessageBox::information(main_window, "Success Message", "Password changed successfully.");
-            if (res == QMessageBox::Ok)
-            {
+            if (res == QMessageBox::Ok) {
                 main_window->showLoginPage();
                 main_window->clearFPFields();
             }
@@ -186,20 +164,15 @@ void AppManager::handleResetPassword(const QString &username, const QString &pho
             throw ForgotPasswordException("An unknown error occurred.");
         }
     }
-    catch (const BaseException& e)
-    {
+    catch (const BaseException& e) {
         e.showDialog(main_window);
     }
 }
 
-void AppManager::handleForgotPasswordStep2(const QString &username, const QString &phone)
-{
-    try
-    {
+void AppManager::handleForgotPasswordStep2(const QString &username, const QString &phone) {
+    try {
         AuthResult result = authenticator.verifyUserPhone(username, phone);
-
-        switch (result)
-        {
+        switch (result) {
         case AuthResult::SUCCESS:
             main_window->showForgotPasswordPage2(username, phone);
             main_window->clearFPFields();
@@ -215,21 +188,16 @@ void AppManager::handleForgotPasswordStep2(const QString &username, const QStrin
             throw ForgotPasswordException("An unknown error occurred.");
         }
     }
-    catch (const BaseException& e)
-    {
+    catch (const BaseException& e) {
         e.showDialog(main_window);
     }
 }
 
-void AppManager::handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password)
-{
-    try
-    {
+void AppManager::handleEditProfile(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password) {
+    try {
         User cur_user = SessionManager::getInstance().getCurrentUser();
         AuthResult result = authenticator.updateUser(cur_user.getId(), name, username, email, phone, old_password, new_password);
-
-        switch (result)
-        {
+        switch (result) {
         case AuthResult::SUCCESS:
         {
             int res = QMessageBox::information(main_window, "Success", "Profile updated successfully.");
@@ -266,8 +234,7 @@ void AppManager::handleEditProfile(const QString &name, const QString &username,
             throw EditProfileException("An unknown error occurred.");
         }
     }
-    catch (const BaseException& e)
-    {
+    catch (const BaseException& e) {
         e.showDialog(main_window);
     }
 }
@@ -286,11 +253,9 @@ void AppManager::handleCreateRoom(const int port, const int board_size, const in
 }
 
 void AppManager::handleJoinRoom(const QString &IP, const int port, const GameName game_name, const int color_index) {
-    try
-    {
+    try {
         User cur_user = SessionManager::getInstance().getCurrentUser();
         AuthResult result = authenticator.verifyIP(IP);
-
         switch (result) {
         case AuthResult::SUCCESS:
             game_manager.joinRoom(cur_user, IP, port, game_name, color_index);
@@ -303,25 +268,21 @@ void AppManager::handleJoinRoom(const QString &IP, const int port, const GameNam
             throw LobbyException("An unknown error occurred.");
         }
     }
-    catch (const BaseException& e)
-    {
+    catch (const BaseException& e) {
         e.showDialog(main_window);
     }
 }
 
 
-void AppManager::handleCancelHost()
-{
+void AppManager::handleCancelHost() {
     game_manager.cancelRoom();
 }
 
-void AppManager::handleLocalMove(int arg1, int arg2, int arg3)
-{
+void AppManager::handleLocalMove(int arg1, int arg2, int arg3) {
     game_manager.handleLocalMove(arg1, arg2, arg3);
 }
 
-void AppManager::updateGameUI()
-{
+void AppManager::updateGameUI() {
     Game *game_logic = game_manager.getCurrentGame();
     if (!game_logic)
         return;
@@ -352,7 +313,6 @@ void AppManager::handleGameStarted() {
     }
     else if (current_game_name == GameName::NineMensMorris)
         main_window->showNineMensMorrisPage();
-
     else if (current_game_name == GameName::Fanorona)
         main_window->showFanoronaPage();
 
@@ -361,30 +321,25 @@ void AppManager::handleGameStarted() {
     updateGameUI();
 }
 
-void AppManager::handleMoveApplied(bool is_turn_kept)
-{
+void AppManager::handleMoveApplied(bool is_turn_kept){
     Q_UNUSED(is_turn_kept);
     updateGameUI();
 }
 
-void AppManager::handleOpponentMoveReceived()
-{
+void AppManager::handleOpponentMoveReceived(){
     updateGameUI();
 }
 
 void AppManager::handleGameOver(GameStatus status, GameEndReason reason) {
     QString title_text;
     QString message_text;
-
     if (reason == GameEndReason::TIME_UP) {
         title_text = "Time's Up!";
         message_text = "The match is over. Time has expired!\n\n";
-    }
-    else if (reason == GameEndReason::RESIGNATION) {
+    } else if (reason == GameEndReason::RESIGNATION) {
         title_text = "Resignation";
         message_text = "The match ended due to a player resigning.\n\n";
-    }
-    else {
+    } else {
         title_text = "Match Result";
         message_text = "";
     }

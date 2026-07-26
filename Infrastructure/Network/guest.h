@@ -10,7 +10,7 @@
     Q_OBJECT
 public:
     explicit Guest(QObject *parent = nullptr);
-    ~Guest();
+    ~Guest() = default;
 
     void connectHost(const QString& IP, int port);
     void sendGuestInfo(const User& guest_user, int guest_color_index, GameName game_name);

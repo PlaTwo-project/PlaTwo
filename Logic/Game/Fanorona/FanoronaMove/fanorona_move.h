@@ -9,7 +9,7 @@ class FanoronaMove : public Move
 {
 public:
     FanoronaMove(int from, int to, int player_id, FanoronaCaptureType capture_type, bool is_end_turn = false);
-    ~FanoronaMove() override;
+    ~FanoronaMove() override = default;
 
     QByteArray serializeMove() const override;
 

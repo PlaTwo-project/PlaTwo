@@ -3,52 +3,43 @@
 #include "host.h"
 #include "Logic/Constants/packet_type.h"
 
-Host::Host(QObject *parent) : Network(parent), server(nullptr)
-{
-}
+Host::Host(QObject *parent) : Network(parent), server(nullptr) {}
 
-Host::~Host()
-{
-    if (server)
-    {
+Host::~Host() {
+    if (server) {
         server->close();
         server->deleteLater();
     }
 }
 
-void Host::startHosting(int port)
-{
+void Host::startHosting(int port) {
     hosting_port = port;
     server = new QTcpServer(this);
     connect(server, &QTcpServer::newConnection, this, &Host::connectNewClient);
-
     if (!server->listen(QHostAddress::Any, port))
         emit error(server->errorString());
 }
 
-void Host::connectNewClient()
-{
+void Host::connectNewClient() {
     if (!server)
         return;
 
     socket = server->nextPendingConnection();
     server->close();
-
     initConnection();
     emit connected();
-
     connect(this, &Network::dataReceived, this, &Host::handleIncomingData);
 }
 
 QString Host::getLocalIP() const {
     QString local_ip = "127.0.0.1";
     const QList<QHostAddress> addresses = QNetworkInterface::allAddresses();
-
-    for (const QHostAddress& address : addresses)
+    for (const QHostAddress& address : addresses) {
         if (address.protocol() == QAbstractSocket::IPv4Protocol && !address.isLoopback()) {
             local_ip = address.toString();
             break;
         }
+    }
 
     return local_ip;
 }
@@ -92,9 +83,8 @@ void Host::handleIncomingData(const QByteArray &data) {
         emit chatMessageReceived(chat_message);
     }
 
-    if (packet_type == static_cast<qint8>(PacketType::PauseRequest)) {
+    if (packet_type == static_cast<qint8>(PacketType::PauseRequest))
         emit pauseRequested();
-    }
 
     if (packet_type == static_cast<qint8>(PacketType::PauseResponse)) {
         bool accepted;
@@ -109,6 +99,7 @@ void Host::rejectGuest() {
         socket->deleteLater();
         socket = nullptr;
     }
+
     if (server && !server->isListening())
         server->listen(QHostAddress::Any, hosting_port);
 }

@@ -1,7 +1,6 @@
 #include "color_selection_dialog.h"
 #include "ui_color_selection_dialog.h"
 #include "Logic/Game/DotsAndBoxes/DotsAndBoxesColors/dots_and_boxes_colors.h"
-
 #include <QButtonGroup>
 
 ColorSelectionDialog::ColorSelectionDialog(QWidget* parent) : QDialog(parent), ui(new Ui::ColorSelectionDialog), selected_index(-1) {

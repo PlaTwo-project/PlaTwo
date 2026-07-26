@@ -7,8 +7,8 @@ DotsAndBoxesBoard::DotsAndBoxesBoard(int size) : board_size(size) {
 
 void DotsAndBoxesBoard::initialize() {
     horizontal_lines = QVector<QVector<int>>(board_size + 1, QVector<int>(board_size, 0));
-    vertical_lines   = QVector<QVector<int>>(board_size, QVector<int>(board_size + 1, 0));
-    captured_boxes   = QVector<QVector<int>>(board_size, QVector<int>(board_size, 0));
+    vertical_lines = QVector<QVector<int>>(board_size, QVector<int>(board_size + 1, 0));
+    captured_boxes = QVector<QVector<int>>(board_size, QVector<int>(board_size, 0));
 }
 
 void DotsAndBoxesBoard::clear() {
@@ -29,8 +29,7 @@ void DotsAndBoxesBoard::applyMove(const Move& main_move, int player_id) {
             return;
 
         horizontal_lines[row][column] = player_id;
-    }
-    else {
+    } else {
         if (vertical_lines[row][column] != 0)
             return;
 

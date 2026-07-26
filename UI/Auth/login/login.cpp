@@ -2,52 +2,41 @@
 #include "ui_login.h"
 #include "UI/Exception/login_exception.h"
 
-Login::Login(QWidget *parent)
-    : QWidget(parent),
-    ui(new Ui::Login)
-{
+Login::Login(QWidget *parent) : QWidget(parent), ui(new Ui::Login) {
     ui->setupUi(this);
 
     ui->lineEdit_username->setPlaceholderText("Enter your Username");
     ui->lineEdit_password->setPlaceholderText("Enter your Password");
 }
 
-Login::~Login()
-{
+Login::~Login() {
     delete ui;
 }
 
-void Login::clearFields()
-{
+void Login::clearFields() {
     ui->lineEdit_username->clear();
     ui->lineEdit_password->clear();
 }
 
-void Login::on_pushButton_login_clicked()
-{
-    try{
+void Login::on_pushButton_login_clicked() {
+    try {
         QString username = ui->lineEdit_username->text().trimmed();
         QString password = ui->lineEdit_password->text().trimmed();
-
-        if (username.isEmpty() || password.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty())
             throw LoginException("Please fill out all fields.");
-        }
 
         emit loginRequested(username, password);
     }
-    catch (const BaseException& e){
+    catch (const BaseException& e) {
         e.showDialog(this);
     }
 }
 
-
-void Login::on_pushButton_signup_clicked()
-{
+void Login::on_pushButton_signup_clicked() {
     emit navigateToSignup(ui->lineEdit_username->text(), ui->lineEdit_password->text());
 }
 
-void Login::on_pushButton_forgotPassword_clicked()
-{
+void Login::on_pushButton_forgotPassword_clicked() {
     emit navigateToForgotPassword(ui->lineEdit_username->text());
 }
 

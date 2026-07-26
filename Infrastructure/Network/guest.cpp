@@ -1,22 +1,13 @@
 #include "guest.h"
 #include "Logic/Constants/packet_type.h"
 
-Guest::Guest(QObject *parent): Network(parent) {
-}
+Guest::Guest(QObject *parent): Network(parent) {}
 
-Guest::~Guest() {
-}
-
-void Guest::connectHost(const QString& IP, int port)
-{
+void Guest::connectHost(const QString& IP, int port) {
     socket = new QTcpSocket(this);
-
     initConnection();
-
     connect(socket, &QTcpSocket::connected, this, &Network::connected);
-
     socket->connectToHost(IP, port);
-
     connect(this, &Network::dataReceived, this, &Guest::handleIncomingData);
 }
 
@@ -61,9 +52,8 @@ void Guest::handleIncomingData(const QByteArray &data) {
         emit chatMessageReceived(chat_message);
     }
 
-    if (packet_type == static_cast<qint8>(PacketType::PauseRequest)) {
+    if (packet_type == static_cast<qint8>(PacketType::PauseRequest))
         emit pauseRequested();
-    }
 
     if (packet_type == static_cast<qint8>(PacketType::PauseResponse)) {
         bool accepted;

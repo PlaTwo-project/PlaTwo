@@ -33,12 +33,10 @@ void HostPage::setPage(GameName game_name) {
         ui->comboBox__board_size->addItem("7 x 7 Dots", 7);
         ui->comboBox__board_size->addItem("8 x 8 Dots", 8);
     }
-    else if (game_name == GameName::NineMensMorris) {
+    else if (game_name == GameName::NineMensMorris)
         ui->comboBox__board_size->addItem("Standard", 3);
-    }
-    else if (game_name == GameName::Fanorona) {
+    else if (game_name == GameName::Fanorona)
         ui->comboBox__board_size->addItem("Standard", 9);
-    }
 
     ui->stackedWidget->setCurrentIndex(0);
 }

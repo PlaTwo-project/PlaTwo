@@ -5,19 +5,16 @@
 #include <QJsonDocument>
 
 DotsAndBoxes::DotsAndBoxes(int size, const User &player_one, const User &player_two)
-    : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0), grid_size(size)
-{
+    : first_player(player_one), second_player(player_two), first_player_score(0), second_player_score(0), grid_size(size) {
     game_board = new DotsAndBoxesBoard(grid_size);
     current_player = first_player;
 }
 
-DotsAndBoxes::~DotsAndBoxes()
-{
+DotsAndBoxes::~DotsAndBoxes() {
     delete game_board;
 }
 
-bool DotsAndBoxes::isValidMove(const Move &main_move)
-{
+bool DotsAndBoxes::isValidMove(const Move &main_move) {
     const DotsAndBoxesMove &move = static_cast<const DotsAndBoxesMove &>(main_move);
     return !game_board->isLineTaken(move.getRow(), move.getColumn(), static_cast<int>(move.getDirection()));
 }
@@ -50,8 +47,7 @@ bool DotsAndBoxes::makeMove(const Move &main_move)  {
     return true;
 }
 
-GameStatus DotsAndBoxes::checkWin()
-{
+GameStatus DotsAndBoxes::checkWin() {
     if (!game_board->isFull())
         return GameStatus::ONGOING;
 
@@ -64,8 +60,7 @@ GameStatus DotsAndBoxes::checkWin()
     return GameStatus::DRAW;
 }
 
-void DotsAndBoxes::resetGame()
-{
+void DotsAndBoxes::resetGame() {
     first_player_score = 0;
     second_player_score = 0;
     game_board->clear();
@@ -73,7 +68,6 @@ void DotsAndBoxes::resetGame()
 }
 
 QString DotsAndBoxes::serializeState() const {
-
     QJsonObject state_obj;
     state_obj["current_player_id"] = current_player.getId();
     state_obj["first_player_score"] = first_player_score;
@@ -106,7 +100,11 @@ void DotsAndBoxes::loadState(const QString &state_data) {
 
     QJsonObject state_obj = json_document.object();
     int current_player_id = state_obj["current_player_id"].toInt();
-    current_player = (current_player_id == first_player.getId()) ? first_player : second_player;
+    if (current_player_id == first_player.getId())
+        current_player = first_player;
+    else
+        current_player = second_player;
+
     first_player_score = state_obj["first_player_score"].toInt();
     second_player_score = state_obj["second_player_score"].toInt();
     auto parseIntMatrix = [](const QJsonArray& serialized_matrix) {
@@ -124,22 +122,18 @@ void DotsAndBoxes::loadState(const QString &state_data) {
     QVector<QVector<int>> horizontal_lines = parseIntMatrix(state_obj["horizontal_lines"].toArray());
     QVector<QVector<int>> vertical_lines = parseIntMatrix(state_obj["vertical_lines"].toArray());
     QVector<QVector<int>> captured_boxes = parseIntMatrix(state_obj["captured_boxes"].toArray());
-
     DotsAndBoxesBoard* db_board = static_cast<DotsAndBoxesBoard*>(game_board);
     db_board->restoreState(horizontal_lines, vertical_lines, captured_boxes);
 }
 
-int DotsAndBoxes::getFirstPlayerScore() const
-{
+int DotsAndBoxes::getFirstPlayerScore() const {
     return first_player_score;
 }
 
-int DotsAndBoxes::getSecondPlayerScore() const
-{
+int DotsAndBoxes::getSecondPlayerScore() const {
     return second_player_score;
 }
 
-Board *DotsAndBoxes::getBoard() const
-{
+Board *DotsAndBoxes::getBoard() const {
     return game_board;
 }

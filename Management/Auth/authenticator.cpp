@@ -3,13 +3,10 @@
 #include "Logic/Security/password_hasher.h"
 #include "Management/App/session_manager.h"
 
-Authenticator::Authenticator(UserInterface& storage): storage(storage), session_storage(){
-}
+Authenticator::Authenticator(UserInterface& storage): storage(storage), session_storage() {}
 
-AuthResult Authenticator::login(const QString &username, const QString &password, User &logged_in_user)
-{
+AuthResult Authenticator::login(const QString &username, const QString &password, User &logged_in_user) {
     User user;
-
     if (!storage.getUserByUsername(username, user))
         return AuthResult::USER_NOT_FOUND;
 
@@ -20,18 +17,15 @@ AuthResult Authenticator::login(const QString &username, const QString &password
         return AuthResult::ALREADY_LOGGED_IN;
 
     session_storage.addSession(user.getId());
-
     logged_in_user = user;
     return AuthResult::SUCCESS;
 }
 
-void Authenticator::logout(int user_id)
-{
+void Authenticator::logout(int user_id) {
     session_storage.removeSession(user_id);
 }
 
-AuthResult Authenticator::signup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password)
-{
+AuthResult Authenticator::signup(const QString &name, const QString &username, const QString &email, const QString &phone, const QString &password) {
     if (!Validator::validateEmail(email.toStdString()))
         return AuthResult::INVALID_EMAIL;
 
@@ -51,19 +45,15 @@ AuthResult Authenticator::signup(const QString &name, const QString &username, c
         return AuthResult::PHONE_TAKEN;
 
     QString hashedPassword = PasswordHasher::hasher(password);
-
     User new_user(name, username, phone, email, hashedPassword);
-
     if (!storage.addUser(new_user))
         return AuthResult::UNKNOWN_ERROR;
 
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::resetPassword(const QString &username, const QString &phone, const QString &new_password)
-{
+AuthResult Authenticator::resetPassword(const QString &username, const QString &phone, const QString &new_password) {
     User user;
-
     if (!storage.getUserByUsername(username, user))
         return AuthResult::USER_NOT_FOUND;
 
@@ -74,19 +64,15 @@ AuthResult Authenticator::resetPassword(const QString &username, const QString &
         return AuthResult::WEAK_PASSWORD;
 
     QString hashedPassword = PasswordHasher::hasher(new_password);
-
     user.setHashedPassword(hashedPassword);
-
     if (!storage.updateUser(user))
         return AuthResult::UNKNOWN_ERROR;
 
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::verifyUserPhone(const QString &username, const QString &phone)
-{
+AuthResult Authenticator::verifyUserPhone(const QString &username, const QString &phone) {
     User user;
-
     if (!storage.getUserByUsername(username, user))
         return AuthResult::USER_NOT_FOUND;
 
@@ -96,12 +82,9 @@ AuthResult Authenticator::verifyUserPhone(const QString &username, const QString
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::updateUser(const int id, const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password)
-{
+AuthResult Authenticator::updateUser(const int id, const QString &name, const QString &username, const QString &email, const QString &phone, const QString &old_password, const QString &new_password) {
     User user;
-
-    if (!username.isEmpty())
-    {
+    if (!username.isEmpty()) {
         if (!storage.getUserById(id, user))
             return AuthResult::USER_NOT_FOUND;
 
@@ -109,8 +92,7 @@ AuthResult Authenticator::updateUser(const int id, const QString &name, const QS
             return AuthResult::USERNAME_TAKEN;
     }
 
-    if (!email.isEmpty())
-    {
+    if (!email.isEmpty()) {
         if (user.getEmail() != email && !Validator::validateEmail(email.toStdString()))
             return AuthResult::INVALID_EMAIL;
 
@@ -118,8 +100,7 @@ AuthResult Authenticator::updateUser(const int id, const QString &name, const QS
             return AuthResult::EMAIL_TAKEN;
     }
 
-    if (!phone.isEmpty())
-    {
+    if (!phone.isEmpty()) {
         if (user.getPhoneNumber() != phone && !Validator::validatePhone(phone.toStdString()))
             return AuthResult::INVALID_PHONE;
 
@@ -127,20 +108,17 @@ AuthResult Authenticator::updateUser(const int id, const QString &name, const QS
             return AuthResult::PHONE_TAKEN;
     }
 
-    if (!old_password.isEmpty() && !new_password.isEmpty())
-    {
+    if (!old_password.isEmpty() && !new_password.isEmpty()) {
         if (!PasswordHasher::verify(old_password, user.getHashedPassword()))
             return AuthResult::WRONG_PASSWORD;
 
-        if (old_password != new_password)
-        {
+        if (old_password != new_password) {
             if (!Validator::validatePassword(new_password.toStdString()))
                 return AuthResult::WEAK_PASSWORD;
 
             user.setHashedPassword(PasswordHasher::hasher(new_password));
         }
-    }
-    else
+    } else
         return AuthResult::EMPTY_FIELD;
 
     user.setName(name);
@@ -156,8 +134,7 @@ AuthResult Authenticator::updateUser(const int id, const QString &name, const QS
     return AuthResult::SUCCESS;
 }
 
-AuthResult Authenticator::verifyIP(const QString& ip)
-{
+AuthResult Authenticator::verifyIP(const QString& ip) {
     if (!Validator::validateIP(ip.toStdString()))
         return AuthResult::INVALID_IP;
 

@@ -62,6 +62,7 @@ HEADERS += \
     Logic/Constants/game_end_reason.h \
     Logic/Constants/game_name.h \
     Logic/Constants/packet_type.h \
+    Logic/Constants/player_slot.h \
     Logic/Game/BaseLogicClasses/Board.h \
     Logic/Game/BaseLogicClasses/Game.h \
     Logic/Game/BaseLogicClasses/Move.h \

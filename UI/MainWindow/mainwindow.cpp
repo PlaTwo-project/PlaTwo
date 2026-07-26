@@ -20,8 +20,7 @@
 #include <QParallelAnimationGroup>
 #include <QGraphicsOpacityEffect>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
-{
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     // create pages
@@ -137,180 +136,147 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     showLoginPage();
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::showLoginPage()
-{
+void MainWindow::showLoginPage() {
     transitionToWidget(login_page);
 }
 
-void MainWindow::showSignupPage()
-{
+void MainWindow::showSignupPage() {
     transitionToWidget(signup_page);
 }
 
-void MainWindow::showForgotPasswordPage()
-{
+void MainWindow::showForgotPasswordPage() {
     forgot_password_page->switchToVerifyPage();
     transitionToWidget(forgot_password_page);
 }
 
-void MainWindow::showForgotPasswordPage2(const QString &username, const QString &phone)
-{
+void MainWindow::showForgotPasswordPage2(const QString &username, const QString &phone) {
     forgot_password_page->setUserData(username, phone);
     forgot_password_page->switchToResetPage();
 }
 
-void MainWindow::showMainMenuPage()
-{
+void MainWindow::showMainMenuPage() {
     transitionToWidget(main_menu_page);
 }
 
-void MainWindow::showEditProfilePage()
-{
+void MainWindow::showEditProfilePage() {
     transitionToWidget(edit_profile_page);
 }
 
-void MainWindow::showGameMenuPage(const GameName game_name)
-{
+void MainWindow::showGameMenuPage(const GameName game_name) {
     cur_game = game_name;
     game_menu_page->setTitle(game_name);
     transitionToWidget(game_menu_page);
 }
 
-void MainWindow::showHostPage(const GameName game_name)
-{
+void MainWindow::showHostPage(const GameName game_name) {
     host_page->setPage(game_name);
     transitionToWidget(host_page);
 }
 
-void MainWindow::showWatingHostPage(const QString &ip, int port)
-{
+void MainWindow::showWatingHostPage(const QString &ip, int port) {
     host_page->switchToWaitingStatus(ip, port);
 }
 
-void MainWindow::showGuestPage(const GameName game_name)
-{
+void MainWindow::showGuestPage(const GameName game_name) {
     guest_page->setTitle(game_name);
     guest_page->clearFields();
     transitionToWidget(guest_page);
 }
 
-void MainWindow::showHistoryPage(const QList<MatchRecord> &historyList, int currentUserId, GameName game_name)
-{
+void MainWindow::showHistoryPage(const QList<MatchRecord> &historyList, int currentUserId, GameName game_name) {
     history_page->setHistory(historyList, currentUserId, game_name);
     transitionToWidget(history_page);
 }
 
-void MainWindow::showDotsAndBoxesPage(const int size)
-{
+void MainWindow::showDotsAndBoxesPage(const int size) {
     dots_and_boxes_page->setupBoard(size);
     game_stack->setCurrentWidget(dots_and_boxes_page);
     transitionToWidget(game_room_page);
 }
 
-void MainWindow::showNineMensMorrisPage()
-{
+void MainWindow::showNineMensMorrisPage() {
     nine_mens_morris_page->setupBoard(0);
     game_stack->setCurrentWidget(nine_mens_morris_page);
     transitionToWidget(game_room_page);
 }
 
-void MainWindow::showFanoronaPage()
-{
+void MainWindow::showFanoronaPage() {
     fanorona_page->setupBoard(0);
     game_stack->setCurrentWidget(fanorona_page);
     transitionToWidget(game_room_page);
 }
 
-void MainWindow::renderActivePage(const Game *game)
-{
+void MainWindow::renderActivePage(const Game *game) {
     BasePage *active_page = qobject_cast<BasePage *>(game_stack->currentWidget());
     if (active_page)
-    {
         active_page->updateFromGame(game);
-    }
 }
 
-void MainWindow::loadUserDataInProfile(const QString &name, const QString &username, const QString &email, const QString &phone)
-{
+void MainWindow::loadUserDataInProfile(const QString &name, const QString &username, const QString &email, const QString &phone) {
     edit_profile_page->setInitialValues(name, username, email, phone);
 }
 
-void MainWindow::updateScoresAndTurn(const int score1, const int score2, const QString &turn_text, const bool is_my_turn)
-{
+void MainWindow::updateScoresAndTurn(const int score1, const int score2, const QString &turn_text, const bool is_my_turn) {
     BasePage *active_page = qobject_cast<BasePage *>(game_stack->currentWidget());
-    if (active_page)
-    {
+    if (active_page) {
         active_page->updateScores(score1, score2);
         active_page->setTurnInfo(turn_text, is_my_turn);
     }
 }
 
-void MainWindow::setPlayerNames(const QString &name1, const QString &name2)
-{
+void MainWindow::setPlayerNames(const QString &name1, const QString &name2) {
     BasePage *active_page = qobject_cast<BasePage *>(game_stack->currentWidget());
     if (active_page)
         active_page->setPlayerNames(name1, name2);
 }
 
-BasePage *MainWindow::getActivePage() const
-{
+BasePage *MainWindow::getActivePage() const {
     return qobject_cast<BasePage *>(game_stack->currentWidget());
 }
 
-void MainWindow::clearLoginFields()
-{
+void MainWindow::clearLoginFields() {
     login_page->clearFields();
 }
 
-void MainWindow::clearSignupFields()
-{
+void MainWindow::clearSignupFields() {
     signup_page->clearFields();
 }
 
-void MainWindow::clearFPFields()
-{
+void MainWindow::clearFPFields() {
     forgot_password_page->clearFields();
 }
 
-void MainWindow::appendOwnChatMessage(const QString &text)
-{
+void MainWindow::appendOwnChatMessage(const QString &text) {
     chat_widget->appendMessage(QString(), text, true);
 }
 
-void MainWindow::receiveChatMessage(const QString &sender_name, const QString &text)
-{
+void MainWindow::receiveChatMessage(const QString &sender_name, const QString &text) {
     chat_widget->appendMessage(sender_name, text, false);
 }
 
-void MainWindow::clearChat()
-{
+void MainWindow::clearChat() {
     chat_widget->clearMessages();
 }
 
-void MainWindow::setDotsAndBoxesColors(const QColor &host_color, const QColor &guest_color)
-{
+void MainWindow::setDotsAndBoxesColors(const QColor &host_color, const QColor &guest_color) {
     dots_and_boxes_page->setPlayerColors(host_color, guest_color);
 }
 
-void MainWindow::updateGameTimers(int host_time, int guest_time)
-{
+void MainWindow::updateGameTimers(int host_time, int guest_time) {
     BasePage *active_page = qobject_cast<BasePage *>(game_stack->currentWidget());
     active_page->updateTimers(host_time, guest_time);
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
-{
+void MainWindow::closeEvent(QCloseEvent *event) {
     emit appClosing();
     event->accept();
 }
 
-void MainWindow::transitionToWidget(QWidget *targetWidget)
-{
+void MainWindow::transitionToWidget(QWidget *targetWidget) {
     QWidget *currentWidget = ui->stackedWidget->currentWidget();
 
     if (currentWidget == targetWidget)
@@ -349,13 +315,13 @@ void MainWindow::transitionToWidget(QWidget *targetWidget)
     group->addAnimation(animNextFade);
     group->addAnimation(animPrevFade);
 
-    connect(group, &QParallelAnimationGroup::finished, [this, targetWidget, currentWidget, group]()
-            {
+    connect(group, &QParallelAnimationGroup::finished, [this, targetWidget, currentWidget, group]() {
         ui->stackedWidget->setCurrentWidget(targetWidget);
         currentWidget->setGraphicsEffect(nullptr);
         targetWidget->setGraphicsEffect(nullptr);
         currentWidget->move(0, 0);
-        group->deleteLater(); });
+        group->deleteLater();
+    });
 
     group->start();
 }

@@ -5,16 +5,13 @@
 #include <QMessageBox>
 #include <QVariantAnimation>
 #include <QEasingCurve>
-#include <cmath>
 
 static const int PIECE_RADIUS = 16;
 static const int CLICK_THRESHOLD = 30;
 static const int MOVE_ANIMATION_DURATION_MS = 450;
 
-FanoronaPage::FanoronaPage(QWidget* parent)
-    : BasePage(parent), chain_active(false), chain_position(-1), current_player_id(0),
-    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0),
-    anim_move_from(-1), anim_move_to(-1), anim_moving_player_id(0) {
+FanoronaPage::FanoronaPage(QWidget* parent) : BasePage(parent), chain_active(false), chain_position(-1), current_player_id(0),
+    selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0), anim_move_from(-1), anim_move_to(-1), anim_moving_player_id(0) {
     setMouseTracking(true);
 
     move_animation = new QVariantAnimation(this);
@@ -56,7 +53,7 @@ QPoint FanoronaPage::pixelOf(int position) const {
 }
 
 int FanoronaPage::positionAt(const QPoint& point) const {
-    for (int position = 0; position < FanoronaBoard::TOTAL_POSITIONS; ++position){
+    for (int position = 0; position < FanoronaBoard::TOTAL_POSITIONS; ++position) {
         QPoint p = pixelOf(position);
         double distance = std::hypot(point.x() - p.x(), point.y() - p.y());
         if (distance <= CLICK_THRESHOLD)
@@ -210,15 +207,16 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
     painter.drawText(margin_offset, 25, turn_status_text);
     painter.drawText(margin_offset, 43, QString("Captured - %1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
     painter.drawText(margin_offset, 61, QString("%1's Time: %2  |  %3's Time: %4").arg(first_player_name).arg(first_player_time_str).arg(second_player_name).arg(second_player_time_str));
-
     if (chain_active)
         painter.drawText(margin_offset, 79, "Capture chain in progress - continue capturing");
 
     painter.setPen(QPen(Qt::darkGray, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    for (int position = 0; position < FanoronaBoard::TOTAL_POSITIONS; ++position)
-        for (int neighbour : snapshot_board.getNeighbours(position))
+    for (int position = 0; position < FanoronaBoard::TOTAL_POSITIONS; ++position) {
+        for (int neighbour : snapshot_board.getNeighbours(position)) {
             if (neighbour > position)
                 painter.drawLine(pixelOf(position), pixelOf(neighbour));
+        }
+    }
 
     for (int position = 0; position < FanoronaBoard::TOTAL_POSITIONS; ++position) {
         QPoint p = pixelOf(position);
@@ -249,9 +247,13 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
             qreal fade = 1.0 - anim_progress;
             int radius = static_cast<int>(PIECE_RADIUS * (0.5 + 0.5 * fade));
 
-            QColor color = (displayed_occupants[position] == 1) ? QColor(255, 99, 71) : QColor(100, 149, 237);
-            color.setAlphaF(fade);
+            QColor color;
+            if (displayed_occupants[position] == 1)
+                color = QColor(255, 99, 71);
+            else
+                color = QColor(100, 149, 237);
 
+            color.setAlphaF(fade);
             painter.setPen(Qt::NoPen);
             painter.setBrush(color);
             painter.drawEllipse(p, radius, radius);
@@ -280,7 +282,12 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
         QPointF current_point = from_point + (to_point - from_point) * anim_progress;
 
         painter.setPen(Qt::black);
-        painter.setBrush(anim_moving_player_id == 1 ? QColor(255, 99, 71) : QColor(100, 149, 237));
+
+        if (anim_moving_player_id == 1)
+            painter.setBrush(QColor(255, 99, 71));
+        else
+            painter.setBrush(QColor(100, 149, 237));
+
         painter.drawEllipse(current_point, PIECE_RADIUS, PIECE_RADIUS);
     }
 }
@@ -289,6 +296,7 @@ void FanoronaPage::tryEmitMove(int from, int to) {
     bool can_approach = snapshot_board.canApproachCapture(from, to);
     bool can_withdrawal = snapshot_board.canWithdrawalCapture(from, to);
     int capture_choice = -1;
+
     if (can_approach && can_withdrawal){
         QMessageBox box(this);
         box.setWindowTitle("Choose Capture");
@@ -309,7 +317,6 @@ void FanoronaPage::tryEmitMove(int from, int to) {
 }
 
 void FanoronaPage::mousePressEvent(QMouseEvent* event) {
-
     if (!is_input_enabled || is_animating)
         return;
 

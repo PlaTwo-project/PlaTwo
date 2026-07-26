@@ -4,14 +4,12 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-SavedGameStorageManager::SavedGameStorageManager()
-{
+SavedGameStorageManager::SavedGameStorageManager() {
     file_path = "saved_games.json";
     loadSavedGames();
 }
 
-void SavedGameStorageManager::loadSavedGames()
-{
+void SavedGameStorageManager::loadSavedGames() {
     QFile file(file_path);
     if (!file.open(QIODevice::ReadOnly))
         return;
@@ -22,12 +20,9 @@ void SavedGameStorageManager::loadSavedGames()
     QJsonDocument doc = QJsonDocument::fromJson(data);
     QJsonArray array = doc.array();
     saved_games_list.clear();
-
-    for (const QJsonValue &value : array)
-    {
+    for (const QJsonValue &value : array) {
         QJsonObject obj = value.toObject();
         SavedGame record;
-
         record.setGameName(static_cast<GameName>(obj["game_name"].toInt()));
         record.setHostId(obj["host_id"].toInt());
         record.setGuestId(obj["guest_id"].toInt());
@@ -42,11 +37,9 @@ void SavedGameStorageManager::loadSavedGames()
     }
 }
 
-void SavedGameStorageManager::saveSavedGames() const
-{
+void SavedGameStorageManager::saveSavedGames() const {
     QJsonArray array;
-    for (const SavedGame &record : saved_games_list)
-    {
+    for (const SavedGame &record : saved_games_list) {
         QJsonObject obj;
         obj["game_name"] = static_cast<int>(record.getGameName());
         obj["host_id"] = record.getHostId();
@@ -58,50 +51,48 @@ void SavedGameStorageManager::saveSavedGames() const
         obj["host_elapsed"] = record.getHostElapsed();
         obj["guest_elapsed"] = record.getGuestElapsed();
 
-
         array.append(obj);
     }
 
     QJsonDocument doc(array);
     QFile file(file_path);
-    if (file.open(QIODevice::WriteOnly)){
+    if (file.open(QIODevice::WriteOnly)) {
         file.write(doc.toJson());
         file.close();
     }
 }
 
-void SavedGameStorageManager::saveOrUpdateGame(GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time,int host_elapsed, int guest_elapsed, const QString &state_data)
-{
+void SavedGameStorageManager::saveOrUpdateGame(GameName game_name, int host_id, int guest_id, int board_size, int time_limit, int elapsed_time,int host_elapsed, int guest_elapsed, const QString &state_data) {
     SavedGame newRecord(game_name, host_id, guest_id, board_size, time_limit, elapsed_time, host_elapsed, guest_elapsed, state_data);
-
-    for (int i = 0; i < saved_games_list.size(); ++i)
+    for (int i = 0; i < saved_games_list.size(); ++i) {
         if (saved_games_list[i].getHostId() == host_id && saved_games_list[i].getGuestId() == guest_id && saved_games_list[i].getGameName() == game_name){
             saved_games_list[i] = newRecord;
             saveSavedGames();
             return;
         }
+    }
 
     saved_games_list.append(newRecord);
     saveSavedGames();
 }
 
-bool SavedGameStorageManager::findSavedGame(int host_id, int guest_id, GameName game_name, SavedGame &out_record) const
-{
-    for (const auto &record : saved_games_list)
+bool SavedGameStorageManager::findSavedGame(int host_id, int guest_id, GameName game_name, SavedGame &out_record) const {
+    for (const auto &record : saved_games_list) {
         if (record.getHostId() == host_id &&record.getGuestId() == guest_id && record.getGameName() == game_name){
             out_record = record;
             return true;
         }
+    }
 
     return false;
 }
 
-void SavedGameStorageManager::removeSavedGame(int host_id, int guest_id, GameName game_name)
-{
-    for (int i = 0; i < saved_games_list.size(); ++i)
+void SavedGameStorageManager::removeSavedGame(int host_id, int guest_id, GameName game_name) {
+    for (int i = 0; i < saved_games_list.size(); ++i) {
         if (saved_games_list[i].getHostId() == host_id && saved_games_list[i].getGuestId() == guest_id && saved_games_list[i].getGameName() == game_name){
             saved_games_list.removeAt(i);
             saveSavedGames();
             return;
         }
+    }
 }
