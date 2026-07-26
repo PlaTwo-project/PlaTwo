@@ -14,20 +14,35 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMessageBox QPushButton {
-    background-color: white;
-    color: black;
-    border: 1px solid #0078d7;
-    padding: 5px 12px;
-    border-radius: 4px;
+   <string notr="true">QWidget#GameMenu {
+    background: transparent;
+}
+
+QMessageBox {
+    background-color: #F7E7C6;
+    color: #3B2414;
+}
+
+QMessageBox QLabel {
+    color: #3B2414;
+    font-size: 10pt;
+}
+
+QMessageBox QPushButton {
+    background-color: #B77A3D;
+    color: #FFF8EA;
+    border: 1px solid #8A5528;
+    border-radius: 7px;
+    padding: 6px 16px;
+    font-weight: bold;
 }
 
 QMessageBox QPushButton:hover {
-    background-color: #e6f2ff;
+    background-color: #C98A49;
 }
 
 QMessageBox QPushButton:pressed {
-    background-color: #C7E3FF;
+    background-color: #8F5729;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -41,7 +56,11 @@ QMessageBox QPushButton:pressed {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #000000;</string>
+      <string notr="true">QLabel {
+    color: #2F1B0C;
+    background: transparent;
+}
+</string>
      </property>
      <property name="text">
       <string>Menu</string>
@@ -61,7 +80,12 @@ QMessageBox QPushButton:pressed {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #495ee4;</string>
+      <string notr="true">QLabel {
+    color: #5B3A1E;
+    background: transparent;
+    letter-spacing: 2px;
+}
+</string>
      </property>
      <property name="text">
       <string>PlaTwo</string>
@@ -108,9 +132,10 @@ QMessageBox QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #23BD3D;
-    color: #e0e0e0;
-    border-radius: 17px;
+    background-color: #A8642A;
+    color: #FFF8EA;
+    border: 2px solid #7A431B;
+    border-radius: 14px;
     padding: 12px 20px;
     font-size: 17px;
     font-weight: bold;
@@ -118,16 +143,14 @@ QMessageBox QPushButton:pressed {
 }
 
 QPushButton:hover {
-    background-color: #1D9E33;
-    border-color: #00c8ff;
-    color: white;
-    padding: 15px 23px;
-    font-size: 19px;
+    background-color: #BC7838;
+    border: 2px solid #8A4E22;
+    color: #FFFFFF;
 }
 
 QPushButton:pressed {
-    background-color: #19872C;
-    border-color: #0088aa;
+    background-color: #7C421B;
+    border: 2px solid #5D2F12;
 }
 </string>
        </property>
@@ -152,9 +175,10 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #007bff;
-    color: #e0e0e0;
-    border-radius: 17px;
+    background-color: #B77A3D;
+    color: #FFF8EA;
+    border: 2px solid #8A5528;
+    border-radius: 14px;
     padding: 12px 20px;
     font-size: 17px;
     font-weight: bold;
@@ -162,16 +186,14 @@ QPushButton:pressed {
 }
 
 QPushButton:hover {
-    background-color: #006FE6;
-    border-color: #00c8ff;
-    color: white;
-    padding: 15px 23px;
-    font-size: 19px;
+    background-color: #C98A49;
+    border: 2px solid #9B6331;
+    color: #FFFFFF;
 }
 
 QPushButton:pressed {
-    background-color: #0062CC;
-    border-color: #0088aa;
+    background-color: #8F5729;
+    border: 2px solid #6D3F1D;
 }
 </string>
        </property>
@@ -196,9 +218,10 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #DE2424;
-    color: #e0e0e0;
-    border-radius: 17px;
+    background-color: #8F5729;
+    color: #FFF8EA;
+    border: 2px solid #6D3F1D;
+    border-radius: 14px;
     padding: 12px 20px;
     font-size: 17px;
     font-weight: bold;
@@ -206,16 +229,14 @@ QPushButton:pressed {
 }
 
 QPushButton:hover {
-    background-color: #C42B1C;
-    border-color: #00c8ff;
-    color: white;
-    padding: 15px 23px;
-    font-size: 19px;
+    background-color: #A8642A;
+    border: 2px solid #7A431B;
+    color: #FFFFFF;
 }
 
 QPushButton:pressed {
-    background-color: #B02719; 
-    border-color: #0088aa;
+    background-color: #6D3F1D;
+    border: 2px solid #4A2B14;
 }
 </string>
        </property>

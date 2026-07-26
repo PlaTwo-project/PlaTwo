@@ -14,20 +14,35 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMessageBox QPushButton {
-    background-color: white;
-    color: black;
-    border: 1px solid #0078d7;
-    padding: 5px 12px;
-    border-radius: 4px;
+   <string notr="true">QWidget#History {
+    background: transparent;
+}
+
+QMessageBox {
+    background-color: #F7E7C6;
+    color: #3B2414;
+}
+
+QMessageBox QLabel {
+    color: #3B2414;
+    font-size: 10pt;
+}
+
+QMessageBox QPushButton {
+    background-color: #B77A3D;
+    color: #FFF8EA;
+    border: 1px solid #8A5528;
+    border-radius: 7px;
+    padding: 6px 16px;
+    font-weight: bold;
 }
 
 QMessageBox QPushButton:hover {
-    background-color: #e6f2ff;
+    background-color: #C98A49;
 }
 
 QMessageBox QPushButton:pressed {
-    background-color: #C7E3FF;
+    background-color: #8F5729;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -41,7 +56,11 @@ QMessageBox QPushButton:pressed {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #000000;</string>
+      <string notr="true">QLabel {
+    color: #2F1B0C;
+    background: transparent;
+}
+</string>
      </property>
      <property name="text">
       <string>History</string>
@@ -61,7 +80,12 @@ QMessageBox QPushButton:pressed {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #495ee4;</string>
+      <string notr="true">QLabel {
+    color: #5B3A1E;
+    background: transparent;
+    letter-spacing: 2px;
+}
+</string>
      </property>
      <property name="text">
       <string>PlaTwo</string>
@@ -84,24 +108,95 @@ QMessageBox QPushButton:pressed {
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">QWidget {
-    background: qlineargradient(
-        x1:0, y1:0,
-        x2:1, y2:1,
-        stop:0 #0d1b4d,
-        stop:1 #1a73e8
-    );
-    color: white;
+        <string notr="true">QTableWidget {
+    background-color: rgba(255, 248, 235, 235);
+    color: #2E1A0B;
+    border: 2px solid #8A5528;
+    border-radius: 10px;
+    gridline-color: #C49A63;
+    selection-background-color: #B77A3D;
+    selection-color: #FFF8EA;
+    alternate-background-color: rgba(247, 231, 198, 210);
 }
-QHeaderView::section {
-    background-color: #0d1b4d;
-    color: white;
-    padding: 4px;
+
+QTableWidget::item {
+    padding: 6px;
     border: none;
 }
-QTableWidget {
-    gridline-color: #ffffff;
-    selection-background-color: #1A73E8;
+
+QTableWidget::item:hover {
+    background-color: rgba(201, 138, 73, 90);
+    color: #2E1A0B;
+}
+
+QTableWidget::item:selected {
+    background-color: #B77A3D;
+    color: #FFF8EA;
+}
+
+QHeaderView::section {
+    background-color: #8F5729;
+    color: #FFF8EA;
+    padding: 6px;
+    border: none;
+    border-right: 1px solid #C49A63;
+    border-bottom: 2px solid #6D3F1D;
+    font-weight: bold;
+}
+
+QHeaderView::section:hover {
+    background-color: #A8642A;
+}
+
+QTableCornerButton::section {
+    background-color: #8F5729;
+    border: none;
+    border-bottom: 2px solid #6D3F1D;
+    border-right: 1px solid #C49A63;
+}
+
+QScrollBar:vertical {
+    background-color: rgba(247, 231, 198, 180);
+    width: 13px;
+    margin: 0px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #A8642A;
+    min-height: 25px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #BC7838;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+QScrollBar:horizontal {
+    background-color: rgba(247, 231, 198, 180);
+    height: 13px;
+    margin: 0px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #A8642A;
+    min-width: 25px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #BC7838;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
 }
 </string>
        </property>
@@ -220,20 +315,23 @@ QTableWidget {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #DE2424;
-    color: white;
-    border: none;
+    background-color: #8F5729;
+    color: #FFF8EA;
+    border: 2px solid #6D3F1D;
     border-radius: 10px;
     padding: 8px 16px;
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #C42B1C;
+    background-color: #A8642A;
+    border: 2px solid #7A431B;
+    color: #FFFFFF;
 }
 
 QPushButton:pressed {
-    background-color: #B02719; 
+    background-color: #6D3F1D;
+    border: 2px solid #4A2B14;
 }
 </string>
        </property>

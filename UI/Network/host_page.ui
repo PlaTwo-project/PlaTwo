@@ -14,20 +14,35 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMessageBox QPushButton {
-    background-color: white;
-    color: black;
-    border: 1px solid #0078d7;
-    padding: 5px 12px;
-    border-radius: 4px;
+   <string notr="true">QWidget#HostPage {
+    background: transparent;
+}
+
+QMessageBox {
+    background-color: #F7E7C6;
+    color: #3B2414;
+}
+
+QMessageBox QLabel {
+    color: #3B2414;
+    font-size: 10pt;
+}
+
+QMessageBox QPushButton {
+    background-color: #B77A3D;
+    color: #FFF8EA;
+    border: 1px solid #8A5528;
+    border-radius: 7px;
+    padding: 6px 16px;
+    font-weight: bold;
 }
 
 QMessageBox QPushButton:hover {
-    background-color: #e6f2ff;
+    background-color: #C98A49;
 }
 
 QMessageBox QPushButton:pressed {
-    background-color: #C7E3FF;
+    background-color: #8F5729;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
@@ -40,7 +55,7 @@ QMessageBox QPushButton:pressed {
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page_host_setting">
       <layout class="QGridLayout" name="gridLayout">
@@ -77,20 +92,23 @@ QMessageBox QPushButton:pressed {
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-    background-color: #DE2424;
-    color: white;
-    border: none;
-    border-radius: 9px;
+    background-color: #8F5729;
+    color: #FFF8EA;
+    border: 2px solid #6D3F1D;
+    border-radius: 10px;
     padding: 8px 16px;
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #C42B1C;
+    background-color: #A8642A;
+    border: 2px solid #7A431B;
+    color: #FFFFFF;
 }
 
 QPushButton:pressed {
-    background-color: #B02719; 
+    background-color: #6D3F1D;
+    border: 2px solid #4A2B14;
 }
 </string>
              </property>
@@ -115,19 +133,23 @@ QPushButton:pressed {
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-    background-color: #23BD3D;
-    color: #e0e0e0;
-    border-radius: 9px;
+    background-color: #B77A3D;
+    color: #FFF8EA;
+    border: 2px solid #8A5528;
+    border-radius: 10px;
     padding: 8px 16px;
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #1D9E33;
+    background-color: #C98A49;
+    border: 2px solid #9B6331;
+    color: #FFFFFF;
 }
 
 QPushButton:pressed {
-    background-color: #19872C;
+    background-color: #8F5729;
+    border: 2px solid #6D3F1D;
 }
 </string>
              </property>
@@ -163,7 +185,11 @@ QPushButton:pressed {
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: #495ee4;</string>
+          <string notr="true">QLabel {
+    color: #5B3A1E;
+    background: transparent;
+    letter-spacing: 2px;
+}</string>
          </property>
          <property name="text">
           <string>PlaTwo</string>
@@ -182,7 +208,10 @@ QPushButton:pressed {
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: #000000;</string>
+          <string notr="true">QLabel {
+    color: #2F1B0C;
+    background: transparent;
+}</string>
          </property>
          <property name="text">
           <string>TextLabel</string>
@@ -235,6 +264,14 @@ QPushButton:pressed {
                <height>0</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+    color: #3B2414;
+    background: transparent;
+    font-size: 11pt;
+    font-weight: bold;
+}</string>
+             </property>
              <property name="text">
               <string>Select the board size:</string>
              </property>
@@ -255,14 +292,60 @@ QPushButton:pressed {
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">
-background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
+              <string notr="true">QComboBox {
+    background-color: rgba(255, 248, 235, 230);
+    color: #2F1B0C;
+    border: 2px solid #B77A3D;
+    border-radius: 10px;
+    padding: 6px 10px;
+}
+
+QComboBox:hover {
+    border: 2px solid #C98A49;
+    background-color: rgba(255, 250, 240, 245);
+}
+
+QComboBox:focus {
+    border: 2px solid #8F5729;
+    background-color: rgba(255, 252, 245, 255);
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 28px;
+    border-left: 1px solid #C49A63;
+    background-color: rgba(183, 122, 61, 60);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    width: 0;
+    height: 0;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #FFF8EA;
+    color: #2F1B0C;
+    border: 1px solid #B77A3D;
+    selection-background-color: #C98A49;
+    selection-color: #FFFFFF;
+}</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QLabel" name="label_6">
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+    color: #3B2414;
+    background: transparent;
+    font-size: 11pt;
+    font-weight: bold;
+}</string>
+             </property>
              <property name="text">
               <string>Choose a free port:</string>
              </property>
@@ -283,8 +366,35 @@ color: rgb(0, 0, 0);</string>
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
+              <string notr="true">QSpinBox {
+    background-color: rgba(255, 248, 235, 230);
+    color: #2F1B0C;
+    border: 2px solid #B77A3D;
+    border-radius: 10px;
+    padding: 6px 10px;
+}
+
+QSpinBox:hover {
+    border: 2px solid #C98A49;
+    background-color: rgba(255, 250, 240, 245);
+}
+
+QSpinBox:focus {
+    border: 2px solid #8F5729;
+    background-color: rgba(255, 252, 245, 255);
+}
+
+QSpinBox::up-button,
+QSpinBox::down-button {
+    width: 20px;
+    border: none;
+    background-color: rgba(183, 122, 61, 70);
+}
+
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover {
+    background-color: rgba(201, 138, 73, 120);
+}</string>
              </property>
              <property name="minimum">
               <number>50000</number>
@@ -311,8 +421,35 @@ color: rgb(0, 0, 0);</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
+                <string notr="true">QSpinBox {
+    background-color: rgba(255, 248, 235, 230);
+    color: #2F1B0C;
+    border: 2px solid #B77A3D;
+    border-radius: 10px;
+    padding: 6px 10px;
+}
+
+QSpinBox:hover {
+    border: 2px solid #C98A49;
+    background-color: rgba(255, 250, 240, 245);
+}
+
+QSpinBox:focus {
+    border: 2px solid #8F5729;
+    background-color: rgba(255, 252, 245, 255);
+}
+
+QSpinBox::up-button,
+QSpinBox::down-button {
+    width: 20px;
+    border: none;
+    background-color: rgba(183, 122, 61, 70);
+}
+
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover {
+    background-color: rgba(201, 138, 73, 120);
+}</string>
                </property>
                <property name="minimum">
                 <number>5</number>
@@ -340,8 +477,29 @@ color: rgb(0, 0, 0);</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
+                <string notr="true">QCheckBox {
+    color: #2F1B0C;
+    background: transparent;
+    spacing: 8px;
+    font-weight: bold;
+}
+
+QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #8A5528;
+    border-radius: 5px;
+    background-color: rgba(255, 248, 235, 230);
+}
+
+QCheckBox::indicator:checked {
+    background-color: #B77A3D;
+    border: 2px solid #8A5528;
+}
+
+QCheckBox::indicator:hover {
+    border: 2px solid #C98A49;
+}</string>
                </property>
                <property name="text">
                 <string>Time limit for each player (minutes)</string>
@@ -412,7 +570,10 @@ color: rgb(0, 0, 0);</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: #000000;</string>
+          <string notr="true">QLabel {
+    color: #2F1B0C;
+    background: transparent;
+}</string>
          </property>
          <property name="text">
           <string>TextLabel</string>
@@ -429,6 +590,12 @@ color: rgb(0, 0, 0);</string>
            <family>Bauhaus LT Medium</family>
            <pointsize>18</pointsize>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #5B3A1E;
+    background: transparent;
+}</string>
          </property>
          <property name="text">
           <string>Server IP : </string>
@@ -449,7 +616,10 @@ color: rgb(0, 0, 0);</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: #000000;</string>
+          <string notr="true">QLabel {
+    color: #3B2414;
+    background: transparent;
+}</string>
          </property>
          <property name="text">
           <string>Waiting for guest to join...</string>
@@ -469,7 +639,11 @@ color: rgb(0, 0, 0);</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: #495ee4;</string>
+          <string notr="true">QLabel {
+    color: #5B3A1E;
+    background: transparent;
+    letter-spacing: 2px;
+}</string>
          </property>
          <property name="text">
           <string>PlaTwo</string>
@@ -500,8 +674,9 @@ color: rgb(0, 0, 0);</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton {
-    background-color: #DE2424;
-    color: #e0e0e0;
+    background-color: #8F5729;
+    color: #FFF8EA;
+    border: 2px solid #6D3F1D;
     border-radius: 12px;
     padding: 10px 17px;
     font-size: 13px;
@@ -510,11 +685,14 @@ color: rgb(0, 0, 0);</string>
 }
 
 QPushButton:hover {
-    background-color: #C42B1C;
+    background-color: #A8642A;
+    border: 2px solid #7A431B;
+    color: #FFFFFF;
 }
 
 QPushButton:pressed {
-    background-color: #B02719; 
+    background-color: #6D3F1D;
+    border: 2px solid #4A2B14;
 }
 </string>
            </property>
@@ -549,6 +727,12 @@ QPushButton:pressed {
            <pointsize>18</pointsize>
            <bold>false</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #5B3A1E;
+    background: transparent;
+}</string>
          </property>
          <property name="text">
           <string>Server port</string>

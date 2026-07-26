@@ -25,14 +25,24 @@ void ChatWidget::setupUi() {
     main_layout->setSpacing(6);
 
     QLabel* title_label = new QLabel("Chat", this);
-    title_label->setStyleSheet("font-weight: bold; font-size: 14px;");
+    title_label->setStyleSheet("font-weight: bold; font-size: 14px; color: #3B2414;");
     main_layout->addWidget(title_label);
 
     message_list = new QListWidget(this);
     message_list->setWordWrap(true);
     message_list->setSelectionMode(QAbstractItemView::NoSelection);
     message_list->setFocusPolicy(Qt::NoFocus);
-    message_list->setStyleSheet("QListWidget {border: 1px solid #cfcfcf; border-radius: 6px;}""QListWidget::item {padding: 4px;}");
+    message_list->setStyleSheet(
+        "QListWidget {"
+        "border: 1px solid #B77A3D;"
+        "border-radius: 6px;"
+        "background-color: rgba(255, 248, 235, 230);"
+        "color: #3B2414;"
+        "}"
+        "QListWidget::item {"
+        "padding: 4px;"
+        "}"
+        );
     main_layout->addWidget(message_list, 1);
 
     QHBoxLayout* input_layout = new QHBoxLayout();
@@ -41,13 +51,53 @@ void ChatWidget::setupUi() {
     emoji_button = new QToolButton(this);
     emoji_button->setText(QString::fromUtf8("\xF0\x9F\x98\x80")); // 😀
     emoji_button->setToolTip("Insert emoji");
+    emoji_button->setStyleSheet(
+        "QToolButton {"
+        "background-color: #B77A3D;"
+        "color: #FFF8EA;"
+        "border: 1px solid #8A5528;"
+        "border-radius: 6px;"
+        "padding: 4px;"
+        "}"
+        "QToolButton:hover {"
+        "background-color: #C98A49;"
+        "}"
+        "QToolButton:pressed {"
+        "background-color: #8F5729;"
+        "}"
+        );
     input_layout->addWidget(emoji_button);
 
     message_input = new QLineEdit(this);
     message_input->setPlaceholderText("Type a message...");
+    message_input->setStyleSheet(
+        "QLineEdit {"
+        "background-color: rgba(255, 248, 235, 230);"
+        "color: #2F1B0C;"
+        "border: 1px solid #B77A3D;"
+        "border-radius: 6px;"
+        "padding: 4px 8px;"
+        "}"
+        );
     input_layout->addWidget(message_input, 1);
 
     send_button = new QPushButton("Send", this);
+    send_button->setStyleSheet(
+        "QPushButton {"
+        "background-color: #B77A3D;"
+        "color: #FFF8EA;"
+        "border: 1px solid #8A5528;"
+        "border-radius: 6px;"
+        "padding: 4px 10px;"
+        "font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "background-color: #C98A49;"
+        "}"
+        "QPushButton:pressed {"
+        "background-color: #8F5729;"
+        "}"
+        );
     input_layout->addWidget(send_button);
 
     main_layout->addLayout(input_layout);
@@ -83,6 +133,22 @@ void ChatWidget::emojiButtonClicked() {
     };
 
     QMenu menu(this);
+    menu.setStyleSheet(
+        "QMenu {"
+        "background-color: #F7E7C6;"
+        "border: 1px solid #B77A3D;"
+        "}"
+        "QPushButton {"
+        "color: #3B2414;"
+        "background: transparent;"
+        "border: none;"
+        "}"
+        "QPushButton:hover {"
+        "background-color: rgba(183, 122, 61, 60);"
+        "border-radius: 4px;"
+        "}"
+        );
+
     QWidget* grid_container = new QWidget(&menu);
     QGridLayout* grid = new QGridLayout(grid_container);
     grid->setContentsMargins(4, 4, 4, 4);
@@ -121,10 +187,11 @@ void ChatWidget::appendMessage(const QString& sender_name, const QString& text, 
     QListWidgetItem* item = new QListWidgetItem(QString("%1: %2").arg(display_name, text));
     if (is_own_message) {
         item->setTextAlignment(Qt::AlignRight);
-        item->setForeground(QColor("#1a73e8"));
-    } else {
+        item->setForeground(QColor("#5B3A1E"));
+    }
+    else {
         item->setTextAlignment(Qt::AlignLeft);
-        item->setForeground(QColor("#DBDBDB"));
+        item->setForeground(QColor("#8A5A33"));
     }
 
     message_list->addItem(item);

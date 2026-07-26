@@ -14,20 +14,35 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMessageBox QPushButton {
-    background-color: white;
-    color: black;
-    border: 1px solid #0078d7;
-    padding: 5px 12px;
-    border-radius: 4px;
+   <string notr="true">QWidget#Signup {
+    background: transparent;
+}
+
+QMessageBox {
+    background-color: #F7E7C6;
+    color: #3B2414;
+}
+
+QMessageBox QLabel {
+    color: #3B2414;
+    font-size: 10pt;
+}
+
+QMessageBox QPushButton {
+    background-color: #B77A3D;
+    color: #FFF8EA;
+    border: 1px solid #8A5528;
+    border-radius: 7px;
+    padding: 6px 16px;
+    font-weight: bold;
 }
 
 QMessageBox QPushButton:hover {
-    background-color: #e6f2ff;
+    background-color: #C98A49;
 }
 
 QMessageBox QPushButton:pressed {
-    background-color: #C7E3FF;
+    background-color: #8F5729;
 }
 </string>
   </property>
@@ -39,6 +54,15 @@ QMessageBox QPushButton:pressed {
      </property>
      <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
       <widget class="QLabel" name="label_3">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+       </property>
        <property name="text">
         <string>Password:</string>
        </property>
@@ -65,8 +89,26 @@ QMessageBox QPushButton:pressed {
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background: white;
-color: black;
+        <string notr="true">QLineEdit {
+    background-color: rgba(255, 248, 235, 235);
+    color: #2E1A0B;
+    border: 2px solid #C49A63;
+    border-radius: 9px;
+    padding: 7px 11px;
+    font-size: 10.5pt;
+    selection-background-color: #B77A3D;
+    selection-color: #FFF8EA;
+}
+
+QLineEdit:hover {
+    border: 2px solid #B77A3D;
+    background-color: rgba(255, 250, 240, 245);
+}
+
+QLineEdit:focus {
+    border: 2px solid #8F5729;
+    background-color: rgba(255, 252, 244, 250);
+}
 </string>
        </property>
        <property name="echoMode">
@@ -89,6 +131,15 @@ color: black;
      </property>
      <item row="0" column="1">
       <widget class="QLabel" name="label_5">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+       </property>
        <property name="text">
         <string>Name:</string>
        </property>
@@ -96,6 +147,15 @@ color: black;
      </item>
      <item row="4" column="1">
       <widget class="QLabel" name="label_6">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+       </property>
        <property name="text">
         <string>Phone Number:</string>
        </property>
@@ -103,6 +163,15 @@ color: black;
      </item>
      <item row="4" column="3">
       <widget class="QLabel" name="label_7">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+       </property>
        <property name="text">
         <string>Email:</string>
        </property>
@@ -130,8 +199,24 @@ color: black;
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-    background: white;
-    color: black;
+    background-color: rgba(255, 248, 235, 235);
+    color: #2E1A0B;
+    border: 2px solid #C49A63;
+    border-radius: 9px;
+    padding: 7px 11px;
+    font-size: 10.5pt;
+    selection-background-color: #B77A3D;
+    selection-color: #FFF8EA;
+}
+
+QLineEdit:hover {
+    border: 2px solid #B77A3D;
+    background-color: rgba(255, 250, 240, 245);
+}
+
+QLineEdit:focus {
+    border: 2px solid #8F5729;
+    background-color: rgba(255, 252, 244, 250);
 }
 </string>
        </property>
@@ -159,8 +244,24 @@ color: black;
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-    background: white;
-    color: black;
+    background-color: rgba(255, 248, 235, 235);
+    color: #2E1A0B;
+    border: 2px solid #C49A63;
+    border-radius: 9px;
+    padding: 7px 11px;
+    font-size: 10.5pt;
+    selection-background-color: #B77A3D;
+    selection-color: #FFF8EA;
+}
+
+QLineEdit:hover {
+    border: 2px solid #B77A3D;
+    background-color: rgba(255, 250, 240, 245);
+}
+
+QLineEdit:focus {
+    border: 2px solid #8F5729;
+    background-color: rgba(255, 252, 244, 250);
 }</string>
        </property>
       </widget>
@@ -187,8 +288,24 @@ color: black;
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-    background: white;
-    color: black;
+    background-color: rgba(255, 248, 235, 235);
+    color: #2E1A0B;
+    border: 2px solid #C49A63;
+    border-radius: 9px;
+    padding: 7px 11px;
+    font-size: 10.5pt;
+    selection-background-color: #B77A3D;
+    selection-color: #FFF8EA;
+}
+
+QLineEdit:hover {
+    border: 2px solid #B77A3D;
+    background-color: rgba(255, 250, 240, 245);
+}
+
+QLineEdit:focus {
+    border: 2px solid #8F5729;
+    background-color: rgba(255, 252, 244, 250);
 }</string>
        </property>
        <property name="text">
@@ -204,6 +321,15 @@ color: black;
      </item>
      <item row="0" column="3">
       <widget class="QLabel" name="label_4">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+       </property>
        <property name="text">
         <string>Username:</string>
        </property>
@@ -231,8 +357,24 @@ color: black;
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-    background: white;
-    color: black;
+    background-color: rgba(255, 248, 235, 235);
+    color: #2E1A0B;
+    border: 2px solid #C49A63;
+    border-radius: 9px;
+    padding: 7px 11px;
+    font-size: 10.5pt;
+    selection-background-color: #B77A3D;
+    selection-color: #FFF8EA;
+}
+
+QLineEdit:hover {
+    border: 2px solid #B77A3D;
+    background-color: rgba(255, 250, 240, 245);
+}
+
+QLineEdit:focus {
+    border: 2px solid #8F5729;
+    background-color: rgba(255, 252, 244, 250);
 }</string>
        </property>
       </widget>
@@ -301,20 +443,31 @@ color: black;
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 16px;
+    background-color: #A8642A;
+    color: #FFF8EA;
+    border: 2px solid #7A431B;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 11pt;
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #218838;
+    background-color: #BC7838;
+    border: 2px solid #8A4E22;
 }
 
 QPushButton:pressed {
-    background-color: #1e7e34; 
+    background-color: #7C421B;
+    border: 2px solid #5D2F12;
+    padding-top: 11px;
+    padding-bottom: 9px;
+}
+
+QPushButton:disabled {
+    background-color: #C9B397;
+    color: #7A6A58;
+    border: 2px solid #A8957E;
 }
 </string>
        </property>
@@ -352,20 +505,21 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: transparent;
-    color: #1976D2;
+    background: transparent;
+    color: #6D3F1D;
     border: none;
-    border-radius: 5px;
-    padding: 8px 16px;
+    text-decoration: underline;
+    font-size: 10pt;
     font-weight: bold;
+    padding: 2px 4px;
 }
 
 QPushButton:hover {
-    color: #145FA8;
+    color: #A8642A;
 }
 
 QPushButton:pressed {
-    color: #104B85; 
+    color: #4A2B14;
 }
 </string>
        </property>
@@ -421,7 +575,11 @@ QPushButton:pressed {
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: #495ee4;</string>
+        <string notr="true">QLabel {
+    color: #5B3A1E;
+    background: transparent;
+    letter-spacing: 2px;
+}</string>
        </property>
        <property name="text">
         <string>PlaTwo</string>
@@ -438,7 +596,10 @@ QPushButton:pressed {
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: #000000;
+        <string notr="true">QLabel {
+    color: #2F1B0C;
+    background: transparent;
+}
 </string>
        </property>
        <property name="text">

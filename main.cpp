@@ -13,8 +13,8 @@ int main(int argc, char *argv[]) {
 
     qApp->setStyle("Fusion");
     QPalette palette;
-    palette.setColor(QPalette::Window, Qt::white);
-    palette.setColor(QPalette::WindowText, Qt::black);
+    palette.setColor(QPalette::Window, QColor("#EAD7B0"));
+    palette.setColor(QPalette::WindowText, QColor("#3A2412"));
     qApp->setPalette(palette);
 
     AppManager manager;
