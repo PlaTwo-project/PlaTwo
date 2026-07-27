@@ -2,6 +2,8 @@
 #include "ui_forgot_password.h"
 #include "UI/MainWindow/mainwindow.h"
 #include "UI/Exception/forget_password_exception.h"
+#include "UI/page_transition.h"
+#include "Logic/Constants/const_numbers.h"
 
 ForgotPassword::ForgotPassword(QWidget *parent) : QWidget(parent), ui(new Ui::ForgotPassword) {
     ui->setupUi(this);
@@ -26,11 +28,11 @@ void ForgotPassword::setUserData(const QString& username, const QString& phone) 
 }
 
 void ForgotPassword::switchToVerifyPage() {
-    ui->stackedWidget->setCurrentIndex(0);
+    pageTransition(ui->stackedWidget, ui->stackedWidget->widget(VERIFY_PAGE), this);
 }
 
 void ForgotPassword::switchToResetPage() {
-    ui->stackedWidget->setCurrentIndex(1);
+    pageTransition(ui->stackedWidget, ui->stackedWidget->widget(RESET_PAGE), this);
 }
 
 void ForgotPassword::clearFields() {

@@ -2,12 +2,13 @@
 #define SESSION_STORAGE_MANAGER_H
 
 #include <QString>
-#include <QList>
+#include <QMap>
+#include <QLockFile>
 
-class SessionStorageManager
-{
+class SessionStorageManager {
 public:
     SessionStorageManager();
+    ~SessionStorageManager();
 
     bool addSession(int user_id);
     bool removeSession(int user_id);
@@ -15,11 +16,9 @@ public:
     void clearAllSessions();
 
 private:
-    QString file_path;
-    QList<int> online_users_list;
+    QString getLockFilePath(int user_id) const;
 
-    void loadSessions();
-    void saveSessions() const;
+    static QMap<int, QLockFile*>& getActiveLocks();
 };
 
 #endif // SESSION_STORAGE_MANAGER_H

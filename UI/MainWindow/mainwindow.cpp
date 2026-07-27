@@ -19,6 +19,7 @@
 #include <QEasingCurve>
 #include <QParallelAnimationGroup>
 #include <QGraphicsOpacityEffect>
+#include "UI/page_transition.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -150,18 +151,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow() {
     delete ui;
 }
-
 void MainWindow::showLoginPage() {
-    transitionToWidget(login_page);
+    pageTransition(ui->stackedWidget, login_page, this);
 }
 
 void MainWindow::showSignupPage() {
-    transitionToWidget(signup_page);
+    pageTransition(ui->stackedWidget, signup_page, this);
 }
 
 void MainWindow::showForgotPasswordPage() {
     forgot_password_page->switchToVerifyPage();
-    transitionToWidget(forgot_password_page);
+    pageTransition(ui->stackedWidget, forgot_password_page, this);
 }
 
 void MainWindow::showForgotPasswordPage2(const QString &username, const QString &phone) {
@@ -170,22 +170,22 @@ void MainWindow::showForgotPasswordPage2(const QString &username, const QString 
 }
 
 void MainWindow::showMainMenuPage() {
-    transitionToWidget(main_menu_page);
+    pageTransition(ui->stackedWidget, main_menu_page, this);
 }
 
 void MainWindow::showEditProfilePage() {
-    transitionToWidget(edit_profile_page);
+    pageTransition(ui->stackedWidget, edit_profile_page, this);
 }
 
 void MainWindow::showGameMenuPage(const GameName game_name) {
     cur_game = game_name;
     game_menu_page->setTitle(game_name);
-    transitionToWidget(game_menu_page);
+    pageTransition(ui->stackedWidget, game_menu_page, this);
 }
 
 void MainWindow::showHostPage(const GameName game_name) {
     host_page->setPage(game_name);
-    transitionToWidget(host_page);
+    pageTransition(ui->stackedWidget, host_page, this);
 }
 
 void MainWindow::showWatingHostPage(const QString &ip, int port) {
@@ -195,30 +195,30 @@ void MainWindow::showWatingHostPage(const QString &ip, int port) {
 void MainWindow::showGuestPage(const GameName game_name) {
     guest_page->setTitle(game_name);
     guest_page->clearFields();
-    transitionToWidget(guest_page);
+    pageTransition(ui->stackedWidget, guest_page, this);
 }
 
 void MainWindow::showHistoryPage(const QList<MatchRecord> &historyList, int currentUserId, GameName game_name) {
     history_page->setHistory(historyList, currentUserId, game_name);
-    transitionToWidget(history_page);
+    pageTransition(ui->stackedWidget, history_page, this);
 }
 
 void MainWindow::showDotsAndBoxesPage(const int size) {
     dots_and_boxes_page->setupBoard(size);
     game_stack->setCurrentWidget(dots_and_boxes_page);
-    transitionToWidget(game_room_page);
+    pageTransition(ui->stackedWidget, game_room_page, this);
 }
 
 void MainWindow::showNineMensMorrisPage() {
     nine_mens_morris_page->setupBoard(0);
     game_stack->setCurrentWidget(nine_mens_morris_page);
-    transitionToWidget(game_room_page);
+    pageTransition(ui->stackedWidget, game_room_page, this);
 }
 
 void MainWindow::showFanoronaPage() {
     fanorona_page->setupBoard(0);
     game_stack->setCurrentWidget(fanorona_page);
-    transitionToWidget(game_room_page);
+    pageTransition(ui->stackedWidget, game_room_page, this);
 }
 
 void MainWindow::renderActivePage(const Game *game) {
@@ -285,54 +285,4 @@ void MainWindow::updateGameTimers(int host_time, int guest_time) {
 void MainWindow::closeEvent(QCloseEvent *event) {
     emit appClosing();
     event->accept();
-}
-
-void MainWindow::transitionToWidget(QWidget *targetWidget) {
-    QWidget *currentWidget = ui->stackedWidget->currentWidget();
-
-    if (currentWidget == targetWidget)
-        return;
-
-    int width = ui->stackedWidget->width();
-    int height = ui->stackedWidget->height();
-
-    QGraphicsOpacityEffect *effCurrent = new QGraphicsOpacityEffect(currentWidget);
-    QGraphicsOpacityEffect *effTarget = new QGraphicsOpacityEffect(targetWidget);
-    currentWidget->setGraphicsEffect(effCurrent);
-    targetWidget->setGraphicsEffect(effTarget);
-
-    targetWidget->setGeometry(0, 0, width, height);
-    targetWidget->show();
-    targetWidget->raise();
-
-    QPropertyAnimation *animNextPos = new QPropertyAnimation(targetWidget, "pos");
-    animNextPos->setDuration(230);
-    animNextPos->setStartValue(QPoint(width * 0.12, 0));
-    animNextPos->setEndValue(QPoint(0, 0));
-    animNextPos->setEasingCurve(QEasingCurve::OutCubic);
-
-    QPropertyAnimation *animNextFade = new QPropertyAnimation(effTarget, "opacity");
-    animNextFade->setDuration(200);
-    animNextFade->setStartValue(0.0);
-    animNextFade->setEndValue(1.0);
-
-    QPropertyAnimation *animPrevFade = new QPropertyAnimation(effCurrent, "opacity");
-    animPrevFade->setDuration(150);
-    animPrevFade->setStartValue(1.0);
-    animPrevFade->setEndValue(0.0);
-
-    QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
-    group->addAnimation(animNextPos);
-    group->addAnimation(animNextFade);
-    group->addAnimation(animPrevFade);
-
-    connect(group, &QParallelAnimationGroup::finished, [this, targetWidget, currentWidget, group]() {
-        ui->stackedWidget->setCurrentWidget(targetWidget);
-        currentWidget->setGraphicsEffect(nullptr);
-        targetWidget->setGraphicsEffect(nullptr);
-        currentWidget->move(0, 0);
-        group->deleteLater();
-    });
-
-    group->start();
 }

@@ -321,9 +321,9 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-    image: none;
-    width: 0;
-    height: 0;
+    image: url(:/icons/Resources/arrow/down_arrow.png);
+    width: 30px;
+    height: 30px;
 }
 
 QComboBox QAbstractItemView {
@@ -332,7 +332,17 @@ QComboBox QAbstractItemView {
     border: 1px solid #B77A3D;
     selection-background-color: #C98A49;
     selection-color: #FFFFFF;
-}</string>
+}
+
+QComboBox::drop-down:hover {
+    background-color: rgba(201, 138, 73, 140);
+    border-left: 1px solid #B77A3D;
+}
+
+QComboBox::drop-down:pressed {
+    background-color: rgba(143, 87, 41, 180);
+}
+</string>
              </property>
             </widget>
            </item>
@@ -395,6 +405,18 @@ QSpinBox::down-button {
 QSpinBox::up-button:hover,
 QSpinBox::down-button:hover {
     background-color: rgba(201, 138, 73, 120);
+}
+
+QSpinBox::up-arrow {
+    image: url(:/icons/Resources/arrow/up_arrow.png);
+    width: 20px;
+    height: 20px;
+}
+
+QSpinBox::down-arrow {
+    image: url(:/icons/Resources/arrow/down_arrow.png);
+    width: 20px;
+    height: 20px;
 }</string>
              </property>
              <property name="minimum">
@@ -450,7 +472,20 @@ QSpinBox::down-button {
 QSpinBox::up-button:hover,
 QSpinBox::down-button:hover {
     background-color: rgba(201, 138, 73, 120);
-}</string>
+}
+
+QSpinBox::up-arrow {
+    image: url(:/icons/Resources/arrow/up_arrow.png);
+    width: 20px;
+    height: 20px;
+}
+
+QSpinBox::down-arrow {
+    image: url(:/icons/Resources/arrow/down_arrow.png);
+    width: 20px;
+    height: 20px;
+}
+</string>
                </property>
                <property name="minimum">
                 <number>5</number>

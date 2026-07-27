@@ -20,20 +20,45 @@
    <string>PlaTwo</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMessageBox QPushButton {
-    background-color: white;
-    color: black;
-    border: 1px solid #0078d7;
-    padding: 5px 12px;
-    border-radius: 4px;
+   <string notr="true">QMessageBox {
+    background-color: #F7E7C6;
+    color: #3B2414;
+    border: 2px solid #8A5528;
+    border-radius: 10px;
+}
+
+QMessageBox QLabel {
+    color: #3B2414;
+    font-size: 10.5pt;
+    font-weight: bold;
+    background: transparent;
+}
+
+QMessageBox QPushButton {
+    background-color: #A8642A;
+    color: #FFF8EA;
+    border: 2px solid #7A431B;
+    border-radius: 7px;
+    padding: 6px 16px;
+    font-size: 10pt;
+    font-weight: bold;
+    min-width: 70px;
 }
 
 QMessageBox QPushButton:hover {
-    background-color: #e6f2ff;
+    background-color: #BC7838;
+    border: 2px solid #8A4E22;
 }
 
 QMessageBox QPushButton:pressed {
-    background-color: #C7E3FF;
+    background-color: #7C421B;
+    border: 2px solid #5D2F12;
+}
+
+QMessageBox QPushButton:disabled {
+    background-color: #C9B397;
+    color: #7A6A58;
+    border: 2px solid #A8957E;
 }
 </string>
   </property>
@@ -56,7 +81,7 @@ QMessageBox QPushButton:pressed {
      <x>0</x>
      <y>0</y>
      <width>1139</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

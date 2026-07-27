@@ -48,6 +48,7 @@ SOURCES += \
     UI/Menu/Proflie/edit_profile.cpp \
     UI/Network/guest_page.cpp \
     UI/Network/host_page.cpp \
+    UI/page_transition.cpp \
     main.cpp \
 
 HEADERS += \
@@ -111,6 +112,7 @@ HEADERS += \
     UI/Menu/Proflie/edit_profile.h \
     UI/Network/guest_page.h \
     UI/Network/host_page.h \
+    UI/page_transition.h
 
 FORMS += \
     UI/Auth/ForgotPassword/forgot_password.ui \

@@ -2,6 +2,8 @@
 #include "ui_host_page.h"
 #include "UI/Games/DotsAndBoxesPage/ColorSelectionDialog/color_selection_dialog.h"
 #include <QGraphicsBlurEffect>
+#include "UI/page_transition.h"
+#include "Logic/Constants/const_numbers.h"
 
 HostPage::HostPage(QWidget *parent) : QWidget(parent), ui(new Ui::HostPage) {
     ui->setupUi(this);
@@ -38,7 +40,7 @@ void HostPage::setPage(GameName game_name) {
     else if (game_name == GameName::Fanorona)
         ui->comboBox__board_size->addItem("Standard", 9);
 
-    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(CREATE_PAGE);
 }
 
 void HostPage::on_pushButton_create_clicked() {
@@ -72,11 +74,11 @@ void HostPage::on_pushButton_back_clicked() {
 
 void HostPage::on_pushButton_cancelHost_clicked() {
     emit cancelHostRequested();
-    ui->stackedWidget->setCurrentIndex(0);
+    pageTransition(ui->stackedWidget, ui->stackedWidget->widget(CREATE_PAGE), this);
 }
 
 void HostPage::switchToWaitingStatus(const QString& Ip, int port) {
     ui->label_server_IP->setText("IP Address: " + Ip);
     ui->label_server_port->setText(QString("Port Number: %1").arg(port));
-    ui->stackedWidget->setCurrentIndex(1);
+    pageTransition(ui->stackedWidget, ui->stackedWidget->widget(WAITING_PAGE), this);
 }
