@@ -8,9 +8,10 @@
 
 DotsAndBoxesPage::DotsAndBoxesPage(QWidget *parent) : BasePage(parent), is_animating(false), anim_progress(1.0), anim_type(0), anim_r(-1), anim_c(-1) {
     setMouseTracking(true);
+    board_background.load(":/backgrounds/Board2.png");
 
     animation = new QVariantAnimation(this);
-    animation->setDuration(300);
+    animation->setDuration(600);
     animation->setStartValue(0.0);
     animation->setEndValue(1.0);
     animation->setEasingCurve(QEasingCurve::OutQuad);
@@ -117,6 +118,10 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
+
+    QRect board_rect(margin_offset - 40, margin_offset - 25, (board_size * cell_spacing) + 80, (board_size * cell_spacing) + 80);
+    drawBoardBackground(painter, board_rect, board_background);
+
     painter.setPen(Qt::black);
     painter.setFont(QFont("Bauhaus LT Demi", 12));
     painter.drawText(margin_offset, 30, turn_status_text);
@@ -124,10 +129,11 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     painter.drawText(margin_offset, 70, QString("%1's Time: %2  |  %3's Time: %4").arg(first_player_name).arg(first_player_time_str).arg(second_player_name).arg(second_player_time_str));
     QPen empty_pen(Qt::lightGray, 2, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
     QPen hover_pen(Qt::darkGray, 4, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+
     for (int r = 0; r < board_size; ++r) {
         for (int c = 0; c < board_size; ++c) {
             if (captured_boxes[r][c] != PlayerSlot::NONE) {
-                QRect rect(margin_offset + c * cell_spacing, margin_offset + r * cell_spacing, cell_spacing, cell_spacing);
+                QRect rect(margin_offset + c * cell_spacing, 15 + margin_offset + r * cell_spacing, cell_spacing, cell_spacing);
                 QColor owner_color;
                 if (captured_boxes[r][c] == PlayerSlot::HOST)
                     owner_color = host_player_color;
@@ -135,9 +141,9 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
                     owner_color = guest_player_color;
 
                 QColor fill_color = owner_color;
-                qreal alpha = 100;
+                qreal alpha = 190;
                 if (is_animating && displayed_captured_boxes[r][c] == PlayerSlot::NONE)
-                    alpha = 100 * anim_progress;
+                    alpha = 190 * anim_progress;
 
                 fill_color.setAlpha(static_cast<int>(alpha));
                 painter.fillRect(rect, fill_color);
@@ -153,7 +159,7 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     for (int r = 0; r <= board_size; ++r) {
         for (int c = 0; c < board_size; ++c) {
             int x1 = margin_offset + c * cell_spacing;
-            int y1 = margin_offset + r * cell_spacing;
+            int y1 = 15 + margin_offset + r * cell_spacing;
             if (is_animating && anim_type == 1 && r == anim_r && c == anim_c) {
                 QColor owner_color;
                 if (horizontal_lines[r][c] == PlayerSlot::HOST)
@@ -186,7 +192,7 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     for (int r = 0; r < board_size; ++r) {
         for (int c = 0; c <= board_size; ++c) {
             int x1 = margin_offset + c * cell_spacing;
-            int y1 = margin_offset + r * cell_spacing;
+            int y1 = 15 + margin_offset + r * cell_spacing;
             if (is_animating && anim_type == 2 && r == anim_r && c == anim_c) {
                 QColor owner_color;
                 if (vertical_lines[r][c] == PlayerSlot::HOST)
@@ -220,7 +226,7 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     painter.setBrush(Qt::black);
     for (int r = 0; r <= board_size; ++r)
         for (int c = 0; c <= board_size; ++c)
-            painter.drawEllipse(QPoint(margin_offset + c * cell_spacing, margin_offset + r * cell_spacing), 5, 5);
+            painter.drawEllipse(QPoint(margin_offset + c * cell_spacing, 15 + margin_offset + r * cell_spacing), 5, 5);
 }
 
 void DotsAndBoxesPage::mousePressEvent(QMouseEvent *event) {
@@ -228,7 +234,7 @@ void DotsAndBoxesPage::mousePressEvent(QMouseEvent *event) {
         return;
 
     int click_x = event->position().x();
-    int click_y = event->position().y();
+    int click_y = event->position().y() - 15;
     for (int r = 0; r <= board_size; ++r) {
         for (int c = 0; c < board_size; ++c) {
             int mid_x = margin_offset + c * cell_spacing + cell_spacing / 2;
@@ -259,7 +265,7 @@ void DotsAndBoxesPage::mouseMoveEvent(QMouseEvent* event) {
     hovered_h_row = hovered_h_col = -1;
     hovered_v_row = hovered_v_col = -1;
     int x = event->position().x();
-    int y = event->position().y();
+    int y = event->position().y() - 15;
     for (int r = 0; r <= board_size; ++r) {
         for (int c = 0; c < board_size; ++c) {
             int mid_x = margin_offset + c * cell_spacing + cell_spacing / 2;

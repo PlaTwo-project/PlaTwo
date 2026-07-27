@@ -6,13 +6,16 @@
 #include <QVariantAnimation>
 #include <QEasingCurve>
 
-static const int PIECE_RADIUS = 16;
-static const int CLICK_THRESHOLD = 30;
+static const int PIECE_RADIUS = 20;
+static const int CLICK_THRESHOLD = 35;
 static const int MOVE_ANIMATION_DURATION_MS = 450;
 
 FanoronaPage::FanoronaPage(QWidget* parent) : BasePage(parent), chain_active(false), chain_position(-1), current_player_id(PlayerSlot::NONE),
     selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0), anim_move_from(-1), anim_move_to(-1), anim_moving_player_id(PlayerSlot::NONE) {
     setMouseTracking(true);
+    redPieceTexture.load(":/textures/Red.png");
+    bluePieceTexture.load(":/textures/Blue.png");
+    board_background.load(":/backgrounds/Board3.png");
 
     move_animation = new QVariantAnimation(this);
     move_animation->setDuration(MOVE_ANIMATION_DURATION_MS);
@@ -49,7 +52,7 @@ void FanoronaPage::setupBoard(const int size) {
 QPoint FanoronaPage::pixelOf(int position) const {
     int row = FanoronaBoard::rowOf(position);
     int col = FanoronaBoard::colOf(position);
-    return QPoint(margin_offset + col * cell_spacing, margin_offset + row * cell_spacing);
+    return QPoint(margin_offset + col * cell_spacing, 28 + margin_offset + row * cell_spacing);
 }
 
 int FanoronaPage::positionAt(const QPoint& point) const {
@@ -202,6 +205,10 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
+
+    QRect board_rect(margin_offset - 90, margin_offset - 105, ((FanoronaBoard::COLS - 1) * cell_spacing) + 180, ((FanoronaBoard::ROWS - 1) * cell_spacing) + 280);
+    drawBoardBackground(painter, board_rect, board_background);
+
     painter.setPen(Qt::black);
     painter.setFont(QFont("Bauhaus LT Demi", 12));
     painter.drawText(margin_offset, 25, turn_status_text);
@@ -218,6 +225,7 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
         }
     }
 
+    int offset = 15, offset2 = -7;
     for (int position = 0; position < FanoronaBoard::TOTAL_POSITIONS; ++position) {
         QPoint p = pixelOf(position);
         if (position == selected_position || (chain_active && position == chain_position)) {
@@ -253,10 +261,13 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
             else
                 color = QColor(100, 149, 237);
 
-            color.setAlphaF(fade);
-            painter.setPen(Qt::NoPen);
-            painter.setBrush(color);
-            painter.drawEllipse(p, radius, radius);
+            painter.setOpacity(fade);
+            if (displayed_occupants[position] == PlayerSlot::HOST)
+                painter.drawPixmap(p.x() - radius + offset2, p.y() - radius + offset2 - 2, offset + radius * 2, offset + radius * 2, redPieceTexture);
+            else
+                painter.drawPixmap(p.x() - radius + offset2, p.y() - radius + offset2 - 2, offset + radius * 2, offset + radius * 2, bluePieceTexture);
+
+            painter.setOpacity(1.0);
             continue;
         }
 
@@ -266,13 +277,10 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
             painter.setBrush(Qt::white);
             painter.drawEllipse(p, 4, 4);
         } else {
-            painter.setPen(Qt::black);
             if (occupant == PlayerSlot::HOST)
-                painter.setBrush(QColor(255, 99, 71));
+                painter.drawPixmap(p.x() - PIECE_RADIUS + offset2, p.y() - PIECE_RADIUS + offset2 - 2, offset + PIECE_RADIUS * 2, offset + PIECE_RADIUS * 2, redPieceTexture);
             else
-                painter.setBrush(QColor(100, 149, 237));
-
-            painter.drawEllipse(p, PIECE_RADIUS, PIECE_RADIUS);
+                painter.drawPixmap(p.x() - PIECE_RADIUS + offset2, p.y() - PIECE_RADIUS + offset2 - 2, offset + PIECE_RADIUS * 2, offset + PIECE_RADIUS * 2, bluePieceTexture);
         }
     }
 
@@ -281,14 +289,10 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
         QPointF to_point = pixelOf(anim_move_to);
         QPointF current_point = from_point + (to_point - from_point) * anim_progress;
 
-        painter.setPen(Qt::black);
-
         if (anim_moving_player_id == PlayerSlot::HOST)
-            painter.setBrush(QColor(255, 99, 71));
+            painter.drawPixmap(current_point.x() - PIECE_RADIUS + offset2, current_point.y() - PIECE_RADIUS + offset2 - 2, offset + PIECE_RADIUS * 2, offset + PIECE_RADIUS * 2, redPieceTexture);
         else
-            painter.setBrush(QColor(100, 149, 237));
-
-        painter.drawEllipse(current_point, PIECE_RADIUS, PIECE_RADIUS);
+            painter.drawPixmap(current_point.x() - PIECE_RADIUS + offset2, current_point.y() - PIECE_RADIUS + offset2 - 2, offset + PIECE_RADIUS * 2, offset + PIECE_RADIUS * 2, bluePieceTexture);
     }
 }
 

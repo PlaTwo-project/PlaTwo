@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     ui->centralwidget->setObjectName("appBackground");
-
     ui->centralwidget->setStyleSheet(R"(
     QWidget#appBackground {
         border-image: url(:/backgrounds/Board.png) 0 0 0 0 stretch stretch;
@@ -34,7 +33,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         border: none;
     }
     )");
-
 
     // create pages
     login_page = new Login(this);

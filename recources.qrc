@@ -1,15 +1,19 @@
 <RCC>
-<qresource prefix="/icons">
-<file>Resources/icon.ico</file>
-</qresource>
-
-<qresource prefix="/fonts">
-<file>Resources/Orbitron-VariableFont_wght.ttf</file>
-<file>Resources/LTe50402.ttf</file>
-<file>Resources/LTe50403.ttf</file>
-</qresource>
-
-<qresource prefix="/backgrounds">
-<file alias="Board.png">Resources/backgrounds/Board.png</file>
-</qresource>
+    <qresource prefix="/icons">
+        <file>Resources/Icon/icon.ico</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file>Resources/Fonts/Orbitron-VariableFont_wght.ttf</file>
+        <file>Resources/Fonts/LTe50402.ttf</file>
+        <file>Resources/Fonts/LTe50403.ttf</file>
+    </qresource>
+    <qresource prefix="/backgrounds">
+        <file alias="Board.png">Resources/backgrounds/Board.png</file>
+        <file alias="Board2.png">Resources/backgrounds/Board2.png</file>
+        <file alias="Board3.png">Resources/backgrounds/Board3.png</file>
+    </qresource>
+    <qresource prefix="/textures">
+        <file alias="Blue.png">Resources/textures/Blue.png</file>
+        <file alias="Red.png">Resources/textures/Red.png</file>
+    </qresource>
 </RCC>

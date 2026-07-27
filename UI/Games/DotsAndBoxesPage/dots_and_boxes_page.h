@@ -37,8 +37,10 @@ private:
     QVector<QVector<PlayerSlot>> displayed_vertical_lines;
     QVector<QVector<PlayerSlot>> displayed_captured_boxes;
 
-    QColor host_player_color = QColor(100, 149, 237);
-    QColor guest_player_color = QColor(255, 99, 71);
+    QColor host_player_color;
+    QColor guest_player_color;
+
+    QPixmap board_background;
 
     int hovered_h_row = -1;
     int hovered_h_col = -1;

@@ -35,6 +35,10 @@ private:
     int hovered_position;
     QVector<int> highlighted_positions;
 
+    QPixmap board_background;
+    QPixmap redPieceTexture;
+    QPixmap bluePieceTexture;
+
     // <animations>
     QVector<PlayerSlot> displayed_occupants;
     QVector<PlayerSlot> pending_occupants;

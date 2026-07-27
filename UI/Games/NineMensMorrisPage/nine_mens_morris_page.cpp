@@ -5,18 +5,19 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include <QVariantAnimation>
-#include <QEasingCurve>
-#include <cmath>
 
 using namespace std;
 
-static const int POINT_RADIUS = 16;
-static const int CLICK_THRESHOLD = 34;
+static const int POINT_RADIUS = 22;
+static const int CLICK_THRESHOLD = 38;
 static const int ANIMATION_DURATION_MS = 450;
 
 NineMensMorrisPage::NineMensMorrisPage(QWidget* parent) : BasePage(parent), awaiting_removal(false), placed_count_p1(0), placed_count_p2(0), current_player_id(PlayerSlot::NONE),
     selected_position(-1), hovered_position(-1), is_animating(false), anim_progress(0.0), anim_move_from(-1), anim_move_to(-1), anim_removed_position(-1), anim_moving_player_id(PlayerSlot::NONE) {
     setMouseTracking(true);
+    board_background.load(":/backgrounds/Board2.png");
+    redPieceTexture.load(":/textures/Red.png");
+    bluePieceTexture.load(":/textures/Blue.png");
     position_owners = QVector<PlayerSlot>(NineMensMorrisBoard::TOTAL_POSITIONS, PlayerSlot::NONE);
 
     move_animation = new QVariantAnimation(this);
@@ -54,7 +55,7 @@ void NineMensMorrisPage::setupBoard(const int size) {
 
 QPoint NineMensMorrisPage::positionToCoordinates(int position) const {
     QPair<int, int> coordinates = NineMensMorrisBoard::getCoordinates(position);
-    return QPoint(margin_offset + coordinates.first * cell_spacing, margin_offset + coordinates.second * cell_spacing);
+    return QPoint(margin_offset + coordinates.first * cell_spacing, 28 + margin_offset + coordinates.second * cell_spacing);
 }
 
 int NineMensMorrisPage::getPositionClicked(const QPoint& point) const {
@@ -202,6 +203,10 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
+
+    QRect board_rect(margin_offset - 50, margin_offset - 12, (6 * cell_spacing) + 100, (6 * cell_spacing) + 95);
+    drawBoardBackground(painter, board_rect, board_background);
+
     painter.setPen(Qt::black);
     painter.setFont(QFont("Bauhaus LT Demi", 12));
     painter.drawText(margin_offset, 18, turn_status_text);
@@ -225,6 +230,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     }
 
     // points and pieces
+    int offset = 15, offset2 = -7;
     for (int position = 0; position < NineMensMorrisBoard::TOTAL_POSITIONS; ++position) {
         QPoint p = positionToCoordinates(position);
         if (highlighted_positions.contains(static_cast<PlayerSlot>(position))) {
@@ -265,11 +271,14 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
             else
                 c = QColor(255, 99, 71);
 
-            c.setAlphaF(fade);
-            painter.setPen(Qt::NoPen);
-            painter.setBrush(c);
             int r = static_cast<int>(POINT_RADIUS * (0.5 + 0.5 * fade));
-            painter.drawEllipse(p, r, r);
+            painter.setOpacity(fade);
+            if (owner == PlayerSlot::HOST)
+                painter.drawPixmap(p.x() - r + offset2, p.y() - r + offset2 - 2, offset + r * 2, offset + r * 2, bluePieceTexture);
+            else
+                painter.drawPixmap(p.x() - r + offset2, p.y() - r + offset2 - 2, offset + r * 2, offset + r * 2, redPieceTexture);
+
+            painter.setOpacity(1.0);
             continue;
         }
 
@@ -278,13 +287,10 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
             painter.setBrush(Qt::white);
             painter.drawEllipse(p, 5, 5);
         } else {
-            painter.setPen(Qt::black);
-            if (owner == PlayerSlot::HOST)
-                painter.setBrush(QColor(100, 149, 237));
-            else
-                painter.setBrush(QColor(255, 99, 71));
-
-            painter.drawEllipse(p, POINT_RADIUS, POINT_RADIUS);
+        if (owner == PlayerSlot::HOST)
+            painter.drawPixmap(p.x() - POINT_RADIUS + offset2, p.y() - POINT_RADIUS + offset2 - 2, offset + POINT_RADIUS * 2, offset + POINT_RADIUS * 2, bluePieceTexture);
+        else
+            painter.drawPixmap(p.x() - POINT_RADIUS + offset2, p.y() - POINT_RADIUS + offset2 - 2, offset + POINT_RADIUS * 2, offset + POINT_RADIUS * 2, redPieceTexture);
         }
     }
 
@@ -299,14 +305,11 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
             painter.setOpacity(anim_progress);
         }
 
-        painter.setPen(Qt::black);
-
         if (anim_moving_player_id == PlayerSlot::HOST)
-            painter.setBrush(QColor(100, 149, 237));
+            painter.drawPixmap(current_point.x() - POINT_RADIUS + offset2, current_point.y() - POINT_RADIUS + offset2 - 2, offset + POINT_RADIUS * 2, offset + POINT_RADIUS * 2, bluePieceTexture);
         else
-            painter.setBrush(QColor(255, 99, 71));
+            painter.drawPixmap(current_point.x() - POINT_RADIUS + offset2, current_point.y() - POINT_RADIUS + offset2 - 2, offset + POINT_RADIUS * 2, offset + POINT_RADIUS * 2, redPieceTexture);
 
-        painter.drawEllipse(current_point, POINT_RADIUS, POINT_RADIUS);
         painter.setOpacity(1.0);
     }
 }

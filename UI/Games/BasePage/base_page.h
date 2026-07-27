@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QResizeEvent>
 #include <QLabel>
+#include <QPixmap>
+#include <QPainter>
 
 class BasePage : public QWidget {
     Q_OBJECT
@@ -60,6 +62,18 @@ signals:
     void pauseRequested();
 
 protected:
+    void drawBoardBackground(QPainter& painter, const QRect& board_rect, const QPixmap& image) {
+        if (image.isNull())
+            return;
+
+        QPixmap scaled = image.scaled(board_rect.size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+        int x = board_rect.x() + (board_rect.width() - scaled.width()) / 2;
+        int y = board_rect.y() + (board_rect.height() - scaled.height()) / 2;
+        painter.save();
+        painter.setClipRect(board_rect);
+        painter.drawPixmap(x, y, scaled);
+        painter.restore();
+    }
 
     void resizeEvent(QResizeEvent* event) override {
         QWidget::resizeEvent(event);
