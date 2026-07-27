@@ -291,6 +291,11 @@ QPushButton:pressed {
                <height>28</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Segoe UI Semibold</family>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">QComboBox {
     background-color: rgba(255, 248, 235, 230);
@@ -375,6 +380,11 @@ QComboBox::drop-down:pressed {
                <height>28</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Segoe UI Semibold</family>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">QSpinBox {
     background-color: rgba(255, 248, 235, 230);
@@ -442,6 +452,11 @@ QSpinBox::down-arrow {
                  <width>0</width>
                  <height>28</height>
                 </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI Semibold</family>
+                </font>
                </property>
                <property name="styleSheet">
                 <string notr="true">QSpinBox {
@@ -511,6 +526,12 @@ QSpinBox::down-arrow {
                  <width>0</width>
                  <height>28</height>
                 </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI Semibold</family>
+                 <bold>true</bold>
+                </font>
                </property>
                <property name="styleSheet">
                 <string notr="true">QCheckBox {

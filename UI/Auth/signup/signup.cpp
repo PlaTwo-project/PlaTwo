@@ -16,7 +16,7 @@ Signup::Signup(QWidget *parent) : QWidget(parent), ui(new Ui::Signup) {
 
     QToolButton *eye_button = new QToolButton(ui->lineEdit_password);
     eye_button->setIcon(QIcon(":/icons/Resources/Icons/eye_closed.png"));
-    eye_button->setIconSize(QSize(24, 24));
+    eye_button->setIconSize(QSize(28, 28));
     eye_button->setCursor(Qt::PointingHandCursor);
     eye_button->setStyleSheet("QToolButton {"
                               "border: none;"

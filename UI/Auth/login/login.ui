@@ -109,8 +109,9 @@ QMessageBox QPushButton:pressed {
        </property>
        <property name="font">
         <font>
+         <family>Segoe UI Semibold</family>
          <pointsize>11</pointsize>
-         <bold>true</bold>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -180,8 +181,9 @@ QLineEdit:focus {
        </property>
        <property name="font">
         <font>
+         <family>Segoe UI Semibold</family>
          <pointsize>11</pointsize>
-         <bold>true</bold>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -191,7 +193,7 @@ QLineEdit:focus {
     border: 2px solid #C49A63;
     border-radius: 9px;
     padding: 7px 11px;
-	padding-right: 32px;
+	padding-right: 38px;
     font-size: 10.5pt;
     selection-background-color: #B77A3D;
     selection-color: #FFF8EA;

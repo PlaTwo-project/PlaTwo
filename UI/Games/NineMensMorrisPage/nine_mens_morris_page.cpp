@@ -203,6 +203,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
     QRect board_rect(margin_offset - 50, margin_offset - 12, (6 * cell_spacing) + 100, (6 * cell_spacing) + 95);
     drawBoardBackground(painter, board_rect, board_background);
