@@ -120,7 +120,7 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-    QRect board_rect(margin_offset - 40, margin_offset - 25, (board_size * cell_spacing) + 80, (board_size * cell_spacing) + 80);
+    QRect board_rect(margin_offset - 40, margin_offset - 25, (board_size * cell_spacing) + 80, (board_size * cell_spacing) + 100);
     drawBoardBackground(painter, board_rect, board_background);
 
     painter.setPen(Qt::black);

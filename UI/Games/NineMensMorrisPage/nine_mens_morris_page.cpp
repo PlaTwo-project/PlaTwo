@@ -205,7 +205,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-    QRect board_rect(margin_offset - 50, margin_offset - 12, (6 * cell_spacing) + 100, (6 * cell_spacing) + 95);
+    QRect board_rect(margin_offset - 50, margin_offset - 12, (6 * cell_spacing) + 100, (6 * cell_spacing) + 110);
     drawBoardBackground(painter, board_rect, board_background);
 
     painter.setPen(Qt::black);
@@ -248,7 +248,7 @@ void NineMensMorrisPage::paintEvent(QPaintEvent* event) {
 
             painter.setPen(QPen(highlight_color, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.setBrush(QColor(highlight_color.red(), highlight_color.green(), highlight_color.blue(), 70));
-            painter.drawEllipse(p, POINT_RADIUS + 6, POINT_RADIUS + 6);
+            painter.drawEllipse(p, POINT_RADIUS + 1, POINT_RADIUS + 1);
         }
 
         if (position == selected_position) {

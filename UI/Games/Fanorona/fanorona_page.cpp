@@ -207,7 +207,7 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-    QRect board_rect(margin_offset - 90, margin_offset - 105, ((FanoronaBoard::COLS - 1) * cell_spacing) + 180, ((FanoronaBoard::ROWS - 1) * cell_spacing) + 280);
+    QRect board_rect(margin_offset - 40, margin_offset - 10, ((FanoronaBoard::COLS - 1) * cell_spacing) + 90, ((FanoronaBoard::ROWS - 1) * cell_spacing) + 95);
     drawBoardBackground(painter, board_rect, board_background);
 
     painter.setPen(Qt::black);
