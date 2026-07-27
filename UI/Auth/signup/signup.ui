@@ -48,27 +48,11 @@ QMessageBox QPushButton:pressed {
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="9" column="1">
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QGridLayout" name="gridLayout_3">
      <property name="leftMargin">
-      <number>0</number>
+      <number>12</number>
      </property>
-     <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
-      <widget class="QLabel" name="label_3">
-       <property name="styleSheet">
-        <string notr="true">QLabel {
-    color: #3A2412;
-    background: transparent;
-    font-size: 10pt;
-    font-weight: bold;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>Password:</string>
-       </property>
-      </widget>
-     </item>
-     <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
+     <item row="1" column="0" alignment="Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop">
       <widget class="QLineEdit" name="lineEdit_password">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -78,15 +62,21 @@ QMessageBox QPushButton:pressed {
        </property>
        <property name="minimumSize">
         <size>
-         <width>300</width>
-         <height>28</height>
+         <width>250</width>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>400</width>
+         <width>250</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
@@ -95,6 +85,7 @@ QMessageBox QPushButton:pressed {
     border: 2px solid #C49A63;
     border-radius: 9px;
     padding: 7px 11px;
+	padding-right: 32px;
     font-size: 10.5pt;
     selection-background-color: #B77A3D;
     selection-color: #FFF8EA;
@@ -115,6 +106,109 @@ QLineEdit:focus {
         <enum>QLineEdit::EchoMode::Password</enum>
        </property>
       </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Password:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" rowspan="2">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="label_char">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>at least 8 characters</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_number">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>at least one number</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_lower">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>at least one lower case character</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_capital">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>at least one capital character</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_special">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #3A2412;
+    background: transparent;
+    font-size: 10pt;
+    font-weight: bold;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>at least one special character</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -188,7 +282,7 @@ QLineEdit:focus {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>28</height>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -196,6 +290,12 @@ QLineEdit:focus {
          <width>250</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
@@ -233,7 +333,7 @@ QLineEdit:focus {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>28</height>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -241,6 +341,12 @@ QLineEdit:focus {
          <width>250</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
@@ -277,7 +383,7 @@ QLineEdit:focus {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>28</height>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -285,6 +391,12 @@ QLineEdit:focus {
          <width>250</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
@@ -346,7 +458,7 @@ QLineEdit:focus {
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>28</height>
+         <height>36</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -354,6 +466,12 @@ QLineEdit:focus {
          <width>250</width>
          <height>8888888</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {

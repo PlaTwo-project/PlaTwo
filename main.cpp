@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    app.setWindowIcon(QIcon(":/icons/Resources/Icon/icon.ico"));
+    app.setWindowIcon(QIcon(":/icons/Resources/Icons/icon.ico"));
 
     QFontDatabase::addApplicationFont(":/fonts/Resources/Fonts/Orbitron-VariableFont_wght.ttf");
     QFontDatabase::addApplicationFont(":/fonts/Resources/Fonts/LTe50402.ttf");

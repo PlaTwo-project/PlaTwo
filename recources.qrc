@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>Resources/Icon/icon.ico</file>
+        <file>Resources/Icons/icon.ico</file>
+        <file>Resources/Icons/eye_closed.png</file>
+        <file>Resources/Icons/eye_open.png</file>
     </qresource>
     <qresource prefix="/fonts">
         <file>Resources/Fonts/Orbitron-VariableFont_wght.ttf</file>

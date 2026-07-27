@@ -2,6 +2,8 @@
 #define SIGNUP_H
 
 #include <QWidget>
+#include <QLabel>
+#include <QRegularExpression>
 
 namespace Ui {
 class Signup;
@@ -24,9 +26,12 @@ signals:
 private slots:
     void on_pushButton_submit_clicked();
     void on_pushButton_login_clicked();
+    void checkPasswordStrength(const QString &password);
 
 private:
     Ui::Signup *ui;
+
+    void updateRequirementLabel(QLabel *label, bool isValid, const QString &text);
 };
 
 #endif // SIGNUP_H
