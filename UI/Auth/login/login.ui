@@ -342,37 +342,29 @@ QLineEdit:focus {
        </property>
        <property name="font">
         <font>
-         <pointsize>11</pointsize>
+         <pointsize>-1</pointsize>
          <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #A8642A;
-    color: #FFF8EA;
-    border: 2px solid #7A431B;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #A83232, stop:0.5 #8B2525, stop:1 #6B1B1B);
+    color: #FFF3E0;
+    border: 2px solid #4A1212;
     border-radius: 10px;
-    padding: 10px 18px;
-    font-size: 11pt;
+    padding: 8px 16px;
+    font-size: 14px;
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #BC7838;
-    border: 2px solid #8A4E22;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #C03939, stop:0.5 #9E2B2B, stop:1 #7D1F1F);
+    border: 2px solid #5C1616;
 }
 
 QPushButton:pressed {
-    background-color: #7C421B;
-    border: 2px solid #5D2F12;
-    padding-top: 11px;
-    padding-bottom: 9px;
-}
-
-QPushButton:disabled {
-    background-color: #C9B397;
-    color: #7A6A58;
-    border: 2px solid #A8957E;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #5C1616, stop:0.5 #7D1F1F, stop:1 #9E2B2B);
+    border: 2px solid #330B0B;
 }
 </string>
        </property>

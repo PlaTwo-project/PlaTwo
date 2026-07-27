@@ -218,11 +218,20 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
     if (chain_active)
         painter.drawText(margin_offset, 79, "Capture chain in progress - continue capturing");
 
-    painter.setPen(QPen(Qt::darkGray, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+
+    QPen highlightPen(QColor(255, 235, 200, 70), 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    QPen groovePen(QColor(35, 18, 8, 200), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     for (int position = 0; position < FanoronaBoard::TOTAL_POSITIONS; ++position) {
         for (int neighbour : snapshot_board.getNeighbours(position)) {
-            if (neighbour > position)
-                painter.drawLine(pixelOf(position), pixelOf(neighbour));
+            if (neighbour > position) {
+                QPoint p1 = pixelOf(position);
+                QPoint p2 = pixelOf(neighbour);
+
+                painter.setPen(highlightPen);
+                painter.drawLine(p1 + QPoint(1, 1), p2 + QPoint(1, 1));
+                painter.setPen(groovePen);
+                painter.drawLine(p1, p2);
+            }
         }
     }
 
@@ -245,10 +254,18 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
             painter.drawEllipse(p, PIECE_RADIUS + 3, PIECE_RADIUS + 3);
         }
 
+        QRadialGradient slot_grad(0, 0, 12);
+        slot_grad.setColorAt(0.0, QColor(20, 10, 5, 230));
+        slot_grad.setColorAt(0.7, QColor(45, 25, 12, 180));
+        slot_grad.setColorAt(1.0, QColor(100, 60, 30, 40));
+
         if (is_animating && (position == anim_move_from || position == anim_move_to)) {
-            painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-            painter.setBrush(Qt::white);
-            painter.drawEllipse(p, 4, 4);
+            painter.save();
+            painter.translate(p);
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(slot_grad);
+            painter.drawEllipse(QPointF(0, 0), 11, 11);
+            painter.restore();
             continue;
         }
 
@@ -274,9 +291,12 @@ void FanoronaPage::paintEvent(QPaintEvent* event) {
 
         PlayerSlot occupant = displayed_occupants[position];
         if (occupant == PlayerSlot::NONE) {
-            painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-            painter.setBrush(Qt::white);
-            painter.drawEllipse(p, 4, 4);
+            painter.save();
+            painter.translate(p);
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(slot_grad);
+            painter.drawEllipse(QPointF(0, 0), 11, 11);
+            painter.restore();
         } else {
             if (occupant == PlayerSlot::HOST)
                 painter.drawPixmap(p.x() - PIECE_RADIUS + offset2, p.y() - PIECE_RADIUS + offset2 - 2, offset + PIECE_RADIUS * 2, offset + PIECE_RADIUS * 2, redPieceTexture);

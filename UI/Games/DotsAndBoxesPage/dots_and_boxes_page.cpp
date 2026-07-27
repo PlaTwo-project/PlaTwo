@@ -128,31 +128,46 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
     painter.drawText(margin_offset, 30, turn_status_text);
     painter.drawText(margin_offset, 50, QString("%1's Score: %2  |  %3's Score: %4").arg(first_player_name).arg(first_player_score).arg(second_player_name).arg(second_player_score));
     painter.drawText(margin_offset, 70, QString("%1's Time: %2  |  %3's Time: %4").arg(first_player_name).arg(first_player_time_str).arg(second_player_name).arg(second_player_time_str));
-    QPen empty_pen(Qt::lightGray, 2, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
-    QPen hover_pen(Qt::darkGray, 4, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+
+    QPen empty_pen(QColor(180, 160, 140, 150), 2, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
+    QPen hover_pen(QColor(80, 80, 80, 200), 4, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
 
     for (int r = 0; r < board_size; ++r) {
         for (int c = 0; c < board_size; ++c) {
             if (captured_boxes[r][c] != PlayerSlot::NONE) {
-                QRect rect(margin_offset + c * cell_spacing, 15 + margin_offset + r * cell_spacing, cell_spacing, cell_spacing);
-                QColor owner_color;
-                if (captured_boxes[r][c] == PlayerSlot::HOST)
-                    owner_color = host_player_color;
-                else
-                    owner_color = guest_player_color;
 
-                QColor fill_color = owner_color;
-                qreal alpha = 190;
+                int pad = 5;
+                QRect rect(margin_offset + c * cell_spacing + pad, 15 + margin_offset + r * cell_spacing + pad, cell_spacing - (2 * pad), cell_spacing - (2 * pad));
+
+                QColor owner_color = (captured_boxes[r][c] == PlayerSlot::HOST) ? host_player_color : guest_player_color;
+
+                qreal alpha = 210;
                 if (is_animating && displayed_captured_boxes[r][c] == PlayerSlot::NONE)
-                    alpha = 190 * anim_progress;
+                    alpha = 210 * anim_progress;
 
-                fill_color.setAlpha(static_cast<int>(alpha));
-                painter.fillRect(rect, fill_color);
-                painter.setPen(owner_color);
-                if (captured_boxes[r][c] == PlayerSlot::HOST)
-                    painter.drawText(rect, Qt::AlignCenter, first_player_name[0]);
-                else
-                    painter.drawText(rect, Qt::AlignCenter, second_player_name[0]);
+                QLinearGradient grad(rect.topLeft(), rect.bottomRight());
+                QColor c_light = owner_color.lighter(120);
+                QColor c_dark = owner_color.darker(110);
+                c_light.setAlpha(static_cast<int>(alpha));
+                c_dark.setAlpha(static_cast<int>(alpha));
+                grad.setColorAt(0.0, c_light);
+                grad.setColorAt(1.0, c_dark);
+
+
+                painter.setPen(Qt::NoPen);
+                painter.setBrush(grad);
+                painter.drawRoundedRect(rect, 6, 6);
+
+                QColor border_color = owner_color.lighter(140);
+                border_color.setAlpha(static_cast<int>(alpha * 0.6));
+                painter.setPen(QPen(border_color, 1));
+                painter.setBrush(Qt::NoBrush);
+                painter.drawRoundedRect(rect, 6, 6);
+
+                painter.setFont(QFont("Bauhaus LT Demi", 15, QFont::Bold));
+                painter.setPen(QColor(255, 255, 255, static_cast<int>(alpha)));
+                QString letter = (captured_boxes[r][c] == PlayerSlot::HOST) ? first_player_name[0] : second_player_name[0];
+                painter.drawText(rect, Qt::AlignCenter, letter);
             }
         }
     }
@@ -162,22 +177,12 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
             int x1 = margin_offset + c * cell_spacing;
             int y1 = 15 + margin_offset + r * cell_spacing;
             if (is_animating && anim_type == 1 && r == anim_r && c == anim_c) {
-                QColor owner_color;
-                if (horizontal_lines[r][c] == PlayerSlot::HOST)
-                    owner_color = host_player_color;
-                else
-                    owner_color = guest_player_color;
-
+                QColor owner_color = (horizontal_lines[r][c] == PlayerSlot::HOST) ? host_player_color : guest_player_color;
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 int current_length = static_cast<int>(cell_spacing * anim_progress);
                 painter.drawLine(x1, y1, x1 + current_length, y1);
             } else if (horizontal_lines[r][c] != PlayerSlot::NONE) {
-                QColor owner_color;
-                if (horizontal_lines[r][c] == PlayerSlot::HOST)
-                    owner_color = host_player_color;
-                else
-                    owner_color = guest_player_color;
-
+                QColor owner_color = (horizontal_lines[r][c] == PlayerSlot::HOST) ? host_player_color : guest_player_color;
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 painter.drawLine(x1, y1, x1 + cell_spacing, y1);
             } else if (!is_animating && r == hovered_h_row && c == hovered_h_col) {
@@ -195,22 +200,12 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
             int x1 = margin_offset + c * cell_spacing;
             int y1 = 15 + margin_offset + r * cell_spacing;
             if (is_animating && anim_type == 2 && r == anim_r && c == anim_c) {
-                QColor owner_color;
-                if (vertical_lines[r][c] == PlayerSlot::HOST)
-                    owner_color = host_player_color;
-                else
-                    owner_color = guest_player_color;
-
+                QColor owner_color = (vertical_lines[r][c] == PlayerSlot::HOST) ? host_player_color : guest_player_color;
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 int current_length = static_cast<int>(cell_spacing * anim_progress);
                 painter.drawLine(x1, y1, x1, y1 + current_length);
             } else if (vertical_lines[r][c] != PlayerSlot::NONE) {
-                QColor owner_color;
-                if (vertical_lines[r][c] == PlayerSlot::HOST)
-                    owner_color = host_player_color;
-                else
-                    owner_color = guest_player_color;
-
+                QColor owner_color = (vertical_lines[r][c] == PlayerSlot::HOST) ? host_player_color : guest_player_color;
                 painter.setPen(QPen(owner_color, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
                 painter.drawLine(x1, y1, x1, y1 + cell_spacing);
             } else if (!is_animating && r == hovered_v_row && c == hovered_v_col) {
@@ -223,12 +218,22 @@ void DotsAndBoxesPage::paintEvent(QPaintEvent *event) {
         }
     }
 
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(Qt::black);
-    for (int r = 0; r <= board_size; ++r)
-        for (int c = 0; c <= board_size; ++c)
-            painter.drawEllipse(QPoint(margin_offset + c * cell_spacing, 15 + margin_offset + r * cell_spacing), 5, 5);
+    for (int r = 0; r <= board_size; ++r) {
+        for (int c = 0; c <= board_size; ++c) {
+            QPoint center(margin_offset + c * cell_spacing, 15 + margin_offset + r * cell_spacing);
+            int dot_radius = 7;
+
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(QColor(0, 0, 0, 90));
+            painter.drawEllipse(center + QPoint(1, 2), dot_radius, dot_radius);
+            painter.setBrush(QColor(25, 20, 15));
+            painter.drawEllipse(center, dot_radius, dot_radius);
+            painter.setBrush(QColor(255, 255, 255, 160));
+            painter.drawEllipse(center - QPoint(2, 2), 2, 2);
+        }
+    }
 }
+
 
 void DotsAndBoxesPage::mousePressEvent(QMouseEvent *event) {
     if (!is_input_enabled || board_size == 0 || is_animating)
